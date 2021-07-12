@@ -1,0 +1,43 @@
+<h2 mat-dialog-title>Einstellung</h2>
+<mat-dialog-content class="mat-typography">
+  <form [formGroup]="setting">
+    <mat-tab-group>
+
+      <mat-tab label="Allgemein">
+
+        <div class="form-group">
+          <mat-form-field appearance="fill">
+            <mat-select name="channel" formControlName="channel">
+              <mat-option value="">---Channel auswählen----</mat-option>
+              <mat-option *ngFor="let channel of channels" [value]="channel">{{channel.label}}</mat-option>
+            </mat-select>
+
+          </mat-form-field>
+
+          <mat-radio-group name="frequence" formControlName="frequence">
+            <mat-radio-button *ngFor="let frequence of frequences"
+                              [value]="frequence">{{frequence.value}} {{frequence.unit}}
+            </mat-radio-button>
+          </mat-radio-group>
+        </div>
+      </mat-tab>
+
+      <mat-tab label="Darstellung">
+        <mat-form-field appearance="fill">
+          <mat-select name="diagram" formControlName="diagram">
+            <mat-option value="">---Channel auswählen----</mat-option>
+            <mat-option *ngFor="let diagram of diagrams" [value]="diagram">{{diagram.label}}</mat-option>
+          </mat-select>
+
+        </mat-form-field>
+      </mat-tab>
+
+    </mat-tab-group>
+  </form>
+
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button mat-button [mat-dialog-close]='setting.value' cdkFocusInitial>Anwenden</button>
+</mat-dialog-actions>
+

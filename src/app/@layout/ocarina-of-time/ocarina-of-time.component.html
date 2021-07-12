@@ -1,0 +1,22 @@
+<mat-toolbar>
+  <mat-form-field class="example-form-field" appearance="fill">
+    <mat-label>Enter a date range</mat-label>
+    <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
+      <input matStartDate formControlName="start" eplaceholder="Start date" (dateChange)="addEvent('start', $event)">
+      <input matEndDate formControlName="end" placeholder="End date" (dateChange)="addEvent('end', $event)">
+    </mat-date-range-input>
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-date-range-picker #picker></mat-date-range-picker>
+  </mat-form-field>
+  <span class="example-spacer">|</span>
+
+  <span class="example-spacer">|</span>
+<div>
+  <button mat-icon-button (click)="reduceSpeed()"><mat-icon>fast_rewind</mat-icon></button >
+  <span >{{ocarinaTime$ | async | date: 'dd. LLL. yyyy'}}</span>
+  <button mat-icon-button (click)="play()"><mat-icon>{{font}}</mat-icon></button>
+  <span >{{ocarinaTime$ | async | date: 'hh:mm:ss'}}</span>
+  <button mat-icon-button (click)="raiseSpeed()"><mat-icon>fast_forward</mat-icon></button>
+</div>
+  <span class="example-spacer">|</span>
+</mat-toolbar>

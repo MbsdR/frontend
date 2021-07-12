@@ -1,0 +1,21 @@
+.mat-toolbar{
+  display: flex;
+  flex-flow: row wrap;
+}
+.example-spacer {
+  flex: 1 0 auto;
+}
+.mat-datepicker-content {
+  height: 5px;
+}
+
+.control {
+  display: flex;
+  flex-direction: row;
+}
+.mat-label{
+  height: 5px;
+}
+
+.example-form-field{
+}
