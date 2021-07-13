@@ -1,50 +1,53 @@
 import {Component, Injectable} from '@angular/core';
-import {Query} from '../../model/query';
+import {Query, IQuery} from '../../model/query';
 
 @Injectable({
   providedIn: 'root'
 })
 export class QueryBuilderService {
 
-  private query: Query = {
-    vendor: '',
-    start : '',
-    end : '',
-    channels: [],
-    turbines: [],
-  };
+  private query: IQuery;
 
+  constructor() {
+    this.query = new Query();
+  }
 
-  constructor() {}
-  vendor(vendor: string): QueryBuilderService{
+  vendor(vendor: string): QueryBuilderService {
     this.query.vendor = vendor;
     return this;
   }
-   start(start: string): QueryBuilderService {
+
+  start(start: string): QueryBuilderService {
     this.query.start = start;
     return this;
   }
+
   end(end: string): QueryBuilderService {
     this.query.end = end;
     return this;
   }
-  addChannel(channel: string): QueryBuilderService{
+
+  addChannel(channel: string): QueryBuilderService {
     this.query.channels.push(channel);
     return this;
   }
-  addTurbine(turbine: string): QueryBuilderService{
+
+  addTurbine(turbine: string): QueryBuilderService {
     this.query.turbines.push(turbine);
     return this;
   }
-  freq(freq: string): QueryBuilderService{
+
+  freq(freq: string): QueryBuilderService {
     this.query.freq = freq;
     return this;
   }
-  func(func: string): QueryBuilderService{
+
+  func(func: string): QueryBuilderService {
     this.query.func = func;
     return this;
   }
-  getQuery(): Query{
+
+  getQuery(): IQuery {
     return this.query;
   }
 }

@@ -9,14 +9,18 @@
           <mat-form-field appearance="fill">
             <mat-select name="channel" formControlName="channel">
               <mat-option value="">---Channel auswählen----</mat-option>
-              <mat-option *ngFor="let channel of channels" [value]="channel">{{channel.label}}</mat-option>
+              <mat-option *ngFor="let channel of channels" [value]="channel.value">{{channel.label.de}}</mat-option>
             </mat-select>
 
           </mat-form-field>
-
+          <mat-radio-group name="unit" formControlName="unit">
+            <mat-radio-button *ngFor="let unit of units"
+                              [value]="unit.value">{{unit.label.de}}
+            </mat-radio-button>
+          </mat-radio-group>
           <mat-radio-group name="frequence" formControlName="frequence">
             <mat-radio-button *ngFor="let frequence of frequences"
-                              [value]="frequence">{{frequence.value}} {{frequence.unit}}
+                              [value]="frequence">{{frequence}}
             </mat-radio-button>
           </mat-radio-group>
         </div>
@@ -24,9 +28,9 @@
 
       <mat-tab label="Darstellung">
         <mat-form-field appearance="fill">
-          <mat-select name="diagram" formControlName="diagram">
+          <mat-select name="diagram" formControlName="chart">
             <mat-option value="">---Channel auswählen----</mat-option>
-            <mat-option *ngFor="let diagram of diagrams" [value]="diagram">{{diagram.label}}</mat-option>
+            <mat-option *ngFor="let chart of charts" [value]="chart">{{chart}}</mat-option>
           </mat-select>
 
         </mat-form-field>
@@ -38,6 +42,6 @@
 </mat-dialog-content>
 <mat-dialog-actions align="end">
   <button mat-button mat-dialog-close>Cancel</button>
-  <button mat-button [mat-dialog-close]='setting.value' cdkFocusInitial>Anwenden</button>
+  <button mat-button [mat-dialog-close]='settings' cdkFocusInitial>Anwenden</button>
 </mat-dialog-actions>
 

@@ -1,8 +1,9 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {Datapoint} from '../../../@core/model/datapoint';
+import {IDatapoint} from '../../../@core/model/IDatapoint';
 import {map} from 'rxjs/operators';
 import {EChartsOption} from 'echarts';
-import {Profile} from '../../../@core/model/profile';
+import {Setting} from '../../../@core/model/setting';
+import {CHANNELS} from '../../../@core/model/mapping';
 
 @Component({
   selector: 'wisa-line-chart',
@@ -11,8 +12,8 @@ import {Profile} from '../../../@core/model/profile';
   styleUrls: ['./line-chart.component.css']
 })
 export class LineChartComponent implements OnInit {
-  @Input() data$: EventEmitter<Datapoint>;
-  @Input() profile: Profile;
+  @Input() data$: EventEmitter<IDatapoint>;
+  @Input() setting: Setting;
   @Input() typ: string;
 
   options: EChartsOption;
@@ -31,6 +32,7 @@ export class LineChartComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    console.log('Create Linechart ', this.setting.channel);
     let counter = 0;
     this.options = {
       tooltip: {
@@ -46,24 +48,22 @@ export class LineChartComponent implements OnInit {
         type: 'time'
       },
       yAxis: {
-        name: this.profile.unit,
+        name: 'Einheit',
         type: 'value'
       },
       series: [{
         type: 'line',
-        data: this.dataset /* [['2017-01-01 00:00:00', 5.15],
-          ['2017-01-01 00:01:00', 15],
-          ['2017-01-01 00:02:00', 15],
-          ['2017-01-01 00:04:00', 15]], */
+        data: this.dataset
       }]
     };
 
     this.data$.pipe(map(datapoint => {
-      console.log(this.profile.channel.concat('_', this.profile.turbina));
-      this.dataset.push([datapoint._stop, datapoint[this.profile.channel.concat('_', this.profile.turbina)]]);
-      counter += 1;
-      if (this.dataset.length > this.size) {
-        this.dataset.shift();
+      if (datapoint[this.setting.channel.concat('_', this.setting.turbine)]) {
+        this.dataset.push([datapoint._stop, datapoint[this.setting.channel.concat('_', this.setting.turbine)]]);
+        counter += 1;
+        if (this.dataset.length > this.size) {
+          this.dataset.shift();
+        }
       }
     })).subscribe(() => {
       if (0 === counter % this.puffer) {

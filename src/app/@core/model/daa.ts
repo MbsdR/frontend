@@ -1,4 +1,4 @@
-export class DaaRes{
+export class IDaaRes {
   'api': {
     'version': string,
     'name': string,

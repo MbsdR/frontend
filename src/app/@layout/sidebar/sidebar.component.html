@@ -15,7 +15,6 @@
     <mat-toolbar>Windpark B</mat-toolbar>
 
   </mat-sidenav>
-
   <mat-sidenav-content>
     <mat-toolbar color="primary">
       <button
@@ -36,8 +35,10 @@
       <wisa-ocarina-of-time></wisa-ocarina-of-time>
       <!-- <wisa-ocarina-of-time [ocarina]="ocarina" (timeRange)="playOcarina($event)"></wisa-ocarina-of-time> -->
     </div>
-      <router-outlet></router-outlet>
-    <button mat-fab (click)="addTiles()"><mat-icon>add</mat-icon> </button>
+    <section>
+      <diV><router-outlet></router-outlet></diV>
+    </section>
+    <!-- <button mat-fab (click)="addTiles()"><mat-icon>add</mat-icon> </button>-->
   </mat-sidenav-content>
 
 </mat-sidenav-container>
