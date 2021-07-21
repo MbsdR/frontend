@@ -1,9 +1,11 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {AfterViewInit, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {IDatapoint} from '../../../@core/model/IDatapoint';
 import {map} from 'rxjs/operators';
 import {EChartsOption} from 'echarts';
-import {Setting} from '../../../@core/model/setting';
+import {ISetting} from '../../../@core/model/ISetting';
 import {CHANNELS} from '../../../@core/model/mapping';
+import {Observable} from 'rxjs';
+import {objectKeys} from 'codelyzer/util/objectKeys';
 
 @Component({
   selector: 'wisa-line-chart',
@@ -11,10 +13,8 @@ import {CHANNELS} from '../../../@core/model/mapping';
     <div echarts [options]="options" [merge]="updateOptions" (chartInit)="onChartInit($event)"></div>`,
   styleUrls: ['./line-chart.component.css']
 })
-export class LineChartComponent implements OnInit {
-  @Input() data$: EventEmitter<IDatapoint>;
-  @Input() setting: Setting;
-  @Input() typ: string;
+export class LineChartComponent implements OnInit, AfterViewInit {
+  @Input() setting: ISetting;
 
   options: EChartsOption;
   updateOptions: EChartsOption;
@@ -23,17 +23,14 @@ export class LineChartComponent implements OnInit {
   private size: number;
   private echartsInstance: any;
   private puffer: number;
+  private channel: string;
+  private counter = 0;
 
   constructor() {
     this.size = 200;
-    this.dataset = [];
-    this.typ = 'line';
     this.puffer = 1;
-  }
+    this.dataset = new Array<[string, (number | string)]>();
 
-  ngOnInit(): void {
-    console.log('Create Linechart ', this.setting.channel);
-    let counter = 0;
     this.options = {
       tooltip: {
         show: true
@@ -44,7 +41,7 @@ export class LineChartComponent implements OnInit {
 
       },
       xAxis: {
-        name: 'Time',
+        name: this.channel,
         type: 'time'
       },
       yAxis: {
@@ -56,25 +53,33 @@ export class LineChartComponent implements OnInit {
         data: this.dataset
       }]
     };
+  }
 
-    this.data$.pipe(map(datapoint => {
-      if (datapoint[this.setting.channel.concat('_', this.setting.turbine)]) {
-        this.dataset.push([datapoint._stop, datapoint[this.setting.channel.concat('_', this.setting.turbine)]]);
-        counter += 1;
-        if (this.dataset.length > this.size) {
-          this.dataset.shift();
-        }
-      }
-    })).subscribe(() => {
-      if (0 === counter % this.puffer) {
-        this.updateOptions = {
-          series: [{
-            data: this.dataset
-          }]
-        };
-        counter = 0;
-      }
-    });
+  ngOnInit(): void {
+    this.channel = this.setting.channel.concat('_', this.setting.turbine);
+  }
+
+
+  ngAfterViewInit(): void {
+    console.info(this.channel, 'chart was created');
+  }
+
+  updateChart(datapoint: IDatapoint): void {
+
+    this.dataset.push([datapoint._start, datapoint[this.channel]]);
+    this.counter += 1;
+    if (this.dataset.length > this.size) {
+      this.dataset.shift();
+    }
+
+    if (0 === this.counter % this.puffer) {
+      this.updateOptions = {
+        series: [{
+          data: this.dataset
+        }]
+      };
+      this.counter = 0;
+    }
   }
 
   onChartInit(ec): void {
@@ -84,5 +89,4 @@ export class LineChartComponent implements OnInit {
   changeDatasetNumber(size: number): void {
     this.size = size;
   }
-
 }

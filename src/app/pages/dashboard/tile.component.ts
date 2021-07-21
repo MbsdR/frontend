@@ -1,49 +1,53 @@
-import {Component, Inject, Input} from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ComponentFactoryResolver,
+  Inject,
+  Input,
+  QueryList,
+  ViewChild,
+  ViewChildren,
+  ViewContainerRef
+} from '@angular/core';
 import {DataAccessService} from '../../@core/service/Data-Access/data-access.service';
-import {OcarinaOfTimeService} from '../../@core/service/OcarinaOfTime/ocarina-of-time.service';
+import {OcarinaOfTimeService} from '../../@core/ocarina-of-time/service/OcarinaOfTime/ocarina-of-time.service';
 import {MatDialog} from '@angular/material/dialog';
+import {ContentComponent} from './content/content.component';
+import {TileDirective} from './directives/tile.directive';
+import {IProfile, Tile} from '../../@core/model/IProfile';
 
 @Component({
+  selector: 'wisa-tile',
   template: `
-    <mat-card class="dashboard-card">
-      <mat-card-header>
-        <mat-card-title>
-          <h1>{{channel}}</h1>
-          <button mat-icon-button class="more-button" [matMenuTriggerFor]="menu" aria-label="Toggle menu">
-            <mat-icon>more_vert</mat-icon>
-          </button>
-          <mat-menu #menu="matMenu" xPosition="before">
-            <button mat-menu-item (click)="openPreference()">
-              <mat-icon>settings</mat-icon>
-            </button>
-            <button mat-menu-item (click)="removeTile()">
-              <mat-icon>delete</mat-icon>
-            </button>
-          </mat-menu>
-        </mat-card-title>
-      </mat-card-header>
-      <mat-card-content class="dashboard-card-content">
-        <!-- Content -->
-        <!-- <wisa-line-chart [data$]="data$" [setting]="tile.setting"></wisa-line-chart> -->
-      </mat-card-content>
-    </mat-card>
+        <ng-template wisaTile></ng-template>
   `
 })
-export class TileComponent {
+export class TileComponent implements AfterViewInit{
+
+  @ViewChild(TileDirective, {static: true}) tiles!: TileDirective;
+  @Input() tile: Tile;
 
   channel = 'Wind';
 
   constructor(@Inject(DataAccessService) dataAccessService: DataAccessService,
               private ocarina: OcarinaOfTimeService,
-              private dialog: MatDialog) {
-    console.log('Tilecomponent was created');
-  }
-
-  openPreference() {
+              private dialog: MatDialog,
+              private componentFactoryResolver: ComponentFactoryResolver) {
 
   }
 
-  removeTile() {
+  ngAfterViewInit(): void {
+    this.loadTile();
+    console.info('Tile was created');
+  }
+
+  loadTile(): void {
+    const componentFactory = this.componentFactoryResolver.resolveComponentFactory(ContentComponent);
+
+    const viewContainerRef = this.tiles.viewContainerRef;
+
+    const componentRef = viewContainerRef.createComponent<ContentComponent>(componentFactory);
+    componentRef.instance.tile = this.tile;
 
   }
 }

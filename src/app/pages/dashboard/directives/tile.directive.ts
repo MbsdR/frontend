@@ -1,9 +1,9 @@
 import {Directive, ViewContainerRef} from '@angular/core';
 
 @Directive({
-  selector: '[wisaAdTile]'
+  selector: '[wisaTile]'
 })
-export class AdTileDirective {
+export class TileDirective {
 
   constructor(public viewContainerRef: ViewContainerRef) { }
 

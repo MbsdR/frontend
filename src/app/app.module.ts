@@ -3,7 +3,7 @@ import {BrowserModule} from '@angular/platform-browser';
 
 import {AppComponent} from './app.component';
 import {SidebarComponent} from './@layout/sidebar/sidebar.component';
-import {OcarinaOfTimeComponent} from './@layout/ocarina-of-time/ocarina-of-time.component';
+import {OcarinaOfTimeComponent} from './@core/ocarina-of-time/component/ocarina-of-time/ocarina-of-time.component';
 import {appRouting, routingComponents} from './app.routing';
 import {NotFoundComponent} from './@core/not-found/not-found.component';
 import {WindEnergyPlantComponent} from './pages/wind-energy-plant/wind-energy-plant.component';
@@ -41,8 +41,10 @@ import {CdkAccordionModule} from '@angular/cdk/accordion';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatInputModule} from '@angular/material/input';
 import {TileComponent} from './pages/dashboard/tile.component';
-import { AdTileDirective } from './pages/dashboard/directives/ad-tile.directive';
 import {DashboardComponent} from './pages/dashboard/dashboard.component';
+import { ContentComponent } from './pages/dashboard/content/content.component';
+import { TileDirective } from './pages/dashboard/directives/tile.directive';
+import { GraphicDirective } from './pages/dashboard/directives/graphic.directive';
 
 export const BASE_URL_OFFIS = '';
 
@@ -60,7 +62,9 @@ export const BASE_URL_OFFIS = '';
     LineChartComponent,
     PreferenceComponent,
     TileComponent,
-    AdTileDirective
+    ContentComponent,
+    TileDirective,
+    GraphicDirective,
   ],
   imports: [
     BrowserModule,
