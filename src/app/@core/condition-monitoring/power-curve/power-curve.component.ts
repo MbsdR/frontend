@@ -1,6 +1,6 @@
 import {Component, Inject, Input, OnInit} from '@angular/core';
 import {EChartsOption} from 'echarts';
-import {OcarinaOfTimeService} from '../../service/OcarinaOfTime/ocarina-of-time.service';
+import {OcarinaOfTimeService} from '../../ocarina-of-time/service/OcarinaOfTime/ocarina-of-time.service';
 
 @Component({
   selector: 'wisa-power-curve',

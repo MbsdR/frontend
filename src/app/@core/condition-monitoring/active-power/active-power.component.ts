@@ -1,7 +1,7 @@
 import {AfterViewInit, Component, EventEmitter, Inject, Input, OnInit, Output} from '@angular/core';
 import {EChartsOption} from 'echarts';
 import {DataAccessService} from '../../service/Data-Access/data-access.service';
-import {Query} from '../../model/query';
+import {IQuery} from '../../model/IQuery';
 import {QueryBuilderService} from '../../service/queryBuilder/query-builder.service';
 import {IDatapoint} from '../../model/IDatapoint';
 import {Observable} from 'rxjs';
@@ -30,7 +30,7 @@ export class ActivePowerComponent implements OnInit, AfterViewInit {
   series: Array<number | string> = [];
   datapoints: Array<IDatapoint> = [];
 
-  private query: Query = {
+  private query: IQuery = {
     vendor: 'VAT',
     start: '2017-01-01',
     end: '2017-01-02',

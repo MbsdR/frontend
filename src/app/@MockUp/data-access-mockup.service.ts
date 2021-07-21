@@ -1,12 +1,12 @@
 import {Injectable} from '@angular/core';
-import {Query} from '../@core/model/query';
+import {IQuery} from '../@core/model/IQuery';
 import {IDatapoint} from '../@core/model/IDatapoint';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DataAccessMockupService {
-  query: Query = {
+  query: IQuery = {
     vendor: 'VAT',
     start: '2017-01-01',
     end: '2017-01-02',

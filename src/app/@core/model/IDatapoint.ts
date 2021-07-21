@@ -3,3 +3,4 @@ export interface IDatapoint {
   '_stop': string;
   [index: string]: number | string;
 }
+

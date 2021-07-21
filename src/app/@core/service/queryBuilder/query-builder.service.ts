@@ -1,5 +1,5 @@
 import {Component, Injectable} from '@angular/core';
-import {Query, IQuery} from '../../model/query';
+import {IQuery, Query} from '../../model/IQuery';
 
 @Injectable({
   providedIn: 'root'

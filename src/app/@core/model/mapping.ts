@@ -1,5 +1,5 @@
 export const CHANNELS = {
-  windSpeed: {
+  WindSpeed: {
     value: 'WindSpeed',
     label: {
       de: 'Windgeschwindigkeit',
@@ -10,7 +10,7 @@ export const CHANNELS = {
       en: 'm/s'
     },
   },
-  activePower: {
+  ActivePower: {
     value: 'ActivePower',
     label: {
       de: 'Stromerzeugung',
@@ -21,7 +21,7 @@ export const CHANNELS = {
       en: 'kW/h'
     },
   },
-  rotorRpm: {
+  RotorRPM: {
     value: 'RotorRPM',
     label: {
       de: 'Rotordrehzahl',
@@ -32,7 +32,7 @@ export const CHANNELS = {
       en: 'rpm'
     },
   },
-  generatorRpm: {
+  GeneratorRPM: {
     value: 'GeneratorRPM',
     label: {
       de: 'Generatordrehzahl',

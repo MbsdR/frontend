@@ -1,11 +1,11 @@
 import { Component, EventEmitter, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import {Profile} from '../../model/profile';
+import {IProfile} from '../../model/IProfile';
 import {newArray} from '@angular/compiler/src/util';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { CHANNELS } from '../../model/mapping';
 import {UserMockUpService} from '../../../@MockUp/user-mock-up.service';
-import {FREQUENCE, Setting, UNITS} from '../../model/setting';
+import {FREQUENCE, ISetting, UNITS} from '../../model/ISetting';
 import { TYPECHARTS } from '../../model/typeCharts';
 
 @Component({
@@ -30,7 +30,7 @@ export class PreferenceComponent implements OnInit {
     });
 
 
-  constructor(@Inject(MAT_DIALOG_DATA) public settings: Setting,
+  constructor(@Inject(MAT_DIALOG_DATA) public settings: ISetting,
               private fb: FormBuilder) {
     // Todo: Initialize values für Settings
     console.log(settings);
