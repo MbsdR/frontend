@@ -3,7 +3,8 @@ import {ISetting} from './ISetting';
 export interface IProfile {
   user?: string;
   language?: string;
-  tiles?: Array<Tile>;
+  dashboard?: Array<Tile>;
+  condition?: Array<Tile>;
 }
 
 export interface Tile {

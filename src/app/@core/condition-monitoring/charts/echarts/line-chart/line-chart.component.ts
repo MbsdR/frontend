@@ -1,9 +1,9 @@
 import {AfterViewInit, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {IDatapoint} from '../../../@core/model/IDatapoint';
+import {IDatapoint} from '../../../../model/IDatapoint';
 import {map} from 'rxjs/operators';
 import {EChartsOption} from 'echarts';
-import {ISetting} from '../../../@core/model/ISetting';
-import {CHANNELS} from '../../../@core/model/mapping';
+import {ISetting} from '../../../../model/ISetting';
+import {CHANNELS} from '../../../../model/mapping';
 import {Observable} from 'rxjs';
 import {objectKeys} from 'codelyzer/util/objectKeys';
 

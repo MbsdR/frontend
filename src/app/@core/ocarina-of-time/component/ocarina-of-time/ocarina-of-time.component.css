@@ -1,4 +1,5 @@
 .mat-toolbar{
+  height: 30px;
   display: flex;
   flex-flow: row wrap;
 }

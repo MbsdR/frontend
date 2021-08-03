@@ -1,43 +1,38 @@
 import {
   AfterViewInit,
-  Component,
-  Inject,
-  OnInit
+  Component, EventEmitter,
+  OnInit, Output
 } from '@angular/core';
-import {DataAccessService} from '../../@core/service/Data-Access/data-access.service';
-import {DataAccessMockupService} from '../../@MockUp/data-access-mockup.service';
-import {QueryBuilderService} from '../../@core/service/queryBuilder/query-builder.service';
 import {IProfile} from '../../@core/model/IProfile';
 import {UserMockUpService} from '../../@MockUp/user-mock-up.service';
+import {OcarinaOfTimeService} from '../../@core/ocarina-of-time/service/OcarinaOfTime/ocarina-of-time.service';
 
 
 @Component({
   selector: 'wisa-dashboard',
   template: `
+    <mat-toolbar class="dashboard">
+    <mat-tab-group>
+      <mat-tab label="Zustandüberwachung"><div [hidden]="!visible" class="ocarina"><wisa-ocarina-of-time></wisa-ocarina-of-time></div> <div>Windpark 1</div></mat-tab>
+      <mat-tab label="Predictive Analytics"> Windpark 1 </mat-tab>
+      <mat-tab label="Business Intelligence"> Windpark 1 </mat-tab>
+    </mat-tab-group>
 
-    <mat-grid-list cols="12" rowHeight="300px" class="dashboard">
-
-      <mat-grid-tile *ngFor="let tile of profile.tiles; index as i" [colspan]="tile.cols" [rowspan]="tile.rows">
-        <div style="background: green;">
-          <wisa-tile-content [tile]="tile"></wisa-tile-content>
-          <!-- <wisa-tile [tile]="tile" ></wisa-tile> -->
-        </div>
-      </mat-grid-tile>
-    </mat-grid-list>
-
+    <mat-slide-toggle (toggleChange)="openOcarina()"></mat-slide-toggle>
+    </mat-toolbar>
   `,
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit, AfterViewInit {
-
+  @Output() toggleChange: EventEmitter<any> = new EventEmitter<any>();
   profile: IProfile;
+  visible = false;
+  private $beginPlaying: EventEmitter<boolean>;
 
-  constructor(@Inject(QueryBuilderService) private queryBuilderService: QueryBuilderService,
-              private dataAccessMockupService: DataAccessMockupService,
-              private dataAccessService: DataAccessService,
-              private userMochUpService: UserMockUpService,
-              ) {
+  constructor(userMochUpService: UserMockUpService,
+              private ocarina: OcarinaOfTimeService) {
     this.profile = userMochUpService.profile;
+    this.$beginPlaying = ocarina.$isPlaying;
   }
 
   ngOnInit(): void {
@@ -46,5 +41,13 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     console.info('Dashboard was created');
   }
 
+  openOcarina(): void {
+    console.log('toggle change');
+    this.toggleChange.emit(this.visible);
+    this.visible = !this.visible;
+    if (!this.visible) {
+      this.$beginPlaying.emit(false);
+    }
+  }
 
 }

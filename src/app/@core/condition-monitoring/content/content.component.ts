@@ -11,21 +11,17 @@ import {
   ViewChild,
   ViewChildren
 } from '@angular/core';
-import {Tile} from '../../../@core/model/IProfile';
-import {PreferenceComponent} from '../../../@core/utility/preference/preference.component';
-import {ISetting} from '../../../@core/model/ISetting';
+import {Tile} from '../../model/IProfile';
+import {PreferenceComponent} from '../../utility/preference/preference.component';
+import {ISetting} from '../../model/ISetting';
 import {MatDialog} from '@angular/material/dialog';
-import {IDatapoint} from '../../../@core/model/IDatapoint';
-import {IQuery} from '../../../@core/model/IQuery';
-import {QueryBuilderService} from '../../../@core/service/queryBuilder/query-builder.service';
-import {OcarinaOfTimeComponent} from '../../../@core/ocarina-of-time/component/ocarina-of-time/ocarina-of-time.component';
-import {DataAccessService} from '../../../@core/service/Data-Access/data-access.service';
+import {IQuery} from '../../model/IQuery';
+import {QueryBuilderService} from '../../service/queryBuilder/query-builder.service';
+import {DataAccessService} from '../../service/Data-Access/data-access.service';
 import {Observable, Subscriber} from 'rxjs';
-import {OcarinaOfTimeService} from '../../../@core/ocarina-of-time/service/OcarinaOfTime/ocarina-of-time.service';
-import {TileDirective} from '../directives/tile.directive';
-import {GraphicDirective} from '../directives/graphic.directive';
-import {LineChartComponent} from '../../../@layout/charts/line-chart/line-chart.component';
-import {CHANNELS} from '../../../@core/model/mapping';
+import {OcarinaOfTimeService} from '../../ocarina-of-time/service/OcarinaOfTime/ocarina-of-time.service';
+import {LineChartComponent} from '../charts/echarts/line-chart/line-chart.component';
+import {CHANNELS} from '../../model/mapping';
 
 @Component({
   selector: 'wisa-tile-content',
@@ -57,8 +53,7 @@ import {CHANNELS} from '../../../@core/model/mapping';
       <mat-card-content class="dashboard-card-content">
         <!-- <ng-template wisaGraphic></ng-template> -->
         <!-- Content -->
-        <wisa-line-chart [setting]="setting"></wisa-line-chart>
-
+       <wisa-line-chart [setting]="setting"></wisa-line-chart>
       </mat-card-content>
     </mat-card>
   `,
@@ -69,6 +64,7 @@ export class ContentComponent implements OnInit, AfterViewInit {
   @ViewChild(LineChartComponent) charts!: LineChartComponent;
 
   @Input() tile: Tile;
+  @Input() turbine: string;
 
   setting: ISetting;
   title: string;
@@ -123,7 +119,7 @@ export class ContentComponent implements OnInit, AfterViewInit {
   getHistoricData(): void {
     const query = this.createQuery(
       this.tile.setting.channel,
-      this.tile.setting.turbine,
+      this.turbine,
       this.timeRange.start,
       this.timeRange.end,
       this.tile.setting.frequence,
