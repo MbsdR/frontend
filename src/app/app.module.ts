@@ -1,4 +1,4 @@
-import {NgModule} from '@angular/core';
+import {LOCALE_ID, NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 
 import {AppComponent} from './app.component';
@@ -45,8 +45,8 @@ import {DashboardComponent} from './pages/dashboard/dashboard.component';
 import { ContentComponent } from './pages/dashboard/content/content.component';
 import { TileDirective } from './pages/dashboard/directives/tile.directive';
 import { GraphicDirective } from './pages/dashboard/directives/graphic.directive';
-
-export const BASE_URL_OFFIS = '';
+import { LoginComponent } from './@core/login/login.component';
+import {APP_BASE_HREF} from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -65,6 +65,7 @@ export const BASE_URL_OFFIS = '';
     ContentComponent,
     TileDirective,
     GraphicDirective,
+    LoginComponent,
   ],
   imports: [
     BrowserModule,
@@ -112,12 +113,14 @@ export const BASE_URL_OFFIS = '';
     MatTabsModule,
     MatInputModule,
 
+
   ],
   providers: [
-    {provide: MAT_DATE_LOCALE, useValue: 'de'},
-    {provide: BASE_URL_OFFIS, useValue: 'http://localhost:8001/data'}
-      // {provide: LOCALE_ID, useValue: 'de'}
-      // {provide: APP_BASE_HREF, useValue: '/wisa'}
+    { provide: MAT_DATE_LOCALE, useValue: 'de'},
+    { provide: 'BASE_URL_DATAPLATFORM', useValue: 'http://localhost:8001'},
+    // { provide: AUTH_ENABLED, useValue: true},
+    { provide: 'LANGUAGE', useValue: 'de'},
+    // {provide: APP_BASE_HREF, useValue: '/wisa'}[CookieService],
   ],
   bootstrap: [AppComponent]
 })

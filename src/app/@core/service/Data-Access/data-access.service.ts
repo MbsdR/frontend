@@ -5,23 +5,21 @@ import {IDaaRes} from '../../model/IDaa';
 import {concat, concatAll, map, tap} from 'rxjs/operators';
 import {IDatapoint} from '../../model/IDatapoint';
 import {IQuery} from '../../model/IQuery';
-import {valueReferenceToExpression} from '@angular/compiler-cli/src/ngtsc/annotations/src/util';
-
 
 @Injectable({
   providedIn: 'root'
 })
+
 export class DataAccessService {
 
 
   dataEvent: EventEmitter<{ result: Array<IDatapoint>, channel: string }>;
   dataEventSingle: EventEmitter<IDatapoint>;
-
-  private BASE_URL = 'http://localhost:8001';
   private headers: HttpHeaders;
 
 
-  constructor(private zone: NgZone,
+  constructor(@Inject('BASE_URL_DATAPLATFORM') private BASE_URL: string,
+              private zone: NgZone,
               private http: HttpClient) {
     console.log('Create Data Access Service');
     this.headers = new HttpHeaders();
@@ -29,6 +27,7 @@ export class DataAccessService {
     this.headers.set('Content-Type', 'application/json');
     this.dataEvent = new EventEmitter<{ result: Array<IDatapoint>, channel: string }>();
     this.dataEventSingle = new EventEmitter<IDatapoint>();
+    console.log(this.BASE_URL);
   }
 
   async getDataSet(query: IQuery): Promise<Array<IDatapoint>> {
@@ -57,7 +56,7 @@ export class DataAccessService {
   }
 
   private request(query: IQuery): Observable<IDaaRes> {
-    return this.http.post<IDaaRes>('http://localhost:8001/data', query);
+    return this.http.post<IDaaRes>(this.BASE_URL.concat('/data'), query);
   }
 
 

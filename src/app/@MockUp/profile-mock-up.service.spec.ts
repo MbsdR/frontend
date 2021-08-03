@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { QueryBuilderService } from './query-builder.service';
+import { ProfileMockUpService } from './profile-mock-up.service';
 
-describe('QueryBuilderService', () => {
-  let service: QueryBuilderService;
+describe('UserMochUpService', () => {
+  let service: ProfileMockUpService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(QueryBuilderService);
+    service = TestBed.inject(ProfileMockUpService);
   });
 
   it('should be created', () => {

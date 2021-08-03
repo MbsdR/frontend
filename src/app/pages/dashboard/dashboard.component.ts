@@ -6,9 +6,9 @@ import {
 } from '@angular/core';
 import {DataAccessService} from '../../@core/service/Data-Access/data-access.service';
 import {DataAccessMockupService} from '../../@MockUp/data-access-mockup.service';
-import {QueryBuilderService} from '../../@core/service/queryBuilder/query-builder.service';
+import {QueryBuilder} from '../../@core/utility/queryBuilder/query-builder';
 import {IProfile} from '../../@core/model/IProfile';
-import {UserMockUpService} from '../../@MockUp/user-mock-up.service';
+import {ProfileMockUpService} from '../../@MockUp/profile-mock-up.service';
 
 
 @Component({
@@ -32,12 +32,11 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 
   profile: IProfile;
 
-  constructor(@Inject(QueryBuilderService) private queryBuilderService: QueryBuilderService,
-              private dataAccessMockupService: DataAccessMockupService,
+  constructor(private dataAccessMockupService: DataAccessMockupService,
               private dataAccessService: DataAccessService,
-              private userMochUpService: UserMockUpService,
+              private userMochUpService: ProfileMockUpService,
               ) {
-    this.profile = userMochUpService.profile;
+    this.profile = userMochUpService.profiles.vat;
   }
 
   ngOnInit(): void {

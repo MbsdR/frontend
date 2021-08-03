@@ -9,6 +9,7 @@ import {WindEnergyPlant} from '../../@core/model/wind-energy-plant';
 import {OcarinaOfTimeService} from '../../@core/ocarina-of-time/service/OcarinaOfTime/ocarina-of-time.service';
 import {WepDashboardComponent} from '../../pages/wind-energy-plant/wep-dashboard.component';
 import {WepDirectiveDirective} from '../../pages/wind-energy-plant/wep-directive.directive';
+import {LoginService} from '../../@core/login/service/login.service';
 
 const WINDPLANT = `
  <svg width="20mm" height="20mm" viewBox="0 0 210 297" xmlns="http://www.w3.org/2000/svg">
@@ -46,6 +47,7 @@ export class SidebarComponent implements OnInit {
 
 
   constructor(@Inject(WindparkMockUpService) windparkMockUpService: WindparkMockUpService,
+              private loginService: LoginService,
               private ocarina: OcarinaOfTimeService,
               private componentFactoryResolver: ComponentFactoryResolver,
               private breakpointObserver: BreakpointObserver,
@@ -112,5 +114,9 @@ export class SidebarComponent implements OnInit {
     const componentFactory = this.componentFactoryResolver.resolveComponentFactory(WepDashboardComponent);
     const viewContainerRef = this.dashboard.viewContainerRef;
     const componentRef = viewContainerRef.createComponent<WepDashboardComponent>(componentFactory);
+  }
+
+  logout(): void {
+    this.loginService.logoutUser();
   }
 }
