@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, EventEmitter, Input, OnInit, Output, Type} from '@angular/core';
+import {AfterViewInit, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {IDatapoint} from '../../../@core/model/IDatapoint';
 import {map} from 'rxjs/operators';
 import {EChartsOption} from 'echarts';

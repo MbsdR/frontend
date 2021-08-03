@@ -7,7 +7,7 @@ import {WepDashboardComponent} from './wep-dashboard.component';
 
 @Component({
   selector: 'wisa-wind-energy-plant',
-  template: `Works`,
+  templateUrl: './wind-energy-plant.component.html',
   styleUrls: ['./wind-energy-plant.component.css']
 })
 export class WindEnergyPlantComponent implements OnInit, OnDestroy {
