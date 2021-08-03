@@ -1,29 +1,19 @@
 import {
   AfterViewInit,
-  Component,
-  ComponentFactoryResolver,
-  EventEmitter,
-  Inject,
+  Component, Inject,
   Input,
   OnInit,
-  Output,
-  QueryList,
-  ViewChild,
-  ViewChildren
+  ViewChild
 } from '@angular/core';
 import {Tile} from '../../../@core/model/IProfile';
 import {PreferenceComponent} from '../../../@core/utility/preference/preference.component';
 import {ISetting} from '../../../@core/model/ISetting';
 import {MatDialog} from '@angular/material/dialog';
-import {IDatapoint} from '../../../@core/model/IDatapoint';
 import {IQuery} from '../../../@core/model/IQuery';
-import {QueryBuilderService} from '../../../@core/service/queryBuilder/query-builder.service';
-import {OcarinaOfTimeComponent} from '../../../@core/ocarina-of-time/component/ocarina-of-time/ocarina-of-time.component';
+import {QueryBuilder} from '../../../@core/utility/queryBuilder/query-builder';
 import {DataAccessService} from '../../../@core/service/Data-Access/data-access.service';
-import {Observable, Subscriber} from 'rxjs';
+import {Observable} from 'rxjs';
 import {OcarinaOfTimeService} from '../../../@core/ocarina-of-time/service/OcarinaOfTime/ocarina-of-time.service';
-import {TileDirective} from '../directives/tile.directive';
-import {GraphicDirective} from '../directives/graphic.directive';
 import {LineChartComponent} from '../../../@layout/charts/line-chart/line-chart.component';
 import {CHANNELS} from '../../../@core/model/mapping';
 
@@ -79,8 +69,7 @@ export class ContentComponent implements OnInit, AfterViewInit {
   private vendor: Array<string>;
   private timeRange: { start: Date, end: Date };
 
-  constructor(@Inject(QueryBuilderService) private queryBuilderService: QueryBuilderService,
-              private dataAccessService: DataAccessService,
+  constructor(@Inject(DataAccessService) private dataAccessService: DataAccessService,
               private ocarina: OcarinaOfTimeService,
               private dialog: MatDialog) {
 
@@ -167,10 +156,7 @@ export class ContentComponent implements OnInit, AfterViewInit {
                       freq: { value: number, unit: string },
                       func: string): IQuery {
 
-    const queryBuilderService = new QueryBuilderService();
-
-    return queryBuilderService
-      .vendor(this.vendor[0])
+    return new QueryBuilder()
       .start(start.toISOString())
       .end(end.toISOString())
       .func(func)

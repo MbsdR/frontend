@@ -2,7 +2,7 @@ import {AfterViewInit, Component, EventEmitter, Inject, Input, OnInit, Output} f
 import {EChartsOption} from 'echarts';
 import {DataAccessService} from '../../service/Data-Access/data-access.service';
 import {IQuery} from '../../model/IQuery';
-import {QueryBuilderService} from '../../service/queryBuilder/query-builder.service';
+import {QueryBuilder} from '../../utility/queryBuilder/query-builder';
 import {IDatapoint} from '../../model/IDatapoint';
 import {Observable} from 'rxjs';
 
@@ -44,7 +44,7 @@ export class ActivePowerComponent implements OnInit, AfterViewInit {
     func: 'mean'
 
   };
-  private queryBuilder: QueryBuilderService;
+  private queryBuilder: QueryBuilder;
   private eventEmitter: EventEmitter<IDatapoint>;
 
   constructor(@Inject(DataAccessService) private dataAccessService: DataAccessService) {
