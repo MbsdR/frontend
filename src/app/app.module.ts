@@ -1,4 +1,4 @@
-import {NgModule} from '@angular/core';
+import {InjectionToken, NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 
 import {AppComponent} from './app.component';
@@ -40,6 +40,7 @@ import {MatInputModule} from '@angular/material/input';
 import {DashboardComponent} from './pages/dashboard/dashboard.component';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import {LoginComponent} from './@core/login/login.component';
+import {AUTH_ENABLED} from './app.tokens';
 
 @NgModule({
   declarations: [
@@ -104,7 +105,7 @@ import {LoginComponent} from './@core/login/login.component';
   providers: [
     { provide: MAT_DATE_LOCALE, useValue: 'de'},
     { provide: 'BASE_URL_DATAPLATFORM', useValue: 'http://localhost:8001'},
-    // { provide: AUTH_ENABLED, useValue: true},
+    { provide: AUTH_ENABLED, useValue: false},
     { provide: 'LANGUAGE', useValue: 'de'},
     // {provide: APP_BASE_HREF, useValue: '/wisa'}[CookieService],
   ],

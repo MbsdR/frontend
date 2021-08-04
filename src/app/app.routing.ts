@@ -4,7 +4,7 @@ import {SidebarComponent} from './@layout/sidebar/sidebar.component';
 import {NotFoundComponent} from './@core/not-found/not-found.component';
 import {WindEnergyPlantComponent} from './pages/wind-energy-plant/wind-energy-plant.component';
 import {LoginComponent} from './@core/login/login.component';
-import {LoginService} from './@core/login/service/login.service';
+import {AuthGuard} from './@core/login/AuthGuard';
 
 export const appRoutes: Routes = [
   {
@@ -14,7 +14,7 @@ export const appRoutes: Routes = [
   {
     path: '',
     component: SidebarComponent,
-    canActivateChild: [LoginService],
+    canActivateChild: [AuthGuard],
     children: [
       {
         path: '',
