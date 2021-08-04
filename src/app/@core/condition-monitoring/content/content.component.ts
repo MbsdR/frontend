@@ -16,7 +16,7 @@ import {PreferenceComponent} from '../../utility/preference/preference.component
 import {ISetting} from '../../model/ISetting';
 import {MatDialog} from '@angular/material/dialog';
 import {IQuery} from '../../model/IQuery';
-import {QueryBuilderService} from '../../service/queryBuilder/query-builder.service';
+import {QueryBuilder} from '../../utility/queryBuilder/query-builder';
 import {DataAccessService} from '../../service/Data-Access/data-access.service';
 import {Observable, Subscriber} from 'rxjs';
 import {OcarinaOfTimeService} from '../../ocarina-of-time/service/OcarinaOfTime/ocarina-of-time.service';
@@ -75,8 +75,7 @@ export class ContentComponent implements OnInit, AfterViewInit {
   private vendor: Array<string>;
   private timeRange: { start: Date, end: Date };
 
-  constructor(@Inject(QueryBuilderService) private queryBuilderService: QueryBuilderService,
-              private dataAccessService: DataAccessService,
+  constructor(private dataAccessService: DataAccessService,
               private ocarina: OcarinaOfTimeService,
               private dialog: MatDialog) {
 
@@ -163,10 +162,7 @@ export class ContentComponent implements OnInit, AfterViewInit {
                       freq: { value: number, unit: string },
                       func: string): IQuery {
 
-    const queryBuilderService = new QueryBuilderService();
-
-    return queryBuilderService
-      .vendor(this.vendor[0])
+    return new QueryBuilder()
       .start(start.toISOString())
       .end(end.toISOString())
       .func(func)

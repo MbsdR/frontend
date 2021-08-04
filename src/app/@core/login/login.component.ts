@@ -1,9 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {LoginService} from './service/login.service';
 import {ILoginData} from '../model/ilogin-data';
-import {NgForm} from '@angular/forms';
 import {Router} from '@angular/router';
-import {DashboardComponent} from '../../pages/dashboard/dashboard.component';
 
 
 @Component({

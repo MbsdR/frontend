@@ -12,7 +12,7 @@ export class ProfileMockUpService {
   private obe: IProfile = {
     vendor: 'OBE',
     language: 'de',
-    tiles: [
+    condition: [
       {
         pos: 2,
         title: CHANNELS.ActivePower.label.de,
@@ -74,7 +74,7 @@ export class ProfileMockUpService {
   private vat: IProfile = {
     vendor: 'VAT',
     language: 'de',
-    tiles: [
+    condition: [
       {
         pos: 2,
         title: CHANNELS.ActivePower.label.de,

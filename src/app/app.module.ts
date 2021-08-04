@@ -39,8 +39,7 @@ import {MatTabsModule} from '@angular/material/tabs';
 import {MatInputModule} from '@angular/material/input';
 import {DashboardComponent} from './pages/dashboard/dashboard.component';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
-
-export const BASE_URL_OFFIS = '';
+import {LoginComponent} from './@core/login/login.component';
 
 @NgModule({
   declarations: [
@@ -52,6 +51,7 @@ export const BASE_URL_OFFIS = '';
     NotFoundComponent,
     WindEnergyPlantComponent,
     PreferenceComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
