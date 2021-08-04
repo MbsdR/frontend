@@ -9,6 +9,10 @@ export interface IQuery {
 }
 
 export class Query implements IQuery {
+  constructor(vendor: string) {
+    this.vendor = vendor;
+  }
+
   channels: Array<string> = new Array();
   end: string;
   freq: string;

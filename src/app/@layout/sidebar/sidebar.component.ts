@@ -9,7 +9,7 @@ import {WindEnergyPlant} from '../../@core/model/wind-energy-plant';
 import {OcarinaOfTimeService} from '../../@core/ocarina-of-time/service/OcarinaOfTime/ocarina-of-time.service';
 import {ConditionMonitoringService} from '../../@core/condition-monitoring/services/condition-monitoring.service';
 import {IConditionData} from '../../@core/model/IConditionData';
-
+import {LoginService} from '../../@core/login/service/login.service';
 @Component({
   selector: 'wisa-sidebar',
   templateUrl: './sidebar.component.html',
@@ -33,6 +33,7 @@ export class SidebarComponent implements OnInit {
 
 
   constructor(@Inject(WindparkMockUpService) windparkMockUpService: WindparkMockUpService,
+              private loginService: LoginService,
               private ocarina: OcarinaOfTimeService,
               private componentFactoryResolver: ComponentFactoryResolver,
               private breakpointObserver: BreakpointObserver) {
@@ -81,5 +82,8 @@ export class SidebarComponent implements OnInit {
 
   playOcarina($event: { start: Date, end: Date }): void {
     console.log('Sidebar play Ocarina on ', $event.start);
+  }
+  logout(): void {
+    this.loginService.logoutUser();
   }
 }

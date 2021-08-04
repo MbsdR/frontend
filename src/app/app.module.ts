@@ -102,12 +102,11 @@ export const BASE_URL_OFFIS = '';
 
   ],
   providers: [
-    {provide: MAT_DATE_LOCALE, useValue: 'de'},
-    {provide: BASE_URL_OFFIS, useValue: 'http://localhost:8001/data'}
-    // {provide: LOCALE_ID, useValue: 'de'}
-    // {provide: APP_BASE_HREF, useValue: '/wisa'}
-  ],
-  exports: [
+    { provide: MAT_DATE_LOCALE, useValue: 'de'},
+    { provide: 'BASE_URL_DATAPLATFORM', useValue: 'http://localhost:8001'},
+    // { provide: AUTH_ENABLED, useValue: true},
+    { provide: 'LANGUAGE', useValue: 'de'},
+    // {provide: APP_BASE_HREF, useValue: '/wisa'}[CookieService],
   ],
   bootstrap: [AppComponent]
 })

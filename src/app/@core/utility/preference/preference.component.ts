@@ -4,7 +4,7 @@ import {IProfile} from '../../model/IProfile';
 import {newArray} from '@angular/compiler/src/util';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { CHANNELS } from '../../model/mapping';
-import {UserMockUpService} from '../../../@MockUp/user-mock-up.service';
+import {ProfileMockUpService} from '../../../@MockUp/profile-mock-up.service';
 import {FREQUENCE, ISetting, UNITS} from '../../model/ISetting';
 import { TYPECHARTS } from '../../model/typeCharts';
 

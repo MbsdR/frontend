@@ -44,7 +44,6 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
   }
-
   ngAfterViewInit(): void {
     console.info('Dashboard was created');
   }
