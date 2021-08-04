@@ -12,13 +12,20 @@ import {OcarinaOfTimeService} from '../../@core/ocarina-of-time/service/OcarinaO
   selector: 'wisa-dashboard',
   template: `
     <mat-toolbar class="dashboard">
-    <mat-tab-group>
-      <mat-tab label="Zustandüberwachung"><div [hidden]="!visible" class="ocarina"><wisa-ocarina-of-time></wisa-ocarina-of-time></div> <div>Windpark 1</div></mat-tab>
-      <mat-tab label="Predictive Analytics"> Windpark 1 </mat-tab>
-      <mat-tab label="Business Intelligence"> Windpark 1 </mat-tab>
-    </mat-tab-group>
+      <mat-tab-group>
+        <mat-tab label="Überblick">
+        </mat-tab>
+        <mat-tab label="Zustandüberwachung">
+          <div [hidden]="!visible" class="ocarina">
+            <wisa-ocarina-of-time></wisa-ocarina-of-time>
+          </div>
+          <div>Windpark 1</div>
+        </mat-tab>
+        <mat-tab label="Predictive Analytics"> Windpark 1</mat-tab>
+        <mat-tab label="Business Intelligence"> Windpark 1</mat-tab>
+      </mat-tab-group>
 
-    <mat-slide-toggle (toggleChange)="openOcarina()"></mat-slide-toggle>
+      <mat-slide-toggle (toggleChange)="openOcarina()"></mat-slide-toggle>
     </mat-toolbar>
   `,
   styleUrls: ['./dashboard.component.css']
@@ -37,6 +44,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
   }
+
   ngAfterViewInit(): void {
     console.info('Dashboard was created');
   }
