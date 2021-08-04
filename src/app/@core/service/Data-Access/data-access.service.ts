@@ -5,6 +5,7 @@ import {IDaaRes} from '../../model/IDaa';
 import {concat, concatAll, map, tap} from 'rxjs/operators';
 import {IDatapoint} from '../../model/IDatapoint';
 import {IQuery} from '../../model/IQuery';
+import {BASE_URL_DATAPLATFORM} from '../../../app.tokens';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +19,7 @@ export class DataAccessService {
   private headers: HttpHeaders;
 
 
-  constructor(@Inject('BASE_URL_DATAPLATFORM') private BASE_URL: string,
+  constructor(@Inject(BASE_URL_DATAPLATFORM) private BASE_URL: string,
               private zone: NgZone,
               private http: HttpClient) {
     console.log('Create Data Access Service');

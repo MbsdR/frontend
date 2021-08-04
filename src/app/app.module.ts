@@ -40,6 +40,7 @@ import {MatInputModule} from '@angular/material/input';
 import {DashboardComponent} from './pages/dashboard/dashboard.component';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import {LoginComponent} from './@core/login/login.component';
+import {AUTH_ENABLED, BASE_URL_DATAPLATFORM, LANGUAGE} from './app.tokens';
 
 @NgModule({
   declarations: [
@@ -103,9 +104,9 @@ import {LoginComponent} from './@core/login/login.component';
   ],
   providers: [
     { provide: MAT_DATE_LOCALE, useValue: 'de'},
-    { provide: 'BASE_URL_DATAPLATFORM', useValue: 'http://localhost:8001'},
-    // { provide: AUTH_ENABLED, useValue: true},
-    { provide: 'LANGUAGE', useValue: 'de'},
+    { provide: BASE_URL_DATAPLATFORM, useValue: 'http://localhost:8001'},
+    { provide: AUTH_ENABLED, useValue: false},
+    { provide: LANGUAGE, useValue: 'de'},
     // {provide: APP_BASE_HREF, useValue: '/wisa'}[CookieService],
   ],
   bootstrap: [AppComponent]

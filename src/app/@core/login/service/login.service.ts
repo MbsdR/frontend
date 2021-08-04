@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {Inject, Injectable, Optional} from '@angular/core';
 import {ILoginData} from '../../model/ilogin-data';
 import {IProfile, Profile} from '../../model/IProfile';
 import {ProfileMockUpService} from '../../../@MockUp/profile-mock-up.service';
@@ -8,6 +8,7 @@ import {Observable} from 'rxjs';
 import {UsermanagementService} from '../../../@MockUp/usermanagement.service';
 import {User} from '../../model/IUser';
 import {AccountService} from './account.service';
+import {AUTH_ENABLED} from '../../../app.tokens';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,8 @@ export class LoginService implements CanActivate, CanActivateChild {
 
   private isAuthenticated: boolean;
 
-  constructor(private userMockUpService: ProfileMockUpService,
+  constructor(@Optional() @Inject(AUTH_ENABLED) private enabled: boolean,
+              userMockUpService: ProfileMockUpService,
               private usermanagementService: UsermanagementService,
               private account: AccountService,
               private router: Router) {
