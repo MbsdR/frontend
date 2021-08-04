@@ -1,10 +1,12 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {ConditionMonitoringService} from '../../services/condition-monitoring.service';
+import {Observable} from 'rxjs';
+import {IConditionData} from '../../../model/IConditionData';
 
 @Component({
   selector: 'wisa-condition-quickview',
   template: `
-    <div [matBadge]="failure" matBadgePosition="above before" matBadgeColor="primary" [matBadgeHidden]="hidden">
+    <div [matBadge]="failure" matBadgePosition="above before" matBadgeColor="primary" >
     <svg width="15mm" height="15mm" viewBox="0 0 210 297" (click)="navigate()">
       <metadata>
       </metadata>
@@ -22,21 +24,14 @@ export class QuickviewComponent implements OnInit {
 
   fillColor = 'rgb(0, 100, 0)';
   failure: number;
-  hidden: boolean;
   @Input() turbine: string;
 
   constructor(private conditionMonitoringService: ConditionMonitoringService) {
-    this.hidden = true;
   }
 
   ngOnInit(): void {
     console.log(this.turbine);
     this.conditionMonitoringService.get$Condition().subscribe( condition => {
-      if (condition.failure > 0) {
-        this.hidden = false;
-      } else {
-        this.hidden = true;
-      }
       this.fillColor = condition.condition;
       this.failure = condition.failure;
     });

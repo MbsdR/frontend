@@ -8,6 +8,7 @@ import {WindparkMockUpService} from '../../@MockUp/windpark-mock-up.service';
 import {WindEnergyPlant} from '../../@core/model/wind-energy-plant';
 import {OcarinaOfTimeService} from '../../@core/ocarina-of-time/service/OcarinaOfTime/ocarina-of-time.service';
 import {ConditionMonitoringService} from '../../@core/condition-monitoring/services/condition-monitoring.service';
+import {IConditionData} from '../../@core/model/IConditionData';
 
 @Component({
   selector: 'wisa-sidebar',
@@ -21,7 +22,7 @@ export class SidebarComponent implements OnInit {
 
   checked = true;
   wepNumberPerRow = 3;
-
+  condition$: Observable<IConditionData>;
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
     .pipe(
       map(result => result.matches),
@@ -32,7 +33,6 @@ export class SidebarComponent implements OnInit {
 
 
   constructor(@Inject(WindparkMockUpService) windparkMockUpService: WindparkMockUpService,
-              private conditionMonitoringService: ConditionMonitoringService,
               private ocarina: OcarinaOfTimeService,
               private componentFactoryResolver: ComponentFactoryResolver,
               private breakpointObserver: BreakpointObserver) {
@@ -42,9 +42,7 @@ export class SidebarComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // const componentFactory = this.componentFactoryResolver.resolveComponentFactory(DashboardComponent);
-    // const viewContainerRef = this.dashboard.viewContainerRef;
-    // const componentRef = viewContainerRef.createComponent<DashboardComponent>(componentFactory);
+    // Todo implement condition$ subsrciption
   }
 
   generateWindpark(windparkMockUpService?: WindparkMockUpService): void {

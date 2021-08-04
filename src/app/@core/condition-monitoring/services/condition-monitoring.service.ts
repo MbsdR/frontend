@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import {interval, Observable} from 'rxjs';
+import {IConditionData} from '../../model/IConditionData';
 
 @Injectable({
   providedIn: 'root'
@@ -8,8 +9,8 @@ export class ConditionMonitoringService {
 
   constructor() { }
 
-  get$Condition(): Observable<{condition: string, failure: number }> {
-    return new Observable<{condition: string, failure: number }>(subscriber => {
+  get$Condition(): Observable<IConditionData> {
+    return new Observable<IConditionData>(subscriber => {
       subscriber.next(this.interpretCondition());
       interval(5000).subscribe(() => subscriber.next(this.interpretCondition()));
     });
