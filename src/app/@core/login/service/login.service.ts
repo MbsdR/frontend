@@ -1,60 +1,42 @@
 import {Inject, Injectable, Optional} from '@angular/core';
-import {ILoginData} from '../../model/ilogin-data';
-import {IProfile, Profile} from '../../model/IProfile';
 import {ProfileMockUpService} from '../../../@MockUp/profile-mock-up.service';
 import {Md5} from 'ts-md5';
-import {ActivatedRouteSnapshot, CanActivate, CanActivateChild, Router, RouterStateSnapshot, UrlTree} from '@angular/router';
-import {Observable} from 'rxjs';
+import {Router} from '@angular/router';
 import {UsermanagementService} from '../../../@MockUp/usermanagement.service';
 import {User} from '../../model/IUser';
 import {AccountService} from './account.service';
 import {AUTH_ENABLED} from '../../../app.tokens';
 
+const CURRENT_USER = 'current_user';
+
 @Injectable({
   providedIn: 'root'
 })
-export class LoginService implements CanActivate, CanActivateChild {
+export class LoginService {
 
   private isAuthenticated: boolean;
 
-  constructor(@Optional() @Inject(AUTH_ENABLED) private enabled: boolean,
-              userMockUpService: ProfileMockUpService,
+  constructor(@Optional() @Inject(AUTH_ENABLED) private authEnabled: boolean,
+              private userMockUpService: ProfileMockUpService,
               private usermanagementService: UsermanagementService,
-              private account: AccountService,
-              private router: Router) {
+              private router: Router,
+              private account: AccountService) {
     this.isAuthenticated = false;
   }
 
-  canActivate(route: ActivatedRouteSnapshot,
-              state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    console.log('i am checking to see if you are logged in');
-    if (this.isAuthenticated) {
-      return true;
-    }
-    this.router.navigateByUrl('login');
-    return false;
-  }
-
-  canActivateChild(route: ActivatedRouteSnapshot,
-                   state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    console.log('checking child route access');
-    if (this.isAuthenticated) {
-      return true;
-    }
-    this.router.navigateByUrl('login');
-    return false;
-  }
-
-  authenticateUser(data: ILoginData): boolean {
-    const user: User = this.loadUser(data.user, data.password);
-    if (user) {
-      console.log(data.user, 'is authenticated');
-      this.account.loadUserProfile(user);
-      localStorage.setItem('vendor', user.username);
+  authenticateUser(user: string, password: string): boolean {
+    if (this.loadUser(user, password)) {
+      console.log(user, 'is authenticated');
+      this.account.loadUserProfile(JSON.parse(localStorage.getItem(CURRENT_USER)));
       this.isAuthenticated = true;
       return true;
     }
     return false;
+  }
+
+  isAuthorized(): boolean | User {
+    console.log('is authorized ', this.authEnabled);
+    return !this.authEnabled || localStorage.getItem(CURRENT_USER) != null;
   }
 
   logoutUser(): boolean {
@@ -63,19 +45,25 @@ export class LoginService implements CanActivate, CanActivateChild {
       //todo delete User
       this.isAuthenticated = false;
       localStorage.clear();
+      sessionStorage.clear();
       this.router.navigateByUrl('login');
     }
 
     return false;
   }
 
-  private loadUser(username: string, password: string): User {
+  private loadUser(username: string, password: string): boolean {
     //Todo DB-Connection
-    const user: User = this.usermanagementService.user[username];
+    const user: User = this.mongoDbConnection(username);
     if (Md5.hashStr(password) === user.password) {
-      return user;
+      localStorage.setItem(CURRENT_USER, JSON.stringify(user));
+      return true;
     }
     return null;
+  }
+
+  private mongoDbConnection(username): User {
+    return this.usermanagementService.user[username];
   }
 
 

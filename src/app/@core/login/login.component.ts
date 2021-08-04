@@ -10,14 +10,14 @@ import {Router} from '@angular/router';
     <div>
       <span class="signtitle" align="center">WiSA Demonstrator</span>
       <span class="sign" align="center" #page>Login Page</span>
-      <form (ngSubmit)="logIn(form.value)" #form="ngForm">
+      <form (ngSubmit)="logIn(user.value, password.value)">
         <div class="form-group">
           <label for="email">E-Mail</label>
-          <input type="text" id="user" class="form-control" name="user" ngModel required/>
+          <input type="text" id="user" class="form-control" #user required/>
         </div>
         <div class="form-group">
           <label for="password">Password</label>
-          <input type="password" id="password" class="form-control" name="password" ngModel required minlength="6"/>
+          <input type="password" id="password" class="form-control" #password required minlength="6"/>
         </div>
         <div>
           <button class="submit" align="center">
@@ -30,22 +30,13 @@ import {Router} from '@angular/router';
   `,
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent {
 
-  constructor(private loginService: LoginService,
-              private router: Router) {}
+  constructor(private loginService: LoginService) {}
 
-  ngOnInit(): void {
-  }
-
-  logIn(value: { user: string, password: string }): boolean{
-    const data: ILoginData = { user: value.user, password: value.password};
-    if (this.loginService.authenticateUser(data)) {
-      console.log('log in as '.concat(data.user));
-      this.router.navigateByUrl('/');
-      return true;
-    }
-    return false;
+  logIn(username: string, password: string): void {
+    this.loginService.authenticateUser(username, password);
+    console.log('log in as '.concat(username));
   }
 
 }

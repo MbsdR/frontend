@@ -27,12 +27,4 @@ describe('LoginComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should log in', () => {
-    expect(component.logIn({user: 'obe', password: '123456'})).toBeTruthy();
-  });
-
-  it('should dont log in', () => {
-    expect(component.logIn({user: 'obe', password: ''})).toBeFalsy();
-  });
-
 });
