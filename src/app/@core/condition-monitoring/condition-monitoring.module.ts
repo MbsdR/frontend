@@ -11,6 +11,7 @@ import {MatMenuModule} from '@angular/material/menu';
 import {ConditionMonitoringService} from './services/condition-monitoring.service';
 import { QuickviewComponent } from './components/quickview/quickview.component';
 import {MatBadgeModule} from '@angular/material/badge';
+import {MatButtonModule} from '@angular/material/button';
 
 
 @NgModule({
@@ -24,22 +25,23 @@ import {MatBadgeModule} from '@angular/material/badge';
     ConditionMonitoringComponent,
     QuickviewComponent
   ],
-  imports: [
-    CommonModule,
-    NgxEchartsModule,
-    MatGridListModule,
-    MatCardModule,
-    MatIconModule,
-    NgxEchartsModule.forRoot({
-      /**
-       * This will import all modules from echarts.
-       * If you only need custom modules,
-       * please refer to [Custom Build] section.
-       */
-      echarts: () => import('echarts'), // or import('./path-to-my-custom-echarts')
-    }),
-    MatMenuModule,
-    MatBadgeModule,
-  ]
+    imports: [
+        CommonModule,
+        NgxEchartsModule,
+        MatGridListModule,
+        MatCardModule,
+        MatIconModule,
+        NgxEchartsModule.forRoot({
+            /**
+             * This will import all modules from echarts.
+             * If you only need custom modules,
+             * please refer to [Custom Build] section.
+             */
+            echarts: () => import('echarts'), // or import('./path-to-my-custom-echarts')
+        }),
+        MatMenuModule,
+        MatBadgeModule,
+        MatButtonModule,
+    ]
 })
 export class ConditionMonitoringModule { }

@@ -1,4 +1,5 @@
 <mat-sidenav-container class="sidenav-container">
+
   <mat-sidenav #drawer class="sidenav" fixedInViewport
                [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
                [mode]="(isHandset$ | async) ? 'over' : 'side'"
@@ -7,19 +8,21 @@
 
     <!-- Quickview Condition monitoring  -->
     <mat-toolbar>Windpark A</mat-toolbar>
-    <mat-toolbar *ngFor="let row of rows">
-      <div *ngFor="let wea of row" class="example-spacer">
-        <a [routerLink]="['./wea', wea.id]">
-          <wisa-condition-quickview [turbine]="wea.id"></wisa-condition-quickview>
+    <div class="quickview">
+      <div *ngFor="let plant of plants" class="turbine">
+        <a [routerLink]="['./wea', plant.id]">
+          <wisa-condition-quickview [turbine]="plant.id"></wisa-condition-quickview>
         </a>
       </div>
-    </mat-toolbar>
+    </div>
     <mat-toolbar>Windpark B</mat-toolbar>
   </mat-sidenav>
 
   <mat-sidenav-content class="sidenav-content">
     <!-- Add Content Here -->
-    <mat-toolbar>
+    <!-- Header -->
+    <div class="header">
+
       <button
         type="button"
         aria-label="Toggle sidenav"
@@ -28,11 +31,16 @@
         *ngIf="isHandset$ | async">
         <mat-icon>menu</mat-icon>
       </button>
-      <a *ngIf="!(isHandset$ | async)" routerLink="/" class="link"> <img src="assets/img/Logo_WiSAbigdata_300dpi.png"
-                                                                         style="width: 200px"></a>
-      <span class="example-spacer"></span>
-
+      <a *ngIf="!(isHandset$ | async)" routerLink="/" class="link">
+        <img src="../../assets/img/Logo_WiSAbigdata_300dpi.png" style="width: 200px">
+      </a>
+      <div>
+        <span>Uhrzeit</span> <br>
+        <span>Anlage</span>
+      </div>
+      <div>
       <mat-slide-toggle (toggleChange)="openOcarina()" toggleOcarina></mat-slide-toggle>
+
       <button mat-icon-button class="more-button" [matMenuTriggerFor]="menu" aria-label="Toggle menu">
         <mat-icon>account_circle</mat-icon>
       </button>
@@ -42,13 +50,15 @@
           Logout
         </button>
       </mat-menu>
-    </mat-toolbar>
-
-    <div class="dashboard">
-      <div [hidden]="!visible">
+      </div>
+      <div [hidden]="!visible" class="ocarina">
         <wisa-ocarina-of-time></wisa-ocarina-of-time>
       </div>
-      <div>
+    </div>
+    <!-- /Header -->
+    <div class="dashboard">
+
+      <div class="content">
         <router-outlet></router-outlet>
       </div>
     </div>

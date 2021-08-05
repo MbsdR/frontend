@@ -26,11 +26,12 @@ import {CHANNELS} from '../../model/mapping';
 @Component({
   selector: 'wisa-tile-content',
   template: `
-
     <mat-card class="dashboard-card">
       <mat-card-header>
         <mat-card-title>
-          <h1>{{title}}</h1>
+          {{title}}
+        </mat-card-title>
+        <div>
           <button mat-icon-button class="more-button" [matMenuTriggerFor]="menu" aria-label="Toggle menu">
             <mat-icon>more_vert</mat-icon>
           </button>
@@ -48,12 +49,12 @@ import {CHANNELS} from '../../model/mapping';
               Löschen
             </button>
           </mat-menu>
-        </mat-card-title>
+        </div>
       </mat-card-header>
       <mat-card-content class="dashboard-card-content">
         <!-- <ng-template wisaGraphic></ng-template> -->
         <!-- Content -->
-       <wisa-line-chart [setting]="setting"></wisa-line-chart>
+        <wisa-line-chart [setting]="setting"></wisa-line-chart>
       </mat-card-content>
     </mat-card>
   `,
@@ -149,7 +150,8 @@ export class ContentComponent implements OnInit, AfterViewInit {
     });
   }
 
-  export(): void{}
+  export(): void {
+  }
 
   removeTile(): void {
     console.info(' Remove Tile');

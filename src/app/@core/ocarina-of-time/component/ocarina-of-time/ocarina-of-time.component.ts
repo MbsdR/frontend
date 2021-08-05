@@ -9,8 +9,9 @@ const SPEED = [1, 2, 8, 32, 128];
 @Component({
   selector: 'wisa-ocarina-of-time',
   template: `
-    <mat-toolbar>
-      <mat-form-field class="example-form-field" appearance="fill">
+    <div class="ocarina">
+      <div class="datapicker">
+      <mat-form-field appearance="fill">
         <mat-label>Enter a date range</mat-label>
         <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
           <input matStartDate formControlName="start" eplaceholder="Start date" (dateChange)="addEvent('start', $event)">
@@ -19,10 +20,8 @@ const SPEED = [1, 2, 8, 32, 128];
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-date-range-picker #picker></mat-date-range-picker>
       </mat-form-field>
-      <span class="example-spacer">|</span>
-
-      <span class="example-spacer">|</span>
-      <div>
+      </div>
+      <div class="control">
         <button mat-icon-button (click)="reduceSpeed()">
           <mat-icon>fast_rewind</mat-icon>
         </button>
@@ -35,8 +34,10 @@ const SPEED = [1, 2, 8, 32, 128];
           <mat-icon>fast_forward</mat-icon>
         </button>
       </div>
-      <span class="example-spacer">|</span>
-    </mat-toolbar>
+      <div>
+
+      </div>
+    </div>
   `,
   styleUrls: ['./ocarina-of-time.component.css']
 })

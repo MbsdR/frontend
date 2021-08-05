@@ -2,7 +2,7 @@ import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 
 import {AppComponent} from './app.component';
-import {SidebarComponent} from './@layout/sidebar/sidebar.component';
+import {SidebarComponent} from './pages/sidebar.component';
 import {OcarinaOfTimeComponent} from './@core/ocarina-of-time/component/ocarina-of-time/ocarina-of-time.component';
 import {appRouting, routingComponents} from './app.routing';
 import {NotFoundComponent} from './@core/not-found/not-found.component';

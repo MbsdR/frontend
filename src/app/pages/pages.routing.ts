@@ -1,4 +1,4 @@
-import {DashboardComponent} from '../../pages/dashboard/dashboard.component';
+import {DashboardComponent} from './dashboard/dashboard.component';
 import {SidebarComponent} from './sidebar.component';
 
 export const pagesRoutes = [

@@ -1,0 +1,37 @@
+.sidenav-container {
+  height: 100%;
+  background-color: white;
+}
+
+.sidenav {
+  width: 10%;
+  background-color: inherit;
+}
+.quickview {
+  width: inherit;
+  background-color: inherit;
+  margin-left: 15px;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: flex-start;
+}
+.turbine {
+  width: 40px;
+  flex-basis: 30%;
+  flex-shrink: 3;
+}
+.sidenav-content {
+}
+
+.header {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  width: 100%;
+  background-color: inherit;
+}
+.ocarina{
+  width: 100%;
+  background-color: inherit;
+}
+

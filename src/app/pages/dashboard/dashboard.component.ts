@@ -11,7 +11,6 @@ import {OcarinaOfTimeService} from '../../@core/ocarina-of-time/service/OcarinaO
 @Component({
   selector: 'wisa-dashboard',
   template: `
-    <mat-toolbar class="dashboard">
       <mat-tab-group>
         <mat-tab label="Überblick">
         </mat-tab>
@@ -25,8 +24,7 @@ import {OcarinaOfTimeService} from '../../@core/ocarina-of-time/service/OcarinaO
         <mat-tab label="Business Intelligence"> Windpark 1</mat-tab>
       </mat-tab-group>
 
-      <mat-slide-toggle (toggleChange)="openOcarina()"></mat-slide-toggle>
-    </mat-toolbar>
+      <!-- <mat-slide-toggle (toggleChange)="openOcarina()"></mat-slide-toggle> -->
   `,
   styleUrls: ['./dashboard.component.css']
 })
