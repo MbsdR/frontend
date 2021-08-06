@@ -1,6 +1,6 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {AfterViewInit, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Observable} from 'rxjs';
-import {OcarinaOfTimeService} from '../../@core/service/OcarinaOfTime/ocarina-of-time.service';
+import {OcarinaOfTimeService} from '../../service/OcarinaOfTime/ocarina-of-time.service';
 import {FormControl, FormGroup} from '@angular/forms';
 import {DateRange, ExtractDateTypeFromSelection, MatDatepickerInputEvent} from '@angular/material/datepicker';
 
@@ -23,18 +23,24 @@ const SPEED = [1, 2, 8, 32, 128];
 
       <span class="example-spacer">|</span>
       <div>
-        <button mat-icon-button (click)="reduceSpeed()"><mat-icon>fast_rewind</mat-icon></button >
-        <span >{{ocarinaTime$ | async | date: 'dd. LLL. yyyy'}}</span>
-        <button mat-icon-button (click)="play()"><mat-icon>{{font}}</mat-icon></button>
-        <span >{{ocarinaTime$ | async | date: 'hh:mm:ss'}}</span>
-        <button mat-icon-button (click)="raiseSpeed()"><mat-icon>fast_forward</mat-icon></button>
+        <button mat-icon-button (click)="reduceSpeed()">
+          <mat-icon>fast_rewind</mat-icon>
+        </button>
+        <span>{{ocarinaTime$ | async | date: 'dd. LLL. yyyy'}}</span>
+        <button mat-icon-button (click)="play()">
+          <mat-icon>{{font}}</mat-icon>
+        </button>
+        <span>{{ocarinaTime$ | async | date: 'hh:mm:ss'}}</span>
+        <button mat-icon-button (click)="raiseSpeed()">
+          <mat-icon>fast_forward</mat-icon>
+        </button>
       </div>
       <span class="example-spacer">|</span>
     </mat-toolbar>
   `,
   styleUrls: ['./ocarina-of-time.component.css']
 })
-export class OcarinaOfTimeComponent {
+export class OcarinaOfTimeComponent implements AfterViewInit {
 
   @Input() ocarinaEnable: EventEmitter<boolean>;
   @Output() currentDatetime$: Observable<number>;
@@ -55,6 +61,10 @@ export class OcarinaOfTimeComponent {
     this.ocarinaTime$ = ocarina.$playOcarina.asObservable();
     this.beginPlaying$ = ocarina.$isPlaying;
     this.timeRange$ = ocarina.timeRangeChange$;
+  }
+
+  ngAfterViewInit(): void {
+    this.beginPlaying$.emit(false);
   }
 
   play(): void {

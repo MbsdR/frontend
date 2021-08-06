@@ -6,7 +6,7 @@ import {MatIconRegistry} from '@angular/material/icon';
 import {DomSanitizer} from '@angular/platform-browser';
 import {WindparkMockUpService} from '../../@MockUp/windpark-mock-up.service';
 import {WindEnergyPlant} from '../../@core/model/wind-energy-plant';
-import {OcarinaOfTimeService} from '../../@core/service/OcarinaOfTime/ocarina-of-time.service';
+import {OcarinaOfTimeService} from '../../@core/ocarina-of-time/service/OcarinaOfTime/ocarina-of-time.service';
 import {WepDashboardComponent} from '../../pages/wind-energy-plant/wep-dashboard.component';
 import {WepDirectiveDirective} from '../../pages/wind-energy-plant/wep-directive.directive';
 

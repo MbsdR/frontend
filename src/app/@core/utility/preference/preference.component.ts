@@ -1,8 +1,12 @@
-import {Component, EventEmitter, Inject, OnInit} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
-import {Profile, Setting} from '../../model/profile';
+import { Component, EventEmitter, Inject, OnInit } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import {Profile} from '../../model/profile';
 import {newArray} from '@angular/compiler/src/util';
-import {MAT_DIALOG_DATA} from '@angular/material/dialog';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { CHANNELS } from '../../model/mapping';
+import {UserMockUpService} from '../../../@MockUp/user-mock-up.service';
+import {FREQUENCE, Setting, UNITS} from '../../model/setting';
+import { TYPECHARTS } from '../../model/typeCharts';
 
 @Component({
   selector: 'wisa-preference',
@@ -11,51 +15,40 @@ import {MAT_DIALOG_DATA} from '@angular/material/dialog';
 })
 export class PreferenceComponent implements OnInit {
 
-  channels = [{
-    value: 'WindSpeed',
-    label: 'Windgeschwindigkeit'
-  },
-    {
-      value: 'ActivePower',
-      label: 'Aktivpower'
-    }];
-  frequences = [{
-    value: 1,
-    unit: 'sek'
-  }, {
-    value: 3,
-    unit: 'sek'
-  }, {
-    value: 5,
-    unit: 'min'
-  }, {
-    value: 10,
-    unit: 'min'
-  }];
-  diagrams = [{
-    value: 'line',
-    label: 'Liniendiagramm'
-  }, {
-    value: 'bar',
-    label: 'Barchart'
-  }];
+  channels = Object.values(CHANNELS);
 
-  profil = {
-    channel: this.channels[0],
-    frequence: this.frequences[3]
-  };
+  frequences = FREQUENCE;
+  units = Object.values(UNITS);
+  charts = TYPECHARTS;
 
   setting = this.fb.group(
     {
       channel: [''],
+      unit: [''],
       frequence: [''],
-      diagram: ['']
+      chart: ['']
     });
 
-  constructor(@Inject(MAT_DIALOG_DATA) private data: any, private fb: FormBuilder) {
+
+  constructor(@Inject(MAT_DIALOG_DATA) public settings: Setting,
+              private fb: FormBuilder) {
     // Todo: Initialize values für Settings
+    console.log(settings);
+    this.setting.setValue({
+      channel: settings.channel,
+      unit: settings.frequence.unit,
+      frequence: settings.frequence.value,
+      chart: settings.type
+    });
   }
 
   ngOnInit(): void {
+    this.setting.valueChanges.subscribe(value => {
+      this.settings.channel = this.setting.value.channel;
+      this.settings.type = this.setting.value.chart;
+      this.settings.frequence.value = this.setting.value.frequence;
+      this.settings.frequence.unit = this.setting.value.unit;
+      console.log(this.settings);
+    });
   }
 }

@@ -2,9 +2,8 @@ import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 
 import {AppComponent} from './app.component';
-import {DashboardComponent} from './pages/dashboard/dashboard.component';
 import {SidebarComponent} from './@layout/sidebar/sidebar.component';
-import {OcarinaOfTimeComponent} from './@layout/ocarina-of-time/ocarina-of-time.component';
+import {OcarinaOfTimeComponent} from './@core/ocarina-of-time/component/ocarina-of-time/ocarina-of-time.component';
 import {appRouting, routingComponents} from './app.routing';
 import {NotFoundComponent} from './@core/not-found/not-found.component';
 import {WindEnergyPlantComponent} from './pages/wind-energy-plant/wind-energy-plant.component';
@@ -41,7 +40,13 @@ import {MatSelectModule} from '@angular/material/select';
 import {CdkAccordionModule} from '@angular/cdk/accordion';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatInputModule} from '@angular/material/input';
+import {TileComponent} from './pages/dashboard/tile.component';
+import {DashboardComponent} from './pages/dashboard/dashboard.component';
+import { ContentComponent } from './pages/dashboard/content/content.component';
+import { TileDirective } from './pages/dashboard/directives/tile.directive';
+import { GraphicDirective } from './pages/dashboard/directives/graphic.directive';
 
+export const BASE_URL_OFFIS = '';
 
 @NgModule({
   declarations: [
@@ -56,6 +61,10 @@ import {MatInputModule} from '@angular/material/input';
     WepDirectiveDirective,
     LineChartComponent,
     PreferenceComponent,
+    TileComponent,
+    ContentComponent,
+    TileDirective,
+    GraphicDirective,
   ],
   imports: [
     BrowserModule,
@@ -105,7 +114,8 @@ import {MatInputModule} from '@angular/material/input';
 
   ],
   providers: [
-      {provide: MAT_DATE_LOCALE, useValue: 'de'},
+    {provide: MAT_DATE_LOCALE, useValue: 'de'},
+    {provide: BASE_URL_OFFIS, useValue: 'http://localhost:8001/data'}
       // {provide: LOCALE_ID, useValue: 'de'}
       // {provide: APP_BASE_HREF, useValue: '/wisa'}
   ],
