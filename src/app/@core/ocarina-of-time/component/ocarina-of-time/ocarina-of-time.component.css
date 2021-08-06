@@ -1,21 +1,20 @@
-.mat-toolbar{
+.ocarina {
+  width: inherit;
   display: flex;
-  flex-flow: row wrap;
+  justify-content: space-between;
+  background-color: inherit;
 }
-.example-spacer {
-  flex: 1 0 auto;
-}
-.mat-datepicker-content {
-  height: 5px;
+
+div{
+  flex: 1 0 10px;
 }
 
 .control {
-  display: flex;
-  flex-direction: row;
-}
-.mat-label{
-  height: 5px;
 }
 
-.example-form-field{
+.datapicker {
 }
+
+.mat-label{
+}
+

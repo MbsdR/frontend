@@ -1,62 +1,69 @@
 import {EventEmitter, Inject, Injectable, NgZone} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {IDaaRes} from '../../model/daa';
-import {map} from 'rxjs/operators';
+import {IDaaRes} from '../../model/IDaa';
+import {concat, concatAll, map, tap} from 'rxjs/operators';
 import {IDatapoint} from '../../model/IDatapoint';
-import {IQuery} from '../../model/query';
-
+import {IQuery} from '../../model/IQuery';
+import {BASE_URL_DATAPLATFORM} from '../../../app.tokens';
 
 @Injectable({
   providedIn: 'root'
 })
+
 export class DataAccessService {
 
 
-  dataEvent: EventEmitter<Array<IDatapoint>>;
+  dataEvent: EventEmitter<{ result: Array<IDatapoint>, channel: string }>;
   dataEventSingle: EventEmitter<IDatapoint>;
-
-  private BASE_URL = 'http://localhost:8001';
-  private sseUrl: string;
   private headers: HttpHeaders;
-  // private resultSet: Array<IDatapoint> = [];
 
-  constructor(private zone: NgZone,
+
+  constructor(@Inject(BASE_URL_DATAPLATFORM) private BASE_URL: string,
+              private zone: NgZone,
               private http: HttpClient) {
     console.log('Create Data Access Service');
     this.headers = new HttpHeaders();
     this.headers.set('Accept', 'application/json');
     this.headers.set('Content-Type', 'application/json');
-    this.dataEvent = new EventEmitter<Array<IDatapoint>>();
+    this.dataEvent = new EventEmitter<{ result: Array<IDatapoint>, channel: string }>();
     this.dataEventSingle = new EventEmitter<IDatapoint>();
+    console.log(this.BASE_URL);
   }
 
-  getDataSet(query: IQuery): EventEmitter<Array<IDatapoint>> {
-    this._start(query);
-    return this.dataEvent;
+  async getDataSet(query: IQuery): Promise<Array<IDatapoint>> {
+    return await this._start(query);
   }
 
-  private _start(query: IQuery): void {
-    const resultSet = new Array<IDatapoint>();
-    this.request(query).subscribe(body => {
-      this.sseUrl = this.BASE_URL.concat(body.api.links[0].href);
-      this.getSSE(resultSet)
-        .subscribe(datapoint => {
-          resultSet.push(JSON.parse(datapoint));
-        });
-    }); // ------end Request ----------
+  private _start(query: IQuery): Promise<Array<IDatapoint>> {
+    const resultSet: Array<IDatapoint> = new Array<IDatapoint>();
+    return new Promise(resolve => {
+      this.request(query).pipe(
+        map(body => {
+          return this.BASE_URL.concat(body.api.links[0].href);
+        }), // ------end Request ----------
+        map(sseUrl => {
+          return this.getSSE(sseUrl);
+        }), // _______end SSE________
+        concatAll()).subscribe(
+        datapoint => resultSet.push(JSON.parse(datapoint)),
+        error => {
+        },
+        () => {
+          resolve(resultSet);
+        }
+      );
+    });
   }
 
   private request(query: IQuery): Observable<IDaaRes> {
-    return this.http.post<IDaaRes>('http://localhost:8001/data', query);
+    return this.http.post<IDaaRes>(this.BASE_URL.concat('/data'), query);
   }
 
 
-  private getSSE(resultSet: Array<IDatapoint>): Observable<string> {
-    return new Observable<string>(observer => {
-      console.log('Start eventsource'.concat(this.sseUrl));
-      const eventSource = this.getEventSource(this.sseUrl);
-
+  private getSSE(sseUrl: string): Observable<string> {
+    return new Observable<string>(subscriber => {
+      const eventSource = new EventSource(sseUrl);
       eventSource.onopen = event => {
         this.zone.run(() => {
           console.log('Connection to server opened.');
@@ -64,20 +71,15 @@ export class DataAccessService {
       };
       eventSource.onmessage = event => {
         this.zone.run(() => {
-          observer.next(event.data);
+          subscriber.next(event.data);
         });
       };
       eventSource.onerror = error => {
         this.zone.run(() => {
-          observer.error(error);
+          subscriber.complete();
           eventSource.close();
-          this.dataEvent.emit(resultSet);
         });
       };
     });
-  }
-
-  private getEventSource(url: string): EventSource {
-    return new EventSource(url);
   }
 }

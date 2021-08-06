@@ -1,3 +1,7 @@
 .dashboard {
+  position: relative;
+}
+.ocarina {
+  position: absolute;
 }
 

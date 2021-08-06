@@ -35,7 +35,9 @@ export class LoginService {
   }
 
   isAuthorized(): boolean | User {
+
     console.log('authenticate is enabled', this.authEnabled);
+
     return !this.authEnabled || localStorage.getItem(CURRENT_USER) != null;
   }
 
