@@ -34,8 +34,8 @@ export class LoginService {
     return false;
   }
 
-  isAuthorized(): boolean | User {
-    console.log('is authorized ', this.authEnabled);
+  isAuthorized(): boolean  {
+    console.log('authenticate is enabled', this.authEnabled);
     return !this.authEnabled || localStorage.getItem(CURRENT_USER) != null;
   }
 
@@ -57,6 +57,7 @@ export class LoginService {
     const user: User = this.mongoDbConnection(username);
     if (Md5.hashStr(password) === user.password) {
       localStorage.setItem(CURRENT_USER, JSON.stringify(user));
+      console.log(JSON.stringify(user));
       return true;
     }
     return null;
