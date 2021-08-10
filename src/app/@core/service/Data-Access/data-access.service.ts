@@ -22,13 +22,11 @@ export class DataAccessService {
   constructor(@Inject(BASE_URL_DATAPLATFORM) private BASE_URL: string,
               private zone: NgZone,
               private http: HttpClient) {
-    console.log('Create Data Access Service');
     this.headers = new HttpHeaders();
     this.headers.set('Accept', 'application/json');
     this.headers.set('Content-Type', 'application/json');
     this.dataEvent = new EventEmitter<{ result: Array<IDatapoint>, channel: string }>();
     this.dataEventSingle = new EventEmitter<IDatapoint>();
-    console.log(this.BASE_URL);
   }
 
   async getDataSet(query: IQuery): Promise<Array<IDatapoint>> {

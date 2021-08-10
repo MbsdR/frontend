@@ -5,8 +5,8 @@ export class QueryBuilder {
 
   private query: IQuery;
 
-  constructor() {
-    this.query = new Query(localStorage.getItem('vendor'));
+  constructor(vendor?: string) {
+    this.query = new Query(vendor);
   }
 
   start(start: string): QueryBuilder {

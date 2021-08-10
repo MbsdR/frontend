@@ -6,6 +6,7 @@ import {ISetting} from '../../../../model/ISetting';
 import {CHANNELS} from '../../../../model/mapping';
 import {Observable} from 'rxjs';
 import {objectKeys} from 'codelyzer/util/objectKeys';
+import {Graphic} from '../../graphic';
 
 @Component({
   selector: 'wisa-line-chart',
@@ -13,9 +14,9 @@ import {objectKeys} from 'codelyzer/util/objectKeys';
     <div echarts [options]="options" [merge]="updateOptions" (chartInit)="onChartInit($event)"></div>`,
   styleUrls: ['./line-chart.component.css']
 })
-export class LineChartComponent implements OnInit, AfterViewInit {
-  @Input() setting: ISetting;
+export class LineChartComponent implements OnInit, AfterViewInit, Graphic {
 
+  setting: ISetting;
   options: EChartsOption;
   updateOptions: EChartsOption;
 
@@ -31,6 +32,10 @@ export class LineChartComponent implements OnInit, AfterViewInit {
     this.puffer = 1;
     this.dataset = new Array<[string, (number | string)]>();
 
+  }
+
+  ngOnInit(): void {
+    this.channel = this.setting.channel;
     this.options = {
       tooltip: {
         show: true
@@ -50,13 +55,9 @@ export class LineChartComponent implements OnInit, AfterViewInit {
       },
       series: [{
         type: 'line',
-        data: this.dataset
+        data: [0,0]
       }]
     };
-  }
-
-  ngOnInit(): void {
-    this.channel = this.setting.channel.concat('_', this.setting.turbine);
   }
 
 
@@ -64,14 +65,15 @@ export class LineChartComponent implements OnInit, AfterViewInit {
     console.info(this.channel, 'chart was created');
   }
 
-  updateChart(datapoint: IDatapoint): void {
-
-    this.dataset.push([datapoint._start, datapoint[this.channel]]);
+  updateChart(datapoint: IDatapoint, turbine: string): void {
+    console.log(this.channel.concat('_').concat(turbine));
+    console.log(datapoint);
+    this.dataset.push([datapoint._start, datapoint[this.channel.concat('_' + turbine)]]);
     this.counter += 1;
     if (this.dataset.length > this.size) {
       this.dataset.shift();
     }
-
+    console.log(this.dataset);
     if (0 === this.counter % this.puffer) {
       this.updateOptions = {
         series: [{
@@ -89,4 +91,5 @@ export class LineChartComponent implements OnInit, AfterViewInit {
   changeDatasetNumber(size: number): void {
     this.size = size;
   }
+
 }

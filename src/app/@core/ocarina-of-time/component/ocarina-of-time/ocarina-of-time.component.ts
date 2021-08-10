@@ -1,5 +1,5 @@
 import {AfterViewInit, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {Observable} from 'rxjs';
+import {Observable, timer} from 'rxjs';
 import {OcarinaOfTimeService} from '../../service/OcarinaOfTime/ocarina-of-time.service';
 import {FormControl, FormGroup} from '@angular/forms';
 import {DateRange, ExtractDateTypeFromSelection, MatDatepickerInputEvent} from '@angular/material/datepicker';
@@ -41,7 +41,7 @@ const SPEED = [1, 2, 8, 32, 128];
   `,
   styleUrls: ['./ocarina-of-time.component.css']
 })
-export class OcarinaOfTimeComponent implements AfterViewInit {
+export class OcarinaOfTimeComponent {
 
   @Input() ocarinaEnable: EventEmitter<boolean>;
   @Output() currentDatetime$: Observable<number>;
@@ -62,10 +62,6 @@ export class OcarinaOfTimeComponent implements AfterViewInit {
     this.ocarinaTime$ = ocarina.$playOcarina.asObservable();
     this.beginPlaying$ = ocarina.$isPlaying;
     this.timeRange$ = ocarina.timeRangeChange$;
-  }
-
-  ngAfterViewInit(): void {
-    this.beginPlaying$.emit(false);
   }
 
   play(): void {

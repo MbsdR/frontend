@@ -1,4 +1,4 @@
-import {NgModule} from '@angular/core';
+import {LOCALE_ID, NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 
 import {AppComponent} from './app.component';
@@ -41,7 +41,11 @@ import {DashboardComponent} from './pages/dashboard/dashboard.component';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import {LoginComponent} from './@core/login/login.component';
 import {AUTH_ENABLED, BASE_URL_DATAPLATFORM, LANGUAGE} from './app.tokens';
+import { TabDirective } from './pages/wind-energy-plant/tab.directive';
 
+import { registerLocaleData } from '@angular/common';
+import localeDe from '@angular/common/locales/de';
+registerLocaleData(localeDe);
 @NgModule({
   declarations: [
     AppComponent,
@@ -52,7 +56,8 @@ import {AUTH_ENABLED, BASE_URL_DATAPLATFORM, LANGUAGE} from './app.tokens';
     NotFoundComponent,
     WindEnergyPlantComponent,
     PreferenceComponent,
-    LoginComponent
+    LoginComponent,
+    TabDirective
   ],
   imports: [
     BrowserModule,
@@ -107,6 +112,7 @@ import {AUTH_ENABLED, BASE_URL_DATAPLATFORM, LANGUAGE} from './app.tokens';
     { provide: BASE_URL_DATAPLATFORM, useValue: 'http://localhost:8001'},
     { provide: AUTH_ENABLED, useValue: false},
     { provide: LANGUAGE, useValue: 'de'},
+    { provide: LOCALE_ID, useValue: 'de'}
     // {provide: APP_BASE_HREF, useValue: '/wisa'}[CookieService],
   ],
   bootstrap: [AppComponent]

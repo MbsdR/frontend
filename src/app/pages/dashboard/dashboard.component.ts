@@ -15,9 +15,6 @@ import {OcarinaOfTimeService} from '../../@core/ocarina-of-time/service/OcarinaO
         <mat-tab label="Überblick">
         </mat-tab>
         <mat-tab label="Zustandüberwachung">
-          <div [hidden]="!visible" class="ocarina">
-            <wisa-ocarina-of-time></wisa-ocarina-of-time>
-          </div>
           <div>Windpark 1</div>
         </mat-tab>
         <mat-tab label="Predictive Analytics"> Windpark 1</mat-tab>
