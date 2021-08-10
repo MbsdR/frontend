@@ -23,7 +23,6 @@ export class OcarinaOfTimeService {
 
 
   constructor(private dataAccessMockupService: DataAccessMockupService) {
-    console.info('Play Ocarina at present');
     this.frequence = 1;
     this.beginPresentTime();
     this.$isPlaying.subscribe((value) =>

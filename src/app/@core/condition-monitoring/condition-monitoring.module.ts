@@ -4,22 +4,24 @@ import {NgxEchartsModule} from 'ngx-echarts';
 import { ConditionMonitoringComponent } from './condition-monitoring.component';
 import {MatGridListModule} from '@angular/material/grid-list';
 import {MatCardModule} from '@angular/material/card';
-import {ContentComponent} from './content/content.component';
+import {ContentComponent, GraphicsDirective} from './content/content.component';
 import {MatIconModule} from '@angular/material/icon';
 import {LineChartComponent} from './charts/echarts/line-chart/line-chart.component';
 import {MatMenuModule} from '@angular/material/menu';
-import {ConditionMonitoringService} from './services/condition-monitoring.service';
 import { QuickviewComponent } from './components/quickview/quickview.component';
 import {MatBadgeModule} from '@angular/material/badge';
 import {MatButtonModule} from '@angular/material/button';
-
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { HeatmapComponent } from './charts/d3/heatmap/heatmap.component';
 
 @NgModule({
   declarations: [
     ConditionMonitoringComponent,
     ContentComponent,
     LineChartComponent,
-    QuickviewComponent
+    QuickviewComponent,
+    HeatmapComponent,
+    GraphicsDirective
   ],
   exports: [
     ConditionMonitoringComponent,
@@ -42,6 +44,7 @@ import {MatButtonModule} from '@angular/material/button';
         MatMenuModule,
         MatBadgeModule,
         MatButtonModule,
+        MatProgressSpinnerModule,
     ]
 })
 export class ConditionMonitoringModule { }

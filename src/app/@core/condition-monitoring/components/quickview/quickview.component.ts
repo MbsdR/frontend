@@ -30,7 +30,6 @@ export class QuickviewComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log(this.turbine);
     this.conditionMonitoringService.get$Condition().subscribe( condition => {
       this.fillColor = condition.condition;
       this.failure = condition.failure;

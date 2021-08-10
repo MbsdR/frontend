@@ -35,8 +35,8 @@
         <img src="../../assets/img/Logo_WiSAbigdata_300dpi.png" style="width: 200px">
       </a>
       <div>
-        <span>Uhrzeit</span> <br>
-        <span>Anlage</span>
+        <span>{{time | async | date }}</span> <br>
+        <span>{{plant}}</span>
       </div>
       <div>
       <mat-slide-toggle (toggleChange)="openOcarina()" toggleOcarina></mat-slide-toggle>
