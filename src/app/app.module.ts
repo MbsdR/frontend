@@ -45,6 +45,8 @@ import { TabDirective } from './pages/wind-energy-plant/tab.directive';
 
 import { registerLocaleData } from '@angular/common';
 import localeDe from '@angular/common/locales/de';
+import { AccountComponent } from './@core/account/account.component';
+import {AccountModule} from './@core/account/account.module';
 registerLocaleData(localeDe);
 @NgModule({
   declarations: [
@@ -104,7 +106,8 @@ registerLocaleData(localeDe);
     MatTabsModule,
     MatInputModule,
     ConditionMonitoringModule,
-    MatButtonToggleModule
+    MatButtonToggleModule,
+    AccountModule
 
   ],
   providers: [

@@ -1,8 +1,7 @@
 import {Injectable} from '@angular/core';
-import {IProfile} from '../@core/model/IProfile';
-import {CHANNELS} from '../@core/model/mapping';
-import {FREQUENCE, UNITS} from '../@core/model/ISetting';
-import {Md5} from 'ts-md5';
+import {IProfile} from '../@core/model/Usermangemant/IProfile';
+import {CHANNELS} from '../@core/model/Constants/mapping';
+import {FREQUENCE, UNITS} from '../@core/model/Constants/ChartSettingConstants';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +9,9 @@ import {Md5} from 'ts-md5';
 export class ProfileMockUpService {
   profiles: { obe: IProfile, vat: IProfile, dwt?: IProfile};
   private obe: IProfile = {
-    vendor: 'OBE',
+    account: {
+      company: {abbr: 'VAT'}
+    },
     language: 'de',
     condition: [
       {
@@ -72,7 +73,9 @@ export class ProfileMockUpService {
     ]
   };
   private vat: IProfile = {
-    vendor: 'VAT',
+    account: {
+      company: {abbr: 'OBE'}
+    },
     language: 'de',
     condition: [
       {

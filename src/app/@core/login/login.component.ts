@@ -1,7 +1,5 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {LoginService} from './service/login.service';
-import {ILoginData} from '../model/ilogin-data';
-import {Router} from '@angular/router';
 
 
 @Component({

@@ -4,7 +4,7 @@ import {EChartsOption} from 'echarts';
 import {interval} from 'rxjs';
 import {formatDate} from '@angular/common';
 import {Graphic} from '../../graphic';
-import {ISetting} from '../../../../model/ISetting';
+import {ITileSetting} from '../../../../model/Usermangemant/ITileSetting';
 import { IDatapoint } from 'src/app/@core/model/IDatapoint';
 
 
@@ -18,7 +18,7 @@ import { IDatapoint } from 'src/app/@core/model/IDatapoint';
 })
 export class HeatmapComponent implements OnInit, AfterViewInit, Graphic {
 
-  @Input() setting: ISetting;
+  @Input() setting: ITileSetting;
 
   chartDom: any;
   myChart: any;

@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
-import {IProfile} from '../@core/model/IProfile';
-import {CHANNELS} from '../@core/model/mapping';
-import {FREQUENCE, UNITS} from '../@core/model/ISetting';
+import {IProfile} from '../@core/model/Usermangemant/IProfile';
+import {CHANNELS} from '../@core/model/Constants/mapping';
+import {FREQUENCE, UNITS} from '../@core/model/Constants/ChartSettingConstants';
 
 @Injectable({
   providedIn: 'root'

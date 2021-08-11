@@ -1,3 +1,5 @@
+import {Type} from '@angular/core';
+
 export const FREQUENCE = [1, 3, 5, 10];
 export const UNITS = {
   sec: {value: 's', label: {de: 'sek.', en: 'sec.'}},
@@ -5,10 +7,4 @@ export const UNITS = {
   hour: {value: 'h', label: {de: 'std.', en: 'h'}}
 };
 
-export interface ISetting {
-  channel: string;
-  turbine: string;
-  func: string;
-  frequence: { value: number, unit: string };
-  type: string;
-}
+export const TYPECHARTS: Array<string> = ['line', 'heat'];

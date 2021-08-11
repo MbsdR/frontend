@@ -1,5 +1,5 @@
 import {IQuery, Query} from '../../model/IQuery';
-import {AccountService} from '../../login/service/account.service';
+import {AccountService} from '../../account/service/account.service';
 
 export class QueryBuilder {
 

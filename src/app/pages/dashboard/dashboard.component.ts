@@ -3,7 +3,7 @@ import {
   Component, EventEmitter,
   OnInit, Output
 } from '@angular/core';
-import {IProfile} from '../../@core/model/IProfile';
+import {IProfile} from '../../@core/model/Usermangemant/IProfile';
 import {UserMockUpService} from '../../@MockUp/user-mock-up.service';
 import {OcarinaOfTimeService} from '../../@core/ocarina-of-time/service/OcarinaOfTime/ocarina-of-time.service';
 

@@ -1,12 +1,12 @@
 import { Component, EventEmitter, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import {IProfile} from '../../model/IProfile';
+import {IProfile} from '../../model/Usermangemant/IProfile';
 import {newArray} from '@angular/compiler/src/util';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { CHANNELS } from '../../model/mapping';
+import { CHANNELS } from '../../model/Constants/mapping';
 import {ProfileMockUpService} from '../../../@MockUp/profile-mock-up.service';
-import {FREQUENCE, ISetting, UNITS} from '../../model/ISetting';
-import { TYPECHARTS } from '../../model/typeCharts';
+import { ITileSetting } from '../../model/Usermangemant/ITileSetting';
+import { FREQUENCE, UNITS, TYPECHARTS } from '../../model/Constants/ChartSettingConstants';
 
 @Component({
   selector: 'wisa-preference',
@@ -30,7 +30,7 @@ export class PreferenceComponent implements OnInit {
     });
 
 
-  constructor(@Inject(MAT_DIALOG_DATA) public settings: ISetting,
+  constructor(@Inject(MAT_DIALOG_DATA) public settings: ITileSetting,
               private fb: FormBuilder) {
     // Todo: Initialize values für Settings
     console.log(settings);

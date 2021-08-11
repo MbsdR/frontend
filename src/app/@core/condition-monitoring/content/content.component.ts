@@ -11,9 +11,8 @@ import {
   ViewChild,
   ViewChildren, ViewContainerRef
 } from '@angular/core';
-import {Tile} from '../../model/IProfile';
 import {PreferenceComponent} from '../../utility/preference/preference.component';
-import {ISetting} from '../../model/ISetting';
+import {ITileSetting} from '../../model/Usermangemant/ITileSetting';
 import {MatDialog} from '@angular/material/dialog';
 import {IQuery} from '../../model/IQuery';
 import {QueryBuilder} from '../../utility/queryBuilder/query-builder';
@@ -21,11 +20,12 @@ import {DataAccessService} from '../../service/Data-Access/data-access.service';
 import {Observable, Subscriber, Subscription, timer} from 'rxjs';
 import {OcarinaOfTimeService} from '../../ocarina-of-time/service/OcarinaOfTime/ocarina-of-time.service';
 import {LineChartComponent} from '../charts/echarts/line-chart/line-chart.component';
-import {CHANNELS} from '../../model/mapping';
+import {CHANNELS} from '../../model/Constants/mapping';
 import {GR, GRAPHICS} from '../constance';
 import {HeatmapComponent} from '../charts/d3/heatmap/heatmap.component';
 import {Graphic} from '../charts/graphic';
 import {IDatapoint} from '../../model/IDatapoint';
+import {ITile} from '../../model/Usermangemant/ITile';
 
 @Directive({
   selector: '[wisaGraphic]'
@@ -84,11 +84,11 @@ export class ContentComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild(LineChartComponent, {static: true}) charts!: LineChartComponent;
   @ViewChild(GraphicsDirective, {static: true}) graphicRef!: GraphicsDirective;
 
-  @Input() tile: Tile;
+  @Input() tile: ITile;
   @Input() turbine: string;
   @Input() isPlaying: boolean;
 
-  setting: ISetting;
+  setting: ITileSetting;
   title: string;
   inProgress: boolean;
   delay: number;
@@ -201,7 +201,7 @@ export class ContentComponent implements OnInit, AfterViewInit, OnDestroy {
     console.log(this.tile.setting);
     const dialogRef = this.dialog.open(PreferenceComponent, {data: this.tile.setting});
 
-    dialogRef.afterClosed().subscribe((setting: ISetting) => {
+    dialogRef.afterClosed().subscribe((setting: ITileSetting) => {
       if (setting) {
         this.tile.setting = setting;
         // Todo reload Tile unsubscribe

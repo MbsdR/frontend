@@ -2,8 +2,8 @@ import {AfterViewInit, Component, EventEmitter, Input, OnInit, Output} from '@an
 import {IDatapoint} from '../../../../model/IDatapoint';
 import {map} from 'rxjs/operators';
 import {EChartsOption} from 'echarts';
-import {ISetting} from '../../../../model/ISetting';
-import {CHANNELS} from '../../../../model/mapping';
+import {ITileSetting} from '../../../../model/Usermangemant/ITileSetting';
+import {CHANNELS} from '../../../../model/Constants/mapping';
 import {Observable} from 'rxjs';
 import {objectKeys} from 'codelyzer/util/objectKeys';
 import {Graphic} from '../../graphic';
@@ -16,7 +16,7 @@ import {Graphic} from '../../graphic';
 })
 export class LineChartComponent implements OnInit, AfterViewInit, Graphic {
 
-  setting: ISetting;
+  setting: ITileSetting;
   options: EChartsOption;
   updateOptions: EChartsOption;
 

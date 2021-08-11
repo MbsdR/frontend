@@ -11,6 +11,11 @@ import {ConditionMonitoringService} from '../@core/condition-monitoring/services
 import {IConditionData} from '../@core/model/IConditionData';
 import {LoginService} from '../@core/login/service/login.service';
 import {ActivatedRoute, Router} from '@angular/router';
+import {PreferenceComponent} from '../@core/utility/preference/preference.component';
+import {ITileSetting} from '../@core/model/Usermangemant/ITileSetting';
+import {CHANNELS} from '../@core/model/Constants/mapping';
+import {MatDialog} from '@angular/material/dialog';
+import {AccountComponent} from '../@core/account/account.component';
 @Component({
   selector: 'wisa-sidebar',
   templateUrl: './sidebar.component.html',
@@ -38,7 +43,8 @@ export class SidebarComponent implements OnInit {
               private ocarina: OcarinaOfTimeService,
               private componentFactoryResolver: ComponentFactoryResolver,
               private breakpointObserver: BreakpointObserver,
-              private router: ActivatedRoute) {
+              private router: ActivatedRoute,
+              private dialog: MatDialog) {
     this.plants = windparkMockUpService.windpark;
     this.$beginPlaying = ocarina.$isPlaying;
     this.time = interval(1000);
@@ -61,5 +67,16 @@ export class SidebarComponent implements OnInit {
   }
   logout(): void {
     this.loginService.logoutUser();
+  }
+
+  openAccount(): void {
+    console.log();
+    const dialogRef = this.dialog.open(AccountComponent, {data: 'Details'});
+
+    dialogRef.afterClosed().subscribe((value) => {
+      if (value) {
+        console.log(value);
+      }
+    });
   }
 }

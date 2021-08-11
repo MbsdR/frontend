@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {IProfile} from '../model/IProfile';
+import {IProfile} from '../model/Usermangemant/IProfile';
 import {UserMockUpService} from '../../@MockUp/user-mock-up.service';
 
 @Component({

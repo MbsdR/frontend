@@ -44,7 +44,12 @@
       <button mat-icon-button class="more-button" [matMenuTriggerFor]="menu" aria-label="Toggle menu">
         <mat-icon>account_circle</mat-icon>
       </button>
+
       <mat-menu #menu="matMenu" xPosition="before">
+        <button mat-menu-item (click)="openAccount()">
+          <mat-icon>account_circle</mat-icon>
+          Account
+        </button>
         <button mat-menu-item (click)="logout()">
           <mat-icon>logout</mat-icon>
           Logout

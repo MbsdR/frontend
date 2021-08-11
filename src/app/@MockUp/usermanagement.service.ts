@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {Md5} from 'ts-md5';
-import {IUser, User} from '../@core/model/IUser';
+import {IUser, User} from '../@core/model/Usermangemant/IUser';
 
 @Injectable({
   providedIn: 'root'
