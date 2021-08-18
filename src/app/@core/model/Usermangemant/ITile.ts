@@ -8,3 +8,16 @@ export interface ITile {
   color?: string;
   setting?: ITileSetting;
 }
+
+export class Tile implements ITile{
+  color: string;
+  cols: number;
+  pos: number;
+  rows: number;
+  setting: ITileSetting;
+  title: string;
+
+  constructor() {
+    return this;
+  }
+}

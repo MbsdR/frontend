@@ -5,7 +5,7 @@ export interface IProfile {
   account?: IAccount;
   language?: string;
   overview?: Array<ITile>;
-  dashboard?: Array<ITile>;
+  homepage?: Array<ITile>;
   condition?: Array<ITile>;
   analytics?: Array<ITile>;
 }

@@ -7,4 +7,4 @@ export const UNITS = {
   hour: {value: 'h', label: {de: 'std.', en: 'h'}}
 };
 
-export const TYPECHARTS: Array<string> = ['line', 'heat'];
+export const TYPECHARTS: Array<string> = ['line', 'heat', 'gauge'];
