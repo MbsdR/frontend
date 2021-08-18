@@ -2,20 +2,13 @@ import {Component, ComponentFactoryResolver, EventEmitter, Inject, Input, OnInit
 import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
 import {interval, Observable} from 'rxjs';
 import {map, shareReplay} from 'rxjs/operators';
-import {MatIconRegistry} from '@angular/material/icon';
-import {DomSanitizer} from '@angular/platform-browser';
 import {WindparkMockUpService} from '../@MockUp/windpark-mock-up.service';
 import {WindEnergyPlant} from '../@core/model/wind-energy-plant';
 import {OcarinaOfTimeService} from '../@core/ocarina-of-time/service/OcarinaOfTime/ocarina-of-time.service';
-import {ConditionMonitoringService} from '../@core/condition-monitoring/services/condition-monitoring.service';
-import {IConditionData} from '../@core/model/IConditionData';
 import {LoginService} from '../@core/login/service/login.service';
-import {ActivatedRoute, Router} from '@angular/router';
-import {PreferenceComponent} from '../@core/utility/preference/preference.component';
-import {ITileSetting} from '../@core/model/Usermangemant/ITileSetting';
-import {CHANNELS} from '../@core/model/Constants/mapping';
+import {ActivatedRoute} from '@angular/router';
 import {MatDialog} from '@angular/material/dialog';
-import {AccountComponent} from '../@core/account/account.component';
+
 @Component({
   selector: 'wisa-sidebar',
   templateUrl: './sidebar.component.html',
@@ -54,29 +47,5 @@ export class SidebarComponent implements OnInit {
     // Todo implement condition$ subsrciption
     this.router.params.subscribe(params => console.log(params));
   }
-  openOcarina(): void {
-    console.log('toggle change');
-    this.toggleChange.emit(this.visible);
-    this.visible = !this.visible;
-    if (!this.visible) {
-      this.$beginPlaying.emit(false);
-    }
-  }
-  playOcarina($event: { start: Date, end: Date }): void {
-    console.log('Sidebar play Ocarina on ', $event.start);
-  }
-  logout(): void {
-    this.loginService.logoutUser();
-  }
 
-  openAccount(): void {
-    console.log();
-    const dialogRef = this.dialog.open(AccountComponent, {data: 'Details'});
-
-    dialogRef.afterClosed().subscribe((value) => {
-      if (value) {
-        console.log(value);
-      }
-    });
-  }
 }

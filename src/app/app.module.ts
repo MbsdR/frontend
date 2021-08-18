@@ -47,6 +47,8 @@ import { registerLocaleData } from '@angular/common';
 import localeDe from '@angular/common/locales/de';
 import { AccountComponent } from './@core/account/account.component';
 import {AccountModule} from './@core/account/account.module';
+import {MapComponent} from './@core/map/map.component';
+import { HeaderComponent } from './pages/header/header.component';
 registerLocaleData(localeDe);
 @NgModule({
   declarations: [
@@ -59,7 +61,9 @@ registerLocaleData(localeDe);
     WindEnergyPlantComponent,
     PreferenceComponent,
     LoginComponent,
-    TabDirective
+    TabDirective,
+    MapComponent,
+    HeaderComponent
   ],
   imports: [
     BrowserModule,

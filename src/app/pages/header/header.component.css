@@ -1,0 +1,14 @@
+
+.header {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  width: 100%;
+  background-color: inherit;
+}
+
+
+.ocarina{
+  width: 100%;
+  background-color: inherit;
+}
