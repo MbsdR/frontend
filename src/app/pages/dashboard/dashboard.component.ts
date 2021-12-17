@@ -6,6 +6,7 @@ import {
 import {IProfile} from '../../@core/model/Usermangemant/IProfile';
 import {UserMockUpService} from '../../@MockUp/user-mock-up.service';
 import {OcarinaOfTimeService} from '../../@core/ocarina-of-time/service/OcarinaOfTime/ocarina-of-time.service';
+import {ActivatedRoute} from '@angular/router';
 
 
 @Component({
@@ -33,12 +34,14 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   private $beginPlaying: EventEmitter<boolean>;
 
   constructor(userMochUpService: UserMockUpService,
-              private ocarina: OcarinaOfTimeService) {
+              private ocarina: OcarinaOfTimeService,
+              private activatedRoute: ActivatedRoute) {
     this.profile = userMochUpService.profile;
     this.$beginPlaying = ocarina.$isPlaying;
   }
 
   ngOnInit(): void {
+    this.activatedRoute.params.subscribe(value => console.log('Dashboard', value));
   }
 
   ngAfterViewInit(): void {

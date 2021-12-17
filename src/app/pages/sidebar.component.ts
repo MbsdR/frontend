@@ -1,25 +1,67 @@
-import {Component, ComponentFactoryResolver, EventEmitter, Inject, Input, OnInit, Output, ViewChild} from '@angular/core';
+import {Component, ComponentFactoryResolver, EventEmitter, Inject, Input, OnInit, Output, QueryList, ViewChild} from '@angular/core';
 import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
 import {interval, Observable} from 'rxjs';
 import {map, shareReplay} from 'rxjs/operators';
 import {WindparkMockUpService} from '../@MockUp/windpark-mock-up.service';
 import {WindEnergyPlant} from '../@core/model/wind-energy-plant';
-import {OcarinaOfTimeService} from '../@core/ocarina-of-time/service/OcarinaOfTime/ocarina-of-time.service';
-import {LoginService} from '../@core/login/service/login.service';
 import {ActivatedRoute} from '@angular/router';
-import {MatDialog} from '@angular/material/dialog';
 
 @Component({
   selector: 'wisa-sidebar',
-  templateUrl: './sidebar.component.html',
+  template: `
+  <mat-sidenav-container class="sidenav-container">
+
+  <mat-sidenav #drawer class="sidenav" fixedInViewport
+               [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+               [mode]="(isHandset$ | async) ? 'over' : 'side'"
+               [opened]="(isHandset$ | async) === false">
+    <!--[attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'" -->
+
+    <!-- Quickview Condition monitoring  -->
+    <mat-toolbar>Windpark A</mat-toolbar>
+    <div class="quickview">
+      <div *ngFor="let plant of plants" class="turbine">
+        <a #routerlink [routerLink]="['../wea', plant.id]">
+          <wisa-condition-quickview [turbine]="plant.id"></wisa-condition-quickview>
+        </a>
+      </div>
+    </div>
+    <mat-toolbar>Windpark B</mat-toolbar>
+  </mat-sidenav>
+
+  <mat-sidenav-content class="sidenav-content">
+    <!-- Add Content Here -->
+    <button
+      type="button"
+      aria-label="Toggle sidenav"
+      mat-icon-button
+      (click)="drawer.toggle()"
+      *ngIf="isHandset$ | async">
+      <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+    </button>
+    <!-- Header -->
+  <wisa-header></wisa-header>
+    <!-- /Header -->
+    <div class="dashboard">
+
+      <div class="content">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+    <!-- <button mat-fab (click)="addTiles()"><mat-icon>add</mat-icon> </button>-->
+  </mat-sidenav-content>
+
+</mat-sidenav-container>
+` ,
   styleUrls: ['./sidebar.component.css'],
 })
 export class SidebarComponent implements OnInit {
 
+
   @Output() toggleChange: EventEmitter<any> = new EventEmitter<any>();
   plants: Array<WindEnergyPlant> = [];
   plant: string;
-  time: Observable<number>;
+  vendor: string;
 
   checked = true;
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
@@ -27,25 +69,19 @@ export class SidebarComponent implements OnInit {
       map(result => result.matches),
       shareReplay()
     );
-  visible = false;
-  private $beginPlaying: EventEmitter<boolean>;
-
 
   constructor(@Inject(WindparkMockUpService) windparkMockUpService: WindparkMockUpService,
-              private loginService: LoginService,
-              private ocarina: OcarinaOfTimeService,
-              private componentFactoryResolver: ComponentFactoryResolver,
               private breakpointObserver: BreakpointObserver,
-              private router: ActivatedRoute,
-              private dialog: MatDialog) {
+              private route: ActivatedRoute) {
     this.plants = windparkMockUpService.windpark;
-    this.$beginPlaying = ocarina.$isPlaying;
-    this.time = interval(1000);
+    this.vendor = 'vat';
   }
-
   ngOnInit(): void {
     // Todo implement condition$ subsrciption
-    this.router.params.subscribe(params => console.log(params));
+    this.route.queryParams.subscribe(value => {
+      console.log(value);
+      this.vendor = value.vendor;
+    });
   }
 
 }

@@ -1,18 +1,16 @@
 import { Injectable } from '@angular/core';
-import {type} from 'os';
+import {Account, Company, IAccount, ICompany} from '../@core/model/Usermangemant/IAccount';
+import {ProfileMockUpService} from './profile-mock-up.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AccountMockUpService {
 
-  constructor() {
-    const details: {
-      username: string,
-      role: Array<string>,
-    } = {
-      username: 'vat',
-      role: ['user']
-    };
+  account: IAccount;
+
+  constructor(private profilMockUp: ProfileMockUpService) {
+    this.account = new Account(profilMockUp.profiles.obe);
+    this.account.company = new Company('OBE');
   }
 }

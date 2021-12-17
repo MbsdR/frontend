@@ -1,7 +1,7 @@
 import {Component, ComponentFactoryResolver, EventEmitter, Inject, OnInit, Output} from '@angular/core';
 import {AccountComponent} from '../../@core/account/account.component';
 import {WindEnergyPlant} from '../../@core/model/wind-energy-plant';
-import {interval, Observable, Subject} from 'rxjs';
+import {interval, Observable} from 'rxjs';
 import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
 import {map, shareReplay, tap} from 'rxjs/operators';
 import {WindparkMockUpService} from '../../@MockUp/windpark-mock-up.service';
@@ -16,14 +16,6 @@ import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
   template: `
     <div class="header">
 
-      <button
-        type="button"
-        aria-label="Toggle sidenav"
-        mat-icon-button
-        (click)="drawer.toggle()"
-        *ngIf="isHandset$ | async">
-        <mat-icon>menu</mat-icon>
-      </button>
       <a *ngIf="!(isHandset$ | async)" routerLink="/" class="link">
         <img src="assets/img/Logo_WiSAbigdata_300dpi.png" style="width: 200px">
       </a>
@@ -70,6 +62,7 @@ export class HeaderComponent implements OnInit {
   @Output() toggleChange: EventEmitter<any> = new EventEmitter<any>();
   plants: Array<WindEnergyPlant> = [];
   time: Observable<number>;
+  systemTime: Date = new Date('2015-04-01');
 
   checked = true;
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
@@ -93,10 +86,13 @@ export class HeaderComponent implements OnInit {
               private dialog: MatDialog) {
     this.plants = windparkMockUpService.windpark;
     this.$beginPlaying = ocarina.$isPlaying;
-    this.time = interval(1000).pipe(map(() =>  Date.now()));
+    this.time = interval(1000).pipe(map((value: number) =>  {
+      return this.systemTime.setSeconds(value % 60);
+    }));
   }
 
   ngOnInit(): void {
+    this.router.paramMap.subscribe(value => console.log('Header', value));
   }
 
   openOcarina(): void {
@@ -117,7 +113,6 @@ export class HeaderComponent implements OnInit {
   }
 
   openAccount(): void {
-    console.log();
     const dialogRef = this.dialog.open(AccountComponent, {data: 'Details'});
 
     dialogRef.afterClosed().subscribe((value) => {
