@@ -6,7 +6,7 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { CHANNELS } from '../../model/Constants/mapping';
 import {ProfileMockUpService} from '../../../@MockUp/profile-mock-up.service';
 import { ITileSetting } from '../../model/Usermangemant/ITileSetting';
-import { FREQUENCE, UNITS, TYPECHARTS } from '../../model/Constants/ChartSettingConstants';
+import { FREQUENCY, UNITS, TYPECHARTS } from '../../model/Constants/ChartSettingConstants';
 
 @Component({
   selector: 'wisa-preference',
@@ -17,7 +17,7 @@ export class PreferenceComponent implements OnInit {
 
   channels = Object.values(CHANNELS);
 
-  frequences = FREQUENCE;
+  frequences = FREQUENCY;
   units = Object.values(UNITS);
   charts = TYPECHARTS;
 
@@ -35,19 +35,19 @@ export class PreferenceComponent implements OnInit {
     // Todo: Initialize values für Settings
     console.log(settings);
     this.setting.setValue({
-      channel: settings.channel,
-      unit: settings.frequence.unit,
-      frequence: settings.frequence.value,
+      channel: settings.feature,
+      unit: settings.frequency.unit,
+      frequence: settings.frequency.value,
       chart: settings.type
     });
   }
 
   ngOnInit(): void {
     this.setting.valueChanges.subscribe(value => {
-      this.settings.channel = this.setting.value.channel;
+      this.settings.feature = this.setting.value.channel;
       this.settings.type = this.setting.value.chart;
-      this.settings.frequence.value = this.setting.value.frequence;
-      this.settings.frequence.unit = this.setting.value.unit;
+      this.settings.frequency.value = this.setting.value.frequence;
+      this.settings.frequency.unit = this.setting.value.unit;
       console.log(this.settings);
     });
   }

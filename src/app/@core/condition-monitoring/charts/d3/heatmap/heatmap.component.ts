@@ -5,7 +5,8 @@ import {interval} from 'rxjs';
 import {formatDate} from '@angular/common';
 import {Graphic} from '../../graphic';
 import {ITileSetting} from '../../../../model/Usermangemant/ITileSetting';
-import { IDatapoint } from 'src/app/@core/model/IDatapoint';
+import { IDatapoint } from 'src/app/@core/model/dto/IDatapoint';
+import {IFindings} from '../../../../model/dto/IFindings';
 
 
 @Component({
@@ -32,12 +33,9 @@ export class HeatmapComponent implements OnInit, AfterViewInit, Graphic {
   };
   isLoading = false;
 
-  constructor() {
-  }
-
-  updateChart(datapoint: IDatapoint, turbine: string): void {
+  constructor() {}
+  updateChart(datapoint: IDatapoint | IFindings, turbine: string): void {
     throw new Error('Method not implemented.');
-    this.updateOptions = {series: {data: []}};
   }
 
   ngOnInit(): void {
@@ -86,15 +84,14 @@ export class HeatmapComponent implements OnInit, AfterViewInit, Graphic {
     const end = +echarts.number.parseDate((+year + 1) + '-01-01');
     const dayTime = 3600 * 24 * 1000;
 
-    const data = [];
     for (let time = date; time < end; time += dayTime) {
       console.log(LOCALE_ID);
-      data.push([
+      this.data.push([
         formatDate(time, 'yyyy-MM-dd', 'de'),
         Math.floor(Math.random() * 10000)
       ]);
     }
-    return data;
+    return this.data;
   }
 
 

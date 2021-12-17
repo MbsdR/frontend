@@ -1,7 +1,11 @@
-import {EventEmitter, Injectable} from '@angular/core';
+import {EventEmitter, Injectable, QueryList, ViewChildren} from '@angular/core';
 import {interval, Observable, Subscription} from 'rxjs';
 import {map, takeWhile} from 'rxjs/operators';
 import {DataAccessMockupService} from '../../../../@MockUp/data-access-mockup.service';
+import {WebSocketService} from '../../../service/RestAPI/web-socket.service';
+import {HistoricData} from '../../../model/IHistoricData';
+import {ITile} from '../../../model/Usermangemant/ITile';
+import {ConditionMonitoringComponent} from '../../../condition-monitoring/condition-monitoring.component';
 
 const UNIT = {sec: 1, min: 60, hour: 3600, day: (3600 * 24)};
 
@@ -10,44 +14,59 @@ const UNIT = {sec: 1, min: 60, hour: 3600, day: (3600 * 24)};
 })
 export class OcarinaOfTimeService {
 
-  $playOcarina: EventEmitter<number> = new EventEmitter<number>();
+  @ViewChildren(ConditionMonitoringComponent) myValue: QueryList<ConditionMonitoringComponent>;
+
+  $playOcarina: EventEmitter<Date> = new EventEmitter<Date>();
   $isPlaying: EventEmitter<boolean> = new EventEmitter<boolean>();
   timeRangeChange$: EventEmitter<{ start: Date; end: Date }> = new EventEmitter<{ start: Date; end: Date }>();
 
   private clock$: Subscription;
-  private frequence: number;
-  private start: number;
-  private end: number;
+  private frequency: number;
+  private start: Date = new Date();
+  private end: Date = new Date();
   private factor: number;
   private wasPlay = false;
 
+  private currentDate: Date;
+  private vendor: string;
+  private timeRange: { start: Date; end: Date };
 
-  constructor(private dataAccessMockupService: DataAccessMockupService) {
-    this.frequence = 1;
+
+  constructor(private dataAccessMockupService: DataAccessMockupService, private webSocketService: WebSocketService) {
+    this.frequency = 1;
     this.beginPresentTime();
     this.$isPlaying.subscribe((value) =>
       console.log('Ocarina Service played ', value)
     );
+    this.timeRangeChange$.subscribe(value => this.timeRange = value);
   }
 
   beginPresentTime(): void {
     if (!this.wasPlay) {
-      this.clock$ = interval(this.frequence * 1000).pipe(map(() => this.$playOcarina.emit(Date.now()))).subscribe();
+      this.clock$ = interval(this.frequency * 1000).subscribe(value => this.$playOcarina.emit(new Date(Date.now())));
     } else {
       this.clock$.unsubscribe();
-      this.clock$ = interval(1000).pipe(map(() => this.$playOcarina.emit(Date.now()))).subscribe();
+      this.clock$ = interval(1000).subscribe(value => this.$playOcarina.emit(new Date(Date.now())));
       this.wasPlay = false;
     }
-
   }
 
-  playOcarinaOfTime(start: number, end = Date.now(), factor = 1): void {
+  Request2Demonstrator(): void {
+    // todo erzuge Job für Datenabfrage
+    // todo sende job an Demonstrator
+    this.webSocketService.crateJob(this.timeRange.start, this.timeRange.end);
+  }
+  responseFromDemonstrator(): void {
+//    this.webSocketService.controlJob(currentDate);
+  }
+
+  playOcarinaOfTime(start: Date, end = new Date(Date.now()), factor = 1): void {
+
     this.clock$.unsubscribe();
     this.wasPlay = true;
     this.start = start;
     this.factor = factor;
     this.end = end;
-    new Date(this.dataAccessMockupService.query.start).getTime();
     this.playOcarina();
   }
 
@@ -57,17 +76,21 @@ export class OcarinaOfTimeService {
 
   changeSpeedOfPlaying(factor: number): void {
     this.clock$.unsubscribe();
+    console.log(factor);
     this.factor = factor;
     this.playOcarina();
   }
 
   private playOcarina(): void {
-    this.clock$ = interval((1000 / this.factor))
-      .pipe(takeWhile(currentDatetime => currentDatetime <= this.end))
+    this.clock$ = interval((1000))
+      .pipe(takeWhile(() => this.start < this.end))
       .pipe(map(() => {
-        this.start += 1000;
-        this.$playOcarina.emit(this.start);
-      })).subscribe();
+        return new Date(this.start.setSeconds(this.start.getSeconds() + this.factor));
+      }))
+      .subscribe(currentDate => {
+        this.$playOcarina.emit(currentDate);
+        this.webSocketService.controlJob(currentDate);
+      });
   }
 
 }

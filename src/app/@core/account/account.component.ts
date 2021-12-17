@@ -7,7 +7,7 @@ import { Component, OnInit } from '@angular/core';
       Account works!!!
     </div>
   `,
-  styleUrls: ['./components/account/account.component.css']
+  styleUrls: ['./account.component.css']
 })
 export class AccountComponent implements OnInit {
 

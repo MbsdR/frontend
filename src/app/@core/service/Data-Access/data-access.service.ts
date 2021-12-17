@@ -3,7 +3,7 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {IDaaRes} from '../../model/IDaa';
 import {concat, concatAll, map, tap} from 'rxjs/operators';
-import {IDatapoint} from '../../model/IDatapoint';
+import {IDatapoint} from '../../model/dto/IDatapoint';
 import {IQuery} from '../../model/IQuery';
 import {BASE_URL_DATAPLATFORM} from '../../../app.tokens';
 

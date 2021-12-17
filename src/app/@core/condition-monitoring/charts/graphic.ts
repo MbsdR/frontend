@@ -1,8 +1,9 @@
 import {ITileSetting} from '../../model/Usermangemant/ITileSetting';
-import {IDatapoint} from '../../model/IDatapoint';
+import {IDatapoint} from '../../model/dto/IDatapoint';
+import {IFindings} from '../../model/dto/IFindings';
 
 export interface Graphic {
   setting: ITileSetting;
 
-  updateChart(datapoint: IDatapoint, turbine: string): void;
+	updateChart(datapoint: IDatapoint | IFindings, turbine: string): void;
 }

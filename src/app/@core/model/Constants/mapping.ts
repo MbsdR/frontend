@@ -1,4 +1,53 @@
 export const CHANNELS = {
+  PitchDeviation: {
+    value: 'pitch_deviation',
+    label: {
+      de: 'Pitchabweichung',
+      en: 'Pitch deviation'
+    },
+    unit: {
+      de: 'Status',
+      en: 'state'
+    },
+    features: [
+      'CDI_VA_PitchPositionBlade1',
+      'CDI_VA_PitchPositionBlade2',
+      'CDI_VA_PitchPositionBlade3'
+    ]
+  },
+  CDI_VA_PitchPositionBlade1: {
+    value: 'CDI_VA_PitchPositionBlade1',
+    label: {
+      de: 'Position Rotor 1',
+      en: 'PitchPositionBlade1'
+    },
+    unit: {
+      de: '°',
+      en: '°'
+    }
+  },
+  CDI_VA_PitchPositionBlade2: {
+    value: 'CDI_VA_PitchPositionBlade2',
+    label: {
+      de: 'Position Rotor 2',
+      en: 'PitchPositionBlade2'
+    },
+    unit: {
+      de: '°',
+      en: '°'
+    }
+  },
+  CDI_VA_PitchPositionBlade3: {
+    value: 'CDI_VA_PitchPositionBlade3',
+    label: {
+      de: 'Position Rotor 3',
+      en: 'PitchPositionBlade3'
+    },
+    unit: {
+      de: '°',
+      en: '°'
+    }
+  },
   WindSpeed: {
     value: 'WindSpeed',
     label: {

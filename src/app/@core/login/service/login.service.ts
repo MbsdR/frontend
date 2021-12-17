@@ -2,7 +2,7 @@ import {Inject, Injectable, Optional} from '@angular/core';
 import {ProfileMockUpService} from '../../../@MockUp/profile-mock-up.service';
 import {Md5} from 'ts-md5';
 import {Router} from '@angular/router';
-import {UsermanagementService} from '../../../@MockUp/usermanagement.service';
+import {UsermanagementService} from '../../service/Usermanagement/usermanagement.service';
 import {User} from '../../model/Usermangemant/IUser';
 import {AccountService} from '../../account/service/account.service';
 import {AUTH_ENABLED} from '../../../app.tokens';
@@ -27,7 +27,11 @@ export class LoginService {
   authenticateUser(user: string, password: string): boolean {
     if (this.loadUser(user, password)) {
       console.log(user, 'is authenticated');
-      this.account.loadAccount(JSON.parse(localStorage.getItem(CURRENT_USER)));
+      let user1;
+      if (localStorage.getItem(CURRENT_USER)){
+        user1 = localStorage.getItem(CURRENT_USER);
+      }
+      this.account.loadAccount(JSON.parse(user1));
       this.isAuthenticated = true;
       return true;
     }
@@ -60,7 +64,7 @@ export class LoginService {
       console.log(JSON.stringify(user));
       return true;
     }
-    return null;
+    return false;
   }
 
   private mongoDbConnection(username): User {

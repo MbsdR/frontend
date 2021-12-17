@@ -4,9 +4,9 @@ export interface ITile {
   pos: number;
   cols: number;
   rows: number;
-  title?: string;
-  color?: string;
-  setting?: ITileSetting;
+  title: string;
+  color: string;
+  setting: ITileSetting;
 }
 
 export class Tile implements ITile{

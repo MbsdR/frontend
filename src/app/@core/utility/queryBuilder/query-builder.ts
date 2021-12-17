@@ -6,7 +6,9 @@ export class QueryBuilder {
   private query: IQuery;
 
   constructor(vendor?: string) {
-    this.query = new Query(vendor);
+    if (vendor) {
+      this.query = new Query(vendor);
+    }
   }
 
   start(start: string): QueryBuilder {

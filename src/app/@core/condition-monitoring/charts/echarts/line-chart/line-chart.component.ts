@@ -1,5 +1,5 @@
 import {AfterViewInit, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {IDatapoint} from '../../../../model/IDatapoint';
+import {IDatapoint} from '../../../../model/dto/IDatapoint';
 import {map} from 'rxjs/operators';
 import {EChartsOption} from 'echarts';
 import {ITileSetting} from '../../../../model/Usermangemant/ITileSetting';
@@ -7,6 +7,7 @@ import {CHANNELS} from '../../../../model/Constants/mapping';
 import {Observable} from 'rxjs';
 import {objectKeys} from 'codelyzer/util/objectKeys';
 import {Graphic} from '../../graphic';
+import {IFindings} from '../../../../model/dto/IFindings';
 
 @Component({
   selector: 'wisa-line-chart',
@@ -28,14 +29,14 @@ export class LineChartComponent implements OnInit, AfterViewInit, Graphic {
   private counter = 0;
 
   constructor() {
-    this.size = 200;
+    this.size = 100;
     this.puffer = 1;
     this.dataset = new Array<[string, (number | string)]>();
 
   }
 
   ngOnInit(): void {
-    this.channel = this.setting.channel;
+    this.channel = this.setting.feature;
     this.options = {
       tooltip: {
         show: true
@@ -55,7 +56,7 @@ export class LineChartComponent implements OnInit, AfterViewInit, Graphic {
       },
       series: [{
         type: 'line',
-        data: [0,0]
+        data: [0, 0]
       }]
     };
   }
@@ -65,15 +66,12 @@ export class LineChartComponent implements OnInit, AfterViewInit, Graphic {
     console.info(this.channel, 'chart was created');
   }
 
-  updateChart(datapoint: IDatapoint, turbine: string): void {
-    console.log(this.channel.concat('_').concat(turbine));
-    console.log(datapoint);
-    this.dataset.push([datapoint._start, datapoint[this.channel.concat('_' + turbine)]]);
+	updateChart(datapoint: IDatapoint, turbine: string): void {
+    this.dataset.push([datapoint._stop, datapoint[this.channel]]);
     this.counter += 1;
     if (this.dataset.length > this.size) {
       this.dataset.shift();
     }
-    console.log(this.dataset);
     if (0 === this.counter % this.puffer) {
       this.updateOptions = {
         series: [{

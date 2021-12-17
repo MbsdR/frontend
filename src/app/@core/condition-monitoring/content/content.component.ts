@@ -1,31 +1,27 @@
 import {
   AfterViewInit,
   Component,
-  ComponentFactoryResolver, ComponentRef, Directive, ElementRef,
-  EventEmitter,
-  Inject,
+  ComponentFactoryResolver, ComponentRef, Directive, EventEmitter,
   Input, OnDestroy,
   OnInit,
-  Output,
-  QueryList,
-  ViewChild,
-  ViewChildren, ViewContainerRef
+  Output, ViewChild,
+  ViewContainerRef
 } from '@angular/core';
 import {PreferenceComponent} from '../../utility/preference/preference.component';
 import {ITileSetting} from '../../model/Usermangemant/ITileSetting';
 import {MatDialog} from '@angular/material/dialog';
-import {IQuery} from '../../model/IQuery';
-import {QueryBuilder} from '../../utility/queryBuilder/query-builder';
-import {DataAccessService} from '../../service/Data-Access/data-access.service';
-import {Observable, Subscriber, Subscription, timer} from 'rxjs';
+import {merge, Observable} from 'rxjs';
 import {OcarinaOfTimeService} from '../../ocarina-of-time/service/OcarinaOfTime/ocarina-of-time.service';
 import {LineChartComponent} from '../charts/echarts/line-chart/line-chart.component';
 import {CHANNELS} from '../../model/Constants/mapping';
-import {GR, GRAPHICS} from '../constance';
-import {HeatmapComponent} from '../charts/d3/heatmap/heatmap.component';
+import {GRAPHICS} from '../constance';
 import {Graphic} from '../charts/graphic';
-import {IDatapoint} from '../../model/IDatapoint';
-import {ITile} from '../../model/Usermangemant/ITile';
+import {IDatapoint} from '../../model/dto/IDatapoint';
+import {ITile, Tile} from '../../model/Usermangemant/ITile';
+import {RealTimeService} from '../../service/real-time/real-time.service';
+import {WebSocketService} from '../../service/RestAPI/web-socket.service';
+import {filter} from 'rxjs/operators';
+import {Finding, IFindings} from '../../model/dto/IFindings';
 
 @Directive({
   selector: '[wisaGraphic]'
@@ -84,6 +80,8 @@ export class ContentComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild(LineChartComponent, {static: true}) charts!: LineChartComponent;
   @ViewChild(GraphicsDirective, {static: true}) graphicRef!: GraphicsDirective;
 
+  @Output() newTile = new EventEmitter<Tile>();
+
   @Input() tile: ITile;
   @Input() turbine: string;
   @Input() isPlaying: boolean;
@@ -92,17 +90,18 @@ export class ContentComponent implements OnInit, AfterViewInit, OnDestroy {
   title: string;
   inProgress: boolean;
   delay: number;
+  streams: Observable<IDatapoint>;
 
   private $timeRangeChange: Observable<{ start: Date; end: Date }>;
   private $playingOcarina: Observable<boolean>;
-  private $time: Observable<number>;
+  private $time: Observable<Date>;
   private vendor: Array<string>;
   private timeRange: { start: Date, end: Date };
-  private subs: Array<Subscription>;
   private graphicType: string;
   private componentRef: ComponentRef<Graphic>;
 
-  constructor(private dataAccessService: DataAccessService,
+  constructor(private realTimeService: RealTimeService,
+              private websocket: WebSocketService,
               private ocarina: OcarinaOfTimeService,
               private componentFactoryResolver: ComponentFactoryResolver,
               private dialog: MatDialog) {
@@ -114,8 +113,6 @@ export class ContentComponent implements OnInit, AfterViewInit, OnDestroy {
     this.$time = ocarina.$playOcarina.asObservable();
     this.$playingOcarina = ocarina.$isPlaying.asObservable();
     this.$timeRangeChange = ocarina.timeRangeChange$;
-    this.subs = new Array<Subscription>();
-    this.inProgress = true;
     this.delay = 5000;
   }
 
@@ -123,78 +120,26 @@ export class ContentComponent implements OnInit, AfterViewInit, OnDestroy {
     this.setting = this.tile.setting;
     this.title = this.tile.title;
     this.graphicType = this.tile.setting.type;
-    this.subs.push(this.$timeRangeChange.subscribe(timeRange => {
-      this.timeRange = timeRange;
-    }));
-    if (this.isPlaying) { // isPlaying
-      this.getHistoricData();
-    } else {
-      this.getCurrentData();
-    }
+    console.log('Which Feature ', this.setting.feature);
   }
 
   ngAfterViewInit(): void {
     this.loadGraphic();
-    this.$playingOcarina.subscribe(isPlaying => {
-      if (isPlaying) {
-        // todo getCurrentData unsubscriben
-        this.getHistoricData();
-      } else if (!isPlaying) {
-        // todo getHistoricData unsubscriben
-        this.getCurrentData();
-      }
+    // Start Datastream from Historic and RealTime
+    this.streams = merge<IDatapoint>(
+      this.websocket.historicData$.asObservable(),
+      this.realTimeService.datastream$.asObservable());
+
+    this.streams
+      .pipe(filter(datapoint =>  this.setting.feature in datapoint ? true : false ))
+      .subscribe((datapoint) => {
+        this.componentRef.instance.updateChart(datapoint, this.turbine);
     });
   }
 
   ngOnDestroy(): void {
     console.log('Destroy');
-    for (const sub of this.subs) {
-      sub.unsubscribe();
-    }
-  }
-
-  getCurrentData(): void {
-    console.log('Live Datastream is not implement yet');
-    timer(2000).subscribe(() => {
-      this.inProgress = false;
-    });
-
-    this.subs.push(this.$time.subscribe(time => {
-      const start = new Date((time - this.delay)).toISOString();
-      const end = new Date(time).toISOString();
-
-      const channel = this.setting.channel.concat('_').concat(this.turbine);
-      const datapoint: IDatapoint = {
-        _start: start,
-        _stop: end
-      };
-      datapoint[channel] = (Math.random() * 100);
-      this.componentRef.instance.updateChart( datapoint, this.turbine);
-    })
-    );
-  }
-
-  getHistoricData(): void {
-    console.log('Start historic');
-    const query = this.createQuery(
-      this.tile.setting.channel,
-      this.turbine,
-      this.timeRange.start,
-      this.timeRange.end,
-      this.tile.setting.frequence,
-      this.tile.setting.func);
-    console.log(JSON.stringify(query));
-    this.dataAccessService.getDataSet(query).then(dataset => {
-      this.inProgress = false;
-      this.subs.push(this.$time.subscribe(time => {
-        while (dataset &&
-        new Date(dataset[0]._start).getTime() < new Date(time - 3600).getTime()) {
-          const datapoint = dataset.shift();
-          this.charts.updateChart(datapoint, this.turbine);
-        }
-      })
-      );
-    });
+    this.realTimeService.rm();
   }
 
   openPreference(): void {
@@ -204,9 +149,10 @@ export class ContentComponent implements OnInit, AfterViewInit, OnDestroy {
     dialogRef.afterClosed().subscribe((setting: ITileSetting) => {
       if (setting) {
         this.tile.setting = setting;
+        this.newTile.emit(this.tile);
         // Todo reload Tile unsubscribe
         console.log(`Dialog result:`, this.tile.setting);
-        this.title = CHANNELS[this.setting.channel].label.de;
+        this.title = CHANNELS[this.setting.feature].label.de;
         this.ngAfterViewInit();
       }
     });
@@ -224,9 +170,9 @@ export class ContentComponent implements OnInit, AfterViewInit, OnDestroy {
                       start: Date,
                       end: Date,
                       freq: { value: number, unit: string },
-                      func: string): IQuery {
+                      func: string): void {
 
-    return new QueryBuilder('VAT')
+    /*new Query('VAT')
       .start(start.toISOString())
       .end(end.toISOString())
       .func(func)
@@ -234,6 +180,7 @@ export class ContentComponent implements OnInit, AfterViewInit, OnDestroy {
       .addTurbine(turbine)
       .addChannel(channel)
       .getQuery();
+      */
   }
 
   private loadGraphic(): void {

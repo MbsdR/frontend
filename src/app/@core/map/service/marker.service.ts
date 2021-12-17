@@ -18,6 +18,7 @@ export class MarkerService {
         const lat = c.geometry.coordinates[1];
         const marker = L.marker([lat, lon]);
 
+
         marker.addTo(map);
       }
     });

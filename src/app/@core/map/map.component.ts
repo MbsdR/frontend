@@ -1,7 +1,6 @@
 import {AfterViewInit, Component, OnInit} from '@angular/core';
 import * as L from 'leaflet';
 import {MarkerService} from './service/marker.service';
-import {interval, timer} from 'rxjs';
 
 const iconRetinaUrl = 'assets/marker-icon-2x.png';
 const iconUrl = 'assets/marker-icon.png';
