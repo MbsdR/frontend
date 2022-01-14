@@ -1,18 +1,18 @@
 import {AfterViewInit, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {IDatapoint} from '../../../../model/dto/IDatapoint';
+import {IDatapoint} from '../../../model/dto/IDatapoint';
 import {map} from 'rxjs/operators';
 import {EChartsOption} from 'echarts';
-import {ITileSetting} from '../../../../model/Usermangemant/ITileSetting';
-import {CHANNELS} from '../../../../model/Constants/mapping';
+import {ITileSetting} from '../../../model/Usermangemant/ITileSetting';
+import {CHANNELS} from '../../../model/Constants/mapping';
 import {Observable} from 'rxjs';
 import {objectKeys} from 'codelyzer/util/objectKeys';
 import {Graphic} from '../../graphic';
-import {IFindings} from '../../../../model/dto/IFindings';
+import {IFindings} from '../../../model/dto/IFindings';
 
 @Component({
   selector: 'wisa-line-chart',
   template: `
-    <div echarts [options]="options" [merge]="updateOptions" (chartInit)="onChartInit($event)"></div>`,
+    <div echarts [options]="options" [merge]="updateOptions" (chartInit)="onChartInit($event)" ></div>`,
   styleUrls: ['./line-chart.component.css']
 })
 export class LineChartComponent implements OnInit, AfterViewInit, Graphic {
@@ -29,7 +29,7 @@ export class LineChartComponent implements OnInit, AfterViewInit, Graphic {
   private counter = 0;
 
   constructor() {
-    this.size = 100;
+    this.size = 10;
     this.puffer = 1;
     this.dataset = new Array<[string, (number | string)]>();
 
@@ -54,6 +54,17 @@ export class LineChartComponent implements OnInit, AfterViewInit, Graphic {
         name: 'Einheit',
         type: 'value'
       },
+      dataZoom: [
+        {
+          type: 'inside',
+          start: 0,
+          end: 20
+        },
+        {
+          start: 0,
+          end: 20
+        }
+      ],
       series: [{
         type: 'line',
         data: [0, 0]
@@ -68,11 +79,11 @@ export class LineChartComponent implements OnInit, AfterViewInit, Graphic {
 
   updateChart(datapoint: IDatapoint, turbine: string): void {
     this.dataset.push([datapoint._stop, datapoint[this.channel]]);
-    this.dataset = Array.from(new Set(this.dataset));
-    this.counter += 1;
     if (this.dataset.length > this.size) {
       this.dataset.shift();
     }
+    this.dataset = Array.from(new Set(this.dataset));
+    this.counter += 1;
     if (0 === this.counter % this.puffer) {
       this.updateOptions = {
         series: [{
