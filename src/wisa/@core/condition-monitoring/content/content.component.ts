@@ -12,16 +12,17 @@ import {ITileSetting} from '../../model/Usermangemant/ITileSetting';
 import {MatDialog} from '@angular/material/dialog';
 import {mergeWith, Observable} from 'rxjs';
 import {OcarinaOfTimeService} from '../../ocarina-of-time/service/OcarinaOfTime/ocarina-of-time.service';
-import {LineChartComponent} from '../charts/echarts/line-chart/line-chart.component';
+import {LineChartComponent} from '../../depiction/echarts/line-chart/line-chart.component';
 import {CHANNELS} from '../../model/Constants/mapping';
 import {GRAPHICS} from '../constance';
-import {Graphic} from '../charts/graphic';
+import {Graphic} from '../../depiction/graphic';
 import {IDatapoint} from '../../model/dto/IDatapoint';
 import {ITile, Tile} from '../../model/Usermangemant/ITile';
 import {RealTimeService} from '../../service/real-time/real-time.service';
 import {WebSocketService} from '../../service/RestAPI/web-socket.service';
 import {filter} from 'rxjs/operators';
 import {Finding, IFindings} from '../../model/dto/IFindings';
+import {AnalysisComponent} from '../../utility/analysis/analysis.component';
 
 @Directive({
   selector: '[wisaGraphic]'
@@ -36,7 +37,7 @@ export class GraphicsDirective {
 @Component({
   selector: 'wisa-tile-content',
   template: `
-    <mat-card class="dashboard-card">
+    <mat-card class="dashboard-card"> <!-- style="background-color: #6cb21b"> -->
       <mat-card-header>
         <mat-card-title>
           {{title}}
@@ -46,6 +47,10 @@ export class GraphicsDirective {
             <mat-icon>more_vert</mat-icon>
           </button>
           <mat-menu #menu="matMenu" xPosition="before">
+            <button mat-menu-item (click)="openAnalysis()">
+              <mat-icon>assessment</mat-icon>
+              Analyse starten
+            </button>
             <button mat-menu-item (click)="openPreference()">
               <mat-icon>settings</mat-icon>
               Einstellung
@@ -56,7 +61,7 @@ export class GraphicsDirective {
             </button>
             <button mat-menu-item (click)="removeTile()">
               <mat-icon>delete</mat-icon>
-              Löschen
+              Entfernen
             </button>
           </mat-menu>
         </div>
@@ -91,9 +96,12 @@ export class ContentComponent implements OnInit, AfterViewInit, OnDestroy {
   inProgress: boolean;
   mainstream: Observable<IDatapoint>;
 
+
+
   private $openOcarina: Observable<boolean>;
   private graphicType: string;
   private componentRef: ComponentRef<Graphic>;
+  alarm: string;
 
   constructor(private realTimeService: RealTimeService,
               private websocket: WebSocketService,
@@ -108,6 +116,7 @@ export class ContentComponent implements OnInit, AfterViewInit, OnDestroy {
     this.title = this.tile.title;
     this.graphicType = this.tile.setting.type;
     console.log('Which Feature ', this.setting.feature);
+    this.alarm = 'red';
   }
 
   ngAfterViewInit(): void {
@@ -131,6 +140,22 @@ export class ContentComponent implements OnInit, AfterViewInit, OnDestroy {
   openPreference(): void {
     console.log(this.tile.setting);
     const dialogRef = this.dialog.open(PreferenceComponent, {data: this.tile.setting});
+
+    dialogRef.afterClosed().subscribe((setting: ITileSetting) => {
+      if (setting) {
+        this.tile.setting = setting;
+        this.newTile.emit(this.tile);
+        // Todo reload Tile unsubscribe
+        console.log(`Dialog result:`, this.tile.setting);
+        this.title = CHANNELS[this.setting.feature].label.de;
+        this.ngAfterViewInit();
+      }
+    });
+  }
+
+  openAnalysis(): void {
+    console.log(this.tile.setting);
+    const dialogRef = this.dialog.open(AnalysisComponent, {data: this.tile.setting});
 
     dialogRef.afterClosed().subscribe((setting: ITileSetting) => {
       if (setting) {
@@ -179,4 +204,5 @@ export class ContentComponent implements OnInit, AfterViewInit, OnDestroy {
     this.componentRef.instance.setting = this.setting;
 
   }
+
 }

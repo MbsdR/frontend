@@ -6,13 +6,14 @@ import {MatGridListModule} from '@angular/material/grid-list';
 import {MatCardModule} from '@angular/material/card';
 import {ContentComponent, GraphicsDirective} from './content/content.component';
 import {MatIconModule} from '@angular/material/icon';
-import {LineChartComponent} from './charts/echarts/line-chart/line-chart.component';
+import {LineChartComponent} from '../depiction/echarts/line-chart/line-chart.component';
 import {MatMenuModule} from '@angular/material/menu';
 import { QuickviewComponent } from './components/quickview/quickview.component';
 import {MatBadgeModule} from '@angular/material/badge';
 import {MatButtonModule} from '@angular/material/button';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
-import { HeatmapComponent } from './charts/d3/heatmap/heatmap.component';
+import { HeatmapComponent } from '../depiction/d3/heatmap/heatmap.component';
+import { PitchDeviationComponent } from './pitch-deviation/pitch-deviation.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { HeatmapComponent } from './charts/d3/heatmap/heatmap.component';
     LineChartComponent,
     QuickviewComponent,
     HeatmapComponent,
-    GraphicsDirective
+    GraphicsDirective,
+    PitchDeviationComponent
   ],
   exports: [
     ConditionMonitoringComponent,
