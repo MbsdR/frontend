@@ -18,7 +18,7 @@ export class RealTimeService {
   datastream$: EventEmitter<any>;
   private headers: HttpHeaders;
   private sub: Subscription;
-  private stop = true;
+  private eventSource: EventSource;
 
   constructor(@Inject(BASE_URL_DATAPLATFORM) private BASE_URL: string,
               private zone: NgZone,
@@ -30,10 +30,10 @@ export class RealTimeService {
     console.log('Realtime cerated');
   }
 
-  getCurrentData(feature, turbine: string): void {
+  getCurrentData(feature, turbine: string): Subscription {
     console.log('Live Datastream is not implement yet');
     console.log('end' in {end: 'string'});
-    this.sub = this.connectInputStream(turbine, feature).subscribe(
+    return this.sub = this.connectInputStream(turbine, feature).subscribe(
       (strDatapoint) => {
         this.datastream$.emit(strDatapoint);
       }, // resultSet.push(JSON.parse(datapoint)),
@@ -43,7 +43,7 @@ export class RealTimeService {
   }
 
   rm(): void{
-    this.stop = false;
+    this.eventSource.close();
     this.sub.unsubscribe();
   }
 
@@ -51,23 +51,22 @@ export class RealTimeService {
     console.log('start sse');
     return new Observable<IDatapoint>(subscriber => {
       // const eventSource = new EventSource(this.BASE_URL.concat('/events'));
-      const eventSource = new EventSource('http://localhost:8080/api/stream-sse?turbine=N1-1');
-      //const eventSource = new EventSource('http://localhost:3000/events?turbine=N1-1');
-      eventSource.onopen = event => {
+      this.eventSource = new EventSource('http://localhost:8080/api/stream-sse?turbine=N1-1');
+      this.eventSource.onopen = event => {
         this.zone.run(() => {
           console.log('Connection to server opened.');
         });
       };
-      eventSource.onmessage = (message) => {
-        console.log(message.data);
+      this.eventSource.onmessage = (message) => {
         this.zone.run( () => {
+          console.log(message.data);
           subscriber.next(JSON.parse(message.data));
         });
       };
-      eventSource.onerror = error => {
+      this.eventSource.onerror = error => {
         this.zone.run(() => {
           subscriber.complete();
-          eventSource.close();
+          this.eventSource.close();
         });
       };
     });
