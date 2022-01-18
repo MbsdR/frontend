@@ -29,7 +29,7 @@ import {MatSliderModule} from '@angular/material/slider';
 import {MatMenuModule} from '@angular/material/menu';
 import {ConditionMonitoringModule} from './@core/condition-monitoring/condition-monitoring.module';
 import {MatButtonModule} from '@angular/material/button';
-import { PreferenceComponent } from './@core/utility/preference/preference.component';
+import {PreferenceComponent} from './@core/utility/preference/preference.component';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatRadioModule} from '@angular/material/radio';
 import {MatCheckboxModule} from '@angular/material/checkbox';
@@ -42,12 +42,16 @@ import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import {LoginComponent} from './@core/login/login.component';
 import {AUTH_ENABLED, BASE_URL_DATAPLATFORM, DEMONSTRATOR, LANGUAGE, STOMP_DESTINATION, WEBSOCKET_DESTINATION} from './wisa.tokens';
 
-import { registerLocaleData } from '@angular/common';
+import {registerLocaleData} from '@angular/common';
 import localeDe from '@angular/common/locales/de';
-import { AccountModule } from './@core/account/account.module';
-import { MapComponent } from './@core/map/map.component';
-import { HeaderComponent } from './pages/header/header.component';
+import {AccountModule} from './@core/account/account.module';
+import {MapComponent} from './@core/map/map.component';
+import {HeaderComponent} from './pages/header/header.component';
+import {PredictiveAnalyticsModule} from './@core/predictive-analytics/predictive-analytics.module';
+import { AnalysisComponent } from './@core/utility/analysis/analysis.component';
+
 registerLocaleData(localeDe);
+
 @NgModule({
   declarations: [
     WisaComponent,
@@ -60,7 +64,8 @@ registerLocaleData(localeDe);
     PreferenceComponent,
     LoginComponent,
     MapComponent,
-    HeaderComponent
+    HeaderComponent,
+    AnalysisComponent
   ],
   imports: [
     BrowserModule,
@@ -108,20 +113,22 @@ registerLocaleData(localeDe);
     MatInputModule,
     ConditionMonitoringModule,
     MatButtonToggleModule,
-    AccountModule
+    AccountModule,
+    PredictiveAnalyticsModule
 
   ],
   providers: [
-    { provide: MAT_DATE_LOCALE, useValue: 'de'},
-    { provide: BASE_URL_DATAPLATFORM, useValue: 'http://localhost:3000'},
-    { provide: AUTH_ENABLED, useValue: false},
-    { provide: LANGUAGE, useValue: 'de'},
-    { provide: LOCALE_ID, useValue: 'de'},
-    { provide: WEBSOCKET_DESTINATION, useValue: '/api/users/'},
-    { provide: STOMP_DESTINATION, useValue: '/stomp'},
-    { provide: DEMONSTRATOR, useValue: 'http://127.0.0.1:8080'}
+    {provide: MAT_DATE_LOCALE, useValue: 'de'},
+    {provide: BASE_URL_DATAPLATFORM, useValue: 'http://localhost:3000'},
+    {provide: AUTH_ENABLED, useValue: false},
+    {provide: LANGUAGE, useValue: 'de'},
+    {provide: LOCALE_ID, useValue: 'de'},
+    {provide: WEBSOCKET_DESTINATION, useValue: '/api/users/'},
+    {provide: STOMP_DESTINATION, useValue: '/stomp'},
+    {provide: DEMONSTRATOR, useValue: 'http://127.0.0.1:8080'}
     // {provide: APP_BASE_HREF, useValue: '/wisa'}[CookieService],
   ],
   bootstrap: [WisaComponent]
 })
-export class WisaModule {}
+export class WisaModule {
+}

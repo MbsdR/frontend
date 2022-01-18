@@ -1,10 +1,7 @@
-import { Component, EventEmitter, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import {IProfile} from '../../model/Usermangemant/IProfile';
-import {newArray} from '@angular/compiler/src/util';
+import {Component, Inject, OnInit} from '@angular/core';
+import { FormBuilder} from '@angular/forms';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { CHANNELS } from '../../model/Constants/mapping';
-import {ProfileMockUpService} from '../../../@MockUp/profile-mock-up.service';
 import { ITileSetting } from '../../model/Usermangemant/ITileSetting';
 import { FREQUENCY, UNITS, TYPECHARTS } from '../../model/Constants/ChartSettingConstants';
 

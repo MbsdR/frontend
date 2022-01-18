@@ -13,7 +13,6 @@ import {MatBadgeModule} from '@angular/material/badge';
 import {MatButtonModule} from '@angular/material/button';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { HeatmapComponent } from '../depiction/d3/heatmap/heatmap.component';
-import { PitchDeviationComponent } from './pitch-deviation/pitch-deviation.component';
 
 @NgModule({
   declarations: [
@@ -22,8 +21,7 @@ import { PitchDeviationComponent } from './pitch-deviation/pitch-deviation.compo
     LineChartComponent,
     QuickviewComponent,
     HeatmapComponent,
-    GraphicsDirective,
-    PitchDeviationComponent
+    GraphicsDirective
   ],
   exports: [
     ConditionMonitoringComponent,
