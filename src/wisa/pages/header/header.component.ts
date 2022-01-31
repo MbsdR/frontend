@@ -44,7 +44,7 @@ import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
         <button mat-raised-button [matMenuTriggerFor]="menu" color="primary">Change Theme</button>
         <mat-menu #menu="matMenu">
           <button mat-menu-item (click)="changeTheme('light-theme')">Blue-Light</button>
-          <button mat-menu-item (click)="changeTheme('pink-light-theme')">Pink-Light</button>
+          <button mat-menu-item (click)="changeTheme('green-light-theme')">Green-Light</button>
           <button mat-menu-item (click)="changeTheme('dark-theme')">Orange-Dark</button>
         </mat-menu>
 

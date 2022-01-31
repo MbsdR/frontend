@@ -4,7 +4,7 @@
 
 
 //Light Theme
-$light-primary: mat.define-palette(mat.$indigo-palette, 200);
+$light-primary: mat.define-palette(mat.$indigo-palette, 600);
 $light-accent: mat.define-palette(mat.$blue-gray-palette, A200,  A100, A400);
 
 $light-theme: mat.define-light-theme((
@@ -32,16 +32,16 @@ $dark-theme:   mat.define-dark-theme((
   @include mat.all-component-colors($dark-theme);
 }
 
-// Pink Light theme
-$pink-light-primary: mat.define-palette(mat.$pink-palette, 600);
-$pink-light-accent:  mat.define-palette(mat.$amber-palette, A200, A100, A400);
+// Green Light theme
+$green-light-primary: mat.define-palette(mat.$green-palette, 600);
+$green-light-accent:  mat.define-palette(mat.$teal-palette, A200, A100, A400);
 
-$pink-light-theme:   mat.define-light-theme((
+$green-light-theme:   mat.define-light-theme((
   color: (
-    primary: $pink-light-primary,
-    accent: $pink-light-accent,
+    primary: $green-light-primary,
+    accent: $green-light-accent,
   )
 ));
-.pink-light-theme {
-  @include mat.all-component-colors($pink-light-theme)
+.green-light-theme {
+  @include mat.all-component-colors($green-light-theme)
 }
