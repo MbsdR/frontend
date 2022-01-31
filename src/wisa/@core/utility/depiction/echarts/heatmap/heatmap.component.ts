@@ -4,9 +4,9 @@ import {EChartsOption} from 'echarts';
 import {interval} from 'rxjs';
 import {formatDate} from '@angular/common';
 import {Graphic} from '../../graphic';
-import {ITileSetting} from '../../../model/Usermangemant/ITileSetting';
+import {ITileSetting} from '../../../../model/Usermangemant/ITileSetting';
 import { IDatapoint } from 'src/wisa/@core/model/dto/IDatapoint';
-import {IFindings} from '../../../model/dto/IFindings';
+import {IFindings} from '../../../../model/dto/IFindings';
 
 
 @Component({

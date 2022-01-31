@@ -1,25 +1,25 @@
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output, QueryList, ViewChildren} from '@angular/core';
-import {IProfile} from '../model/Usermangemant/IProfile';
 import {Tile} from '../model/Usermangemant/ITile';
+import {IProfile} from '../model/Usermangemant/IProfile';
+import {Subscription} from 'rxjs';
 import {UsermanagementMockupService} from '../../@MockUp/usermanagement-mockup.service';
 import {RealTimeService} from '../service/real-time/real-time.service';
-import {Subscription} from 'rxjs';
 
 @Component({
-  selector: 'wisa-condition-monitoring',
+  selector: 'wisa-predictive-analytics',
   template: `
     <mat-grid-list cols="12" rowHeight="300px" class="dashboard">
-      <mat-grid-tile *ngFor="let tile of profile.settings.cms; index as i" [colspan]="tile.cols" [rowspan]="tile.rows"
+      <mat-grid-tile *ngFor="let tile of profile.settings.pa; index as i" [colspan]="tile.cols" [rowspan]="tile.rows"
                      [style]="backgorundColor">
         <div>
-          <wisa-content-creator [tile]="tile" [turbine]="id" [isPlaying]="isPlaying" [isAnalytics]="false" (newTile)="updateTile($event)"></wisa-content-creator>
+          <wisa-content-creator [tile]="tile" [turbine]="id" [isPlaying]="isPlaying" [isAnalytics]="true" (newTile)="updateTile($event)"></wisa-content-creator>
         </div>
       </mat-grid-tile>
     </mat-grid-list>
   `,
-  styleUrls: ['./condition-monitoring.component.css']
+  styleUrls: ['./predictive-analytics.component.css']
 })
-export class ConditionMonitoringComponent implements OnInit, OnDestroy {
+export class PredictiveAnalyticsComponent implements OnInit, OnDestroy {
 
   @ViewChildren('mat-grid-list') gridlist: QueryList<any>;
   @Output() tiles = new EventEmitter<Array<Tile>>();
@@ -46,4 +46,5 @@ export class ConditionMonitoringComponent implements OnInit, OnDestroy {
     console.log('Destroy Condition');
     this.realTimeService.rm();
   }
+
 }

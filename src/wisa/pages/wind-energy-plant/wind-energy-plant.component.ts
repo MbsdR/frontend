@@ -5,6 +5,8 @@ import {ActivatedRoute} from '@angular/router';
 import {WebSocketService} from '../../@core/service/RestAPI/web-socket.service';
 import {IDatapoint} from '../../@core/model/dto/IDatapoint';
 import {Observable} from 'rxjs';
+import {AddTileComponent} from '../../@core/utility/add-tile/add-tile.component';
+import {MatDialog} from '@angular/material/dialog';
 
 
 @Component({
@@ -23,7 +25,7 @@ import {Observable} from 'rxjs';
       </mat-tab>
       <mat-tab label="Predictive Analytics">
         <ng-template matTabContent>
-          Content 2
+          <wisa-predictive-analytics (tiles)="changeTiles($event)" [turbine]="turbine"></wisa-predictive-analytics>
         </ng-template>
       </mat-tab>
       <mat-tab label="Business Intelligence">
@@ -33,24 +35,32 @@ import {Observable} from 'rxjs';
       </mat-tab>
       <!-- <mat-tab label="Wartung"> Content 4</mat-tab> -->
     </mat-tab-group>
+    <button mat-fab (click)="addTiles()"><mat-icon>add</mat-icon> </button>
   `,
   styleUrls: ['./wind-energy-plant.component.css']
 })
 export class WindEnergyPlantComponent implements OnInit, OnDestroy {
 
-  $datastream: Observable<IDatapoint>;
+  @Output() $changeDashboard: EventEmitter<string> = new EventEmitter<string>();
   turbine: string;
 
-  constructor(private router: ActivatedRoute, private webSocket: WebSocketService) {
+  constructor(private router: ActivatedRoute, private webSocket: WebSocketService,
+              private dialog: MatDialog) {
     router.params.subscribe(value => {
       // get Turbine from parameter
       webSocket.turbine = value.id;
       this.turbine = value.id;
     });
+    this.$changeDashboard.subscribe(value => {
+      webSocket.dashboard = value;
+    }) ;
   }
 
   sayHello($event: MatTabChangeEvent): void {
-    console.log('ChangeEvent', $event.index);
+    // TODO Emit dashboard
+    const mapping = {1: 'cms', 2: 'pa', 3: 'bi'};
+    this.$changeDashboard.emit(mapping[$event.index]);
+    console.log('ChangeEvent', $event);
   }
 
   ngOnInit(): void {
@@ -61,5 +71,14 @@ export class WindEnergyPlantComponent implements OnInit, OnDestroy {
 
   changeTiles($event: Array<Tile>): void{
     console.log($event);
+  }
+
+  addTiles(): void {
+
+    const dialogRef = this.dialog.open(AddTileComponent);
+
+    dialogRef.afterClosed().subscribe(() => {
+      console.log('Save new Tile');
+    });
   }
 }

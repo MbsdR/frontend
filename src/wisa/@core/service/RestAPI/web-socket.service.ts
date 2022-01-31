@@ -18,6 +18,7 @@ export class WebSocketService {
 
   public historicData$: EventEmitter<IDatapoint>;
   public turbine: string;
+  public dashboard: string;
   private stompClient: Client;
 
   constructor(@Inject(DEMONSTRATOR) private url,
@@ -48,7 +49,8 @@ export class WebSocketService {
     body.end = end.toISOString();
     body.turbine = this.turbine;
     // Todo anpassen an sichtbares Dashboard
-    for (const iTile of this.managementService.profile.condition) {
+
+    for (const iTile of this.managementService.profile.settings[this.dashboard]) {
       body.feature.push(iTile.setting);
     }
     console.log('Websocket request', JSON.stringify(body));

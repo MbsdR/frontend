@@ -5,6 +5,11 @@ import {map, shareReplay} from 'rxjs/operators';
 import {WindparkMockUpService} from '../@MockUp/windpark-mock-up.service';
 import {WindEnergyPlant} from '../@core/model/wind-energy-plant';
 import {ActivatedRoute} from '@angular/router';
+import {PreferenceComponent} from '../@core/utility/preference/preference.component';
+import {ITileSetting} from '../@core/model/Usermangemant/ITileSetting';
+import {CHANNELS} from '../@core/model/Constants/mapping';
+import {MatDialog} from '@angular/material/dialog';
+import {AddTileComponent} from '../@core/utility/add-tile/add-tile.component';
 
 @Component({
   selector: 'wisa-sidebar',
@@ -48,7 +53,7 @@ import {ActivatedRoute} from '@angular/router';
         <router-outlet></router-outlet>
       </div>
     </div>
-    <!-- <button mat-fab (click)="addTiles()"><mat-icon>add</mat-icon> </button>-->
+
   </mat-sidenav-content>
 
 </mat-sidenav-container>

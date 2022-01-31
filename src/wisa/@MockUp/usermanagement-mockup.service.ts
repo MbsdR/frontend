@@ -8,7 +8,7 @@ import {IProfile} from '../@core/model/Usermangemant/IProfile';
   providedIn: 'root'
 })
 
-export class UsermanagementService {
+export class UsermanagementMockupService {
   user = {
     obe: User,
     vat: User,

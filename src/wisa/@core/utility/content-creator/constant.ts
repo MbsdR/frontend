@@ -1,6 +1,5 @@
 import {LineChartComponent} from '../depiction/echarts/line-chart/line-chart.component';
-import {HeatmapComponent} from '../depiction/d3/heatmap/heatmap.component';
-import {Graphic} from '../depiction/graphic';
+import {HeatmapComponent} from '../depiction/echarts/heatmap/heatmap.component';
 import {Type} from '@angular/core';
 
 export const GRAPHICS = {

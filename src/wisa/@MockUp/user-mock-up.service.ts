@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {IProfile} from '../@core/model/Usermangemant/IProfile';
+import {IProfile, Profile} from '../@core/model/Usermangemant/IProfile';
 import {CHANNELS} from '../@core/model/Constants/mapping';
 import {FREQUENCY, UNITS} from '../@core/model/Constants/ChartSettingConstants';
 
@@ -7,8 +7,9 @@ import {FREQUENCY, UNITS} from '../@core/model/Constants/ChartSettingConstants';
   providedIn: 'root'
 })
 export class UserMockUpService {
-  profile: IProfile = {
-    condition:  [
+  profile: IProfile = new Profile(
+    {
+      cms:  [
         {
           pos: 2,
           title: CHANNELS.PitchDeviation.label.de,
@@ -19,7 +20,8 @@ export class UserMockUpService {
             feature: CHANNELS.PitchDeviation.value,
             frequency: {value: FREQUENCY[2], unit: UNITS.min.value},
             type: 'line',
-            func: 'mean'
+            func: 'mean',
+            threshold: {warn: 0.3, alarm: 0.6}
           }
         },
         {
@@ -61,8 +63,10 @@ export class UserMockUpService {
             func: 'mean'
           }
         },
-      ]
-    };
+      ],
+      pa: [],
+    }
+  );
 
   constructor() {
   }

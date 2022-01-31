@@ -1,13 +1,9 @@
 import {AfterViewInit, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {IDatapoint} from '../../../model/dto/IDatapoint';
-import {map} from 'rxjs/operators';
+import {IDatapoint} from '../../../../model/dto/IDatapoint';
 import {EChartsOption} from 'echarts';
-import {ITileSetting} from '../../../model/Usermangemant/ITileSetting';
-import {CHANNELS} from '../../../model/Constants/mapping';
-import {Observable} from 'rxjs';
-import {objectKeys} from 'codelyzer/util/objectKeys';
+import {ITileSetting} from '../../../../model/Usermangemant/ITileSetting';
 import {Graphic} from '../../graphic';
-import {IFindings} from '../../../model/dto/IFindings';
+import {formatDate} from '@angular/common';
 
 @Component({
   selector: 'wisa-line-chart',
@@ -48,7 +44,10 @@ export class LineChartComponent implements OnInit, AfterViewInit, Graphic {
       },
       xAxis: {
         name: this.channel,
-        type: 'time'
+        type: 'time',
+        axisLabel: {
+          formatter: '{yyyy}-{MM}-{dd} {HH}:{mm}:{ss}'
+        }
       },
       yAxis: {
         name: 'Einheit',
@@ -66,6 +65,12 @@ export class LineChartComponent implements OnInit, AfterViewInit, Graphic {
         }
       ],
       series: [{
+        type: 'line',
+        showSymbol: false,
+        data: [10, 11, 10],
+        lineStyle: {color: 'red'}
+      },
+        {
         type: 'line',
         data: [0, 0]
       }]
@@ -102,4 +107,7 @@ export class LineChartComponent implements OnInit, AfterViewInit, Graphic {
     this.size = size;
   }
 
+  private createDateStr(stop: string): void {
+    const myDate = new Date(stop);
+  }
 }

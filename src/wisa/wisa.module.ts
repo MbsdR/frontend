@@ -27,7 +27,6 @@ import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatSliderModule} from '@angular/material/slider';
 import {MatMenuModule} from '@angular/material/menu';
-import {ConditionMonitoringModule} from './@core/condition-monitoring/condition-monitoring.module';
 import {MatButtonModule} from '@angular/material/button';
 import {PreferenceComponent} from './@core/utility/preference/preference.component';
 import {MatDialogModule} from '@angular/material/dialog';
@@ -46,9 +45,15 @@ import {registerLocaleData} from '@angular/common';
 import localeDe from '@angular/common/locales/de';
 import {AccountModule} from './@core/account/account.module';
 import {MapComponent} from './@core/map/map.component';
-import {HeaderComponent} from './pages/header/header.component';
-import {PredictiveAnalyticsModule} from './@core/predictive-analytics/predictive-analytics.module';
 import { AnalysisComponent } from './@core/utility/analysis/analysis.component';
+import {ConditionMonitoringComponent} from './@core/condition-monitoring/condition-monitoring.component';
+import {LineChartComponent} from './@core/utility/depiction/echarts/line-chart/line-chart.component';
+import {QuickviewComponent} from './@core/condition-monitoring/components/quickview/quickview.component';
+import {HeatmapComponent} from './@core/utility/depiction/echarts/heatmap/heatmap.component';
+import {ContentCreatorComponent, GraphicsDirective} from './@core/utility/content-creator/content-creator.component';
+import {HeaderComponent} from './pages/header/header.component';
+import {PredictiveAnalyticsComponent} from './@core/predictive-analytics/predictive-analytics.component';
+import { AddTileComponent } from './@core/utility/add-tile/add-tile.component';
 
 registerLocaleData(localeDe);
 
@@ -64,8 +69,19 @@ registerLocaleData(localeDe);
     PreferenceComponent,
     LoginComponent,
     MapComponent,
+    AnalysisComponent,
+    ConditionMonitoringComponent,
+    PredictiveAnalyticsComponent,
+    LineChartComponent,
+    QuickviewComponent,
+    HeatmapComponent,
+    ContentCreatorComponent,
+    GraphicsDirective,
     HeaderComponent,
-    AnalysisComponent
+    AddTileComponent
+
+  ],
+  exports: [
   ],
   imports: [
     BrowserModule,
@@ -111,10 +127,8 @@ registerLocaleData(localeDe);
     CdkAccordionModule,
     MatTabsModule,
     MatInputModule,
-    ConditionMonitoringModule,
     MatButtonToggleModule,
-    AccountModule,
-    PredictiveAnalyticsModule
+    AccountModule
 
   ],
   providers: [

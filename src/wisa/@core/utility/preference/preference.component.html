@@ -7,9 +7,9 @@
 
         <div class="form-group">
           <mat-form-field appearance="fill">
-            <mat-select name="channel" formControlName="channel">
+            <mat-select name="diagram" formControlName="chart">
               <mat-option value="">---Channel auswählen----</mat-option>
-              <mat-option *ngFor="let channel of channels" [value]="channel.value">{{channel.label.de}}</mat-option>
+              <mat-option *ngFor="let chart of charts" [value]="chart">{{chart}}</mat-option>
             </mat-select>
 
           </mat-form-field>
@@ -24,16 +24,6 @@
             </mat-radio-button>
           </mat-radio-group>
         </div>
-      </mat-tab>
-
-      <mat-tab label="Darstellung">
-        <mat-form-field appearance="fill">
-          <mat-select name="diagram" formControlName="chart">
-            <mat-option value="">---Channel auswählen----</mat-option>
-            <mat-option *ngFor="let chart of charts" [value]="chart">{{chart}}</mat-option>
-          </mat-select>
-
-        </mat-form-field>
       </mat-tab>
 
     </mat-tab-group>

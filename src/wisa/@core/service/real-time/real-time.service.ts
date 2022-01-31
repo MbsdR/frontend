@@ -7,6 +7,7 @@ import {BASE_URL_DATAPLATFORM} from '../../../wisa.tokens';
 import {concatAll, map, take, takeUntil, takeWhile} from 'rxjs/operators';
 import {interval, Observable, Subscription, timer} from 'rxjs';
 import {IFindings} from '../../model/dto/IFindings';
+import {formatDate} from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
@@ -34,15 +35,20 @@ export class RealTimeService {
     console.log('Live Datastream is not implement yet');
     console.log('end' in {end: 'string'});
     return this.sub = this.connectInputStream(turbine, feature).subscribe(
-      (strDatapoint) => {
-        this.datastream$.emit(strDatapoint);
+      (datapoint) => {
+        datapoint._start = formatDate(datapoint._start, 'YYYY-MM-dd HH:mm:ss', 'de');
+        datapoint._stop = formatDate(datapoint._stop, 'YYYY-MM-dd HH:mm:ss', 'de');
+        console.log(datapoint);
+        this.datastream$.emit(datapoint);
       }, // resultSet.push(JSON.parse(datapoint)),
-      error => {},
-      () => {}
+      error => {
+      },
+      () => {
+      }
     );
   }
 
-  rm(): void{
+  rm(): void {
     this.eventSource.close();
     this.sub.unsubscribe();
   }
@@ -51,24 +57,29 @@ export class RealTimeService {
     console.log('start sse');
     return new Observable<IDatapoint>(subscriber => {
       // const eventSource = new EventSource(this.BASE_URL.concat('/events'));
-      this.eventSource = new EventSource('http://localhost:8080/api/stream-sse?turbine=N1-1');
-      this.eventSource.onopen = event => {
-        this.zone.run(() => {
-          console.log('Connection to server opened.');
-        });
-      };
-      this.eventSource.onmessage = (message) => {
-        this.zone.run( () => {
-          console.log(message.data);
-          subscriber.next(JSON.parse(message.data));
-        });
-      };
-      this.eventSource.onerror = error => {
-        this.zone.run(() => {
-          subscriber.complete();
-          this.eventSource.close();
-        });
-      };
+      try {
+        this.eventSource = new EventSource('http://localhost:8080/api/stream-sse?turbine=N1-1');
+
+
+        this.eventSource.onopen = event => {
+          this.zone.run(() => {
+            console.log('Connection to server opened.');
+          });
+        };
+        this.eventSource.onmessage = (message) => {
+          this.zone.run(() => {
+            subscriber.next(JSON.parse(message.data));
+          });
+        };
+        this.eventSource.onerror = error => {
+          this.zone.run(() => {
+            subscriber.complete();
+            this.eventSource.close();
+          });
+        };
+      }
+      catch (e){
+      }
     });
   }
 }

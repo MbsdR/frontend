@@ -11,13 +11,10 @@ import {SettingMockUpService} from './setting-mock-up.service';
 export class ProfileMockUpService {
   profiles: { obe: IProfile, vat: IProfile, dwt?: IProfile};
 
-  constructor(private settings: SettingMockUpService) {
+  constructor(private settingMockUpService: SettingMockUpService) {
     this.profiles = {
-      vat: new Profile(),
-      obe: new Profile()
+      vat: new Profile(settingMockUpService.vatTiles),
+      obe: new Profile(settingMockUpService.obeTiles)
     };
-
-    this.profiles.vat.condition = settings.vatTiles;
-    this.profiles.obe.condition = settings.obeTiles;
   }
 }

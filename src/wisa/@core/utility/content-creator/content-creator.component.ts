@@ -1,28 +1,29 @@
 import {
   AfterViewInit,
   Component,
-  ComponentFactoryResolver, ComponentRef, Directive, EventEmitter,
+  ComponentFactoryResolver,
+  ComponentRef, Directive,
+  EventEmitter,
   Input, OnDestroy,
   OnInit,
-  Output, ViewChild,
-  ViewContainerRef
+  Output,
+  ViewChild, ViewContainerRef
 } from '@angular/core';
-import {PreferenceComponent} from '../../utility/preference/preference.component';
-import {ITileSetting} from '../../model/Usermangemant/ITileSetting';
-import {MatDialog} from '@angular/material/dialog';
-import {mergeWith, Observable} from 'rxjs';
-import {OcarinaOfTimeService} from '../../ocarina-of-time/service/OcarinaOfTime/ocarina-of-time.service';
-import {LineChartComponent} from '../../depiction/echarts/line-chart/line-chart.component';
-import {CHANNELS} from '../../model/Constants/mapping';
-import {GRAPHICS} from '../constance';
-import {Graphic} from '../../depiction/graphic';
-import {IDatapoint} from '../../model/dto/IDatapoint';
+import {LineChartComponent} from '../depiction/echarts/line-chart/line-chart.component';
 import {ITile, Tile} from '../../model/Usermangemant/ITile';
+import {ITileSetting} from '../../model/Usermangemant/ITileSetting';
+import {mergeWith, Observable} from 'rxjs';
+import {IDatapoint} from '../../model/dto/IDatapoint';
+import {Graphic} from '../depiction/graphic';
 import {RealTimeService} from '../../service/real-time/real-time.service';
 import {WebSocketService} from '../../service/RestAPI/web-socket.service';
+import {OcarinaOfTimeService} from '../../ocarina-of-time/service/OcarinaOfTime/ocarina-of-time.service';
+import {MatDialog} from '@angular/material/dialog';
 import {filter} from 'rxjs/operators';
-import {Finding, IFindings} from '../../model/dto/IFindings';
-import {AnalysisComponent} from '../../utility/analysis/analysis.component';
+import {PreferenceComponent} from '../preference/preference.component';
+import {CHANNELS} from '../../model/Constants/mapping';
+import {AnalysisComponent} from '../analysis/analysis.component';
+import {GRAPHICS} from './constant';
 
 @Directive({
   selector: '[wisaGraphic]'
@@ -35,7 +36,7 @@ export class GraphicsDirective {
 }
 
 @Component({
-  selector: 'wisa-tile-content',
+  selector: 'wisa-content-creator',
   template: `
     <mat-card class="dashboard-card"> <!-- style="background-color: #6cb21b"> -->
       <mat-card-header>
@@ -46,8 +47,8 @@ export class GraphicsDirective {
           <button mat-icon-button class="more-button" [matMenuTriggerFor]="menu" aria-label="Toggle menu">
             <mat-icon>more_vert</mat-icon>
           </button>
-          <mat-menu #menu="matMenu" xPosition="before">
-            <button mat-menu-item (click)="openAnalysis()">
+          <mat-menu #menu="matMenu" xPosition="before" >
+            <button *ngIf="isAnalytics" mat-menu-item (click)="openAnalysis()" >
               <mat-icon>assessment</mat-icon>
               Analyse starten
             </button>
@@ -78,9 +79,9 @@ export class GraphicsDirective {
       </mat-card-content>
     </mat-card>
   `,
-  styleUrls: ['./content.component.css']
+  styleUrls: ['./content-creator.component.css']
 })
-export class ContentComponent implements OnInit, AfterViewInit, OnDestroy {
+export class ContentCreatorComponent implements OnInit, AfterViewInit, OnDestroy  {
 
   @ViewChild(LineChartComponent, {static: true}) charts!: LineChartComponent;
   @ViewChild(GraphicsDirective, {static: true}) graphicRef!: GraphicsDirective;
@@ -90,6 +91,7 @@ export class ContentComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() tile: ITile;
   @Input() turbine: string;
   @Input() isPlaying: boolean;
+  @Input() isAnalytics: boolean;
 
   setting: ITileSetting;
   title: string;
@@ -97,11 +99,9 @@ export class ContentComponent implements OnInit, AfterViewInit, OnDestroy {
   mainstream: Observable<IDatapoint>;
 
 
-
   private $openOcarina: Observable<boolean>;
   private graphicType: string;
   private componentRef: ComponentRef<Graphic>;
-  alarm: string;
 
   constructor(private realTimeService: RealTimeService,
               private websocket: WebSocketService,
@@ -116,7 +116,7 @@ export class ContentComponent implements OnInit, AfterViewInit, OnDestroy {
     this.title = this.tile.title;
     this.graphicType = this.tile.setting.type;
     console.log('Which Feature ', this.setting.feature);
-    this.alarm = 'red';
+    console.log(this.isAnalytics);
   }
 
   ngAfterViewInit(): void {
@@ -129,7 +129,7 @@ export class ContentComponent implements OnInit, AfterViewInit, OnDestroy {
       .pipe(filter(datapoint =>  this.setting.feature in datapoint ? true : false ))
       .subscribe((datapoint) => {
         this.componentRef.instance.updateChart(datapoint, this.turbine);
-    });
+      });
   }
 
   ngOnDestroy(): void {

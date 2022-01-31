@@ -2,20 +2,20 @@ import {TestBed} from '@angular/core/testing';
 
 import {LoginService} from './login.service';
 import { Profile} from '../../model/Usermangemant/IProfile';
-import {UsermanagementService} from '../../../@MockUp/usermanagement.service';
+import {UsermanagementMockupService} from '../../../@MockUp/usermanagement-mockup.service';
 import {Router} from '@angular/router';
 import {ProfileMockUpService} from '../../../@MockUp/profile-mock-up.service';
 import {AccountService} from '../../account/service/account.service';
 
 describe('LoginService', () => {
   let service: LoginService;
-  let usermanagement: UsermanagementService;
+  let usermanagement: UsermanagementMockupService;
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [Router, ProfileMockUpService, UsermanagementService, AccountService]
+      imports: [Router, ProfileMockUpService, UsermanagementMockupService, AccountService]
     });
     service = TestBed.inject(LoginService);
-    usermanagement = TestBed.inject(UsermanagementService);
+    usermanagement = TestBed.inject(UsermanagementMockupService);
   });
 
   it('should be created', () => {
