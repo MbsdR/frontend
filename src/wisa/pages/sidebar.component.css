@@ -1,15 +1,12 @@
 .sidenav-container {
   height: 100%;
-  background-color: white;
 }
 
 .sidenav {
   width: 10%;
-  background-color: inherit;
 }
 .quickview {
   width: inherit;
-  background-color: inherit;
   margin-left: 15px;
   display: flex;
   flex-flow: row wrap;

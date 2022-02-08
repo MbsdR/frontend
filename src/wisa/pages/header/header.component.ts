@@ -17,7 +17,7 @@ import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
     <div class="header">
 
       <a *ngIf="!(isHandset$ | async)" routerLink="/" class="link">
-        <img src="assets/img/Logo_WiSAbigdata_300dpi.png" style="width: 200px">
+        <img src="assets/img/WiSAbigdata_Logo_eng.svg" style="width: 200px">
       </a>
       <div>
         <span>{{time | async  | date:'shortDate' }}</span> <br>
@@ -25,7 +25,7 @@ import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
       </div>
       <div>
         <mat-slide-toggle (toggleChange)="openOcarina()" toggleOcarina></mat-slide-toggle>
-
+<!--
         <button mat-icon-button class="more-button" [matMenuTriggerFor]="menu" aria-label="Toggle menu">
           <mat-icon>account_circle</mat-icon>
         </button>
@@ -40,6 +40,14 @@ import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
             Logout
           </button>
         </mat-menu>
+-->
+        <button mat-raised-button [matMenuTriggerFor]="menu" color="primary">Change Theme</button>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item (click)="changeTheme('light-theme')">Blue-Light</button>
+          <button mat-menu-item (click)="changeTheme('green-light-theme')">Green-Light</button>
+          <button mat-menu-item (click)="changeTheme('dark-theme')">Orange-Dark</button>
+        </mat-menu>
+
         <div [formGroup]="myGroup">
           <mat-form-field appearance="fill">
             <mat-select name="channel" formControlName="plant">
@@ -75,6 +83,9 @@ export class HeaderComponent implements OnInit {
   myGroup = new FormGroup({
     plant: new FormControl()
   });
+
+  @Output()
+  readonly changeThemeForMe = new EventEmitter<string>();
 
   constructor(@Inject(WindparkMockUpService) windparkMockUpService: WindparkMockUpService,
               private loginService: LoginService,
@@ -116,5 +127,9 @@ export class HeaderComponent implements OnInit {
         console.log(value);
       }
     });
+  }
+
+  changeTheme(theme: string){
+    this.changeThemeForMe.emit(theme)
   }
 }
