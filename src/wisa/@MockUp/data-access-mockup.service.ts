@@ -44,9 +44,5 @@ export class DataAccessMockupService {
     this.query.start = '2017-01-01';
     this.query.end = '2017-01-02';
     this.query.feature = new Array<ITileSetting>();
-
-    for (const tile of profils.profiles.vat.condition) {
-      this.query.feature.push(tile.setting);
-    }
   }
 }

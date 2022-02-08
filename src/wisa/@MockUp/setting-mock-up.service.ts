@@ -48,7 +48,7 @@ export class SettingMockUpService {
         }
       },
     ],
-    pa: [{
+    pa: [/*{
       pos: 2,
       title: 'Pitch Deviation',
       cols: 2,
@@ -60,7 +60,7 @@ export class SettingMockUpService {
         func: 'mean',
         type: 'line'
       }
-    }, ],
+    }, */],
     bi: []
   };
 

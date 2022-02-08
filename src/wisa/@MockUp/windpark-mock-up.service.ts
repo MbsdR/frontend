@@ -9,8 +9,8 @@ export class WindparkMockUpService {
   windpark: Array<WindEnergyPlant> = [];
 
   constructor() {
-    for (let i = 1; i < 10; i++) {
-      this.windpark.push({id: String(i)});
+    for (let i = 1; i < 2; i++) {
+      this.windpark.push({id: 'N1-1'});
     }
   }
 }

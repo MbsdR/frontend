@@ -4,10 +4,9 @@ import { Client} from '@stomp/stompjs';
 import * as SockJS from 'sockjs-client';
 import {HistoricData} from '../../model/IHistoricData';
 import {UsermanagementService} from '../Usermanagement/usermanagement.service';
-import {User} from '../../model/Usermangemant/IUser';
 import {IDatapoint} from '../../model/dto/IDatapoint';
-import {OcarinaOfTimeService} from '../../ocarina-of-time/service/OcarinaOfTime/ocarina-of-time.service';
-import next from 'ajv/dist/vocabularies/next';
+import {ITile} from '../../model/Usermangemant/ITile';
+import {formatDate} from '@angular/common';
 
 const PRIVATE_ENDPOINT = '/user/queue/historicData';
 
@@ -31,12 +30,12 @@ export class WebSocketService {
    * @param body
    */
   public controlJob(body: Date): void{
-    console.log('control Job', body.toISOString());
-    /*
+    console.log('control Job', formatDate(body, 'yyyy-MM-dd HH:mm:ssZ', 'de'));
     this.stompClient.publish(
-      {destination: '/api/historicData/control' , headers: {},  body: JSON.stringify({content: body.toISOString()})}
+      {destination: '/api/historicData/control' ,
+        headers: {},
+        body: `${formatDate(body, 'yyyy-MM-dd HH:mm:ssZ', 'de')}`}
     );
-    */
   }
 
   /**
@@ -45,16 +44,18 @@ export class WebSocketService {
    */
   public crateJob(start: Date, end: Date): void{
     const body = new HistoricData('OBE');
-    body.start = start.toISOString();
-    body.end = end.toISOString();
+    body.start = formatDate(start, 'YYYY-MM-dd HH:mm:ssZ', 'de');
+    body.stop = formatDate(start, 'YYYY-MM-dd HH:mm:ssZ', 'de');
     body.turbine = this.turbine;
     // Todo anpassen an sichtbares Dashboard
+    const dashboard: Array<ITile> = this.managementService.profile.settings[this.dashboard];
 
-    for (const iTile of this.managementService.profile.settings[this.dashboard]) {
-      body.feature.push(iTile.setting);
+    for (const iTile of dashboard) {
+      body.feature.push(iTile.setting.feature);
     }
+
     console.log('Websocket request', JSON.stringify(body));
-    // this.stompClient.publish({destination: '/api/historicData' , headers: {},  body: JSON.stringify(body)});
+    this.stompClient.publish({destination: '/api/historicData' , headers: {},  body: JSON.stringify(body)});
   }
 
   public connectDemonstrator(): void {

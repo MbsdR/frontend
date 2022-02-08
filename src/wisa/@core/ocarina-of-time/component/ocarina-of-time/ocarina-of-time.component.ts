@@ -26,11 +26,11 @@ const SPEED = [1, 2, 8, 32, 128];
         <button mat-icon-button (click)="reduceSpeed()">
           <mat-icon>fast_rewind</mat-icon>
         </button>
-        <span>{{ocarinaTime$ | async | date: 'dd. LLL. yyyy'}}</span>
+        <span>{{ocarinaService.$ocarinDateStream | async | date: 'dd. LLL. yyyy'}}</span>
         <button mat-icon-button (click)="play()">
           <mat-icon>{{font}}</mat-icon>
         </button>
-        <span>{{ocarinaTime$ | async | date: 'hh:mm:ss'}}</span>
+        <span>{{ocarinaService.$ocarinDateStream | async | date: 'HH:mm:ss'}}</span>
         <button mat-icon-button (click)="raiseSpeed()">
           <mat-icon>fast_forward</mat-icon>
         </button>
@@ -41,12 +41,10 @@ const SPEED = [1, 2, 8, 32, 128];
 })
 export class OcarinaOfTimeComponent{
 
-  @Output() currentDatetime$: Observable<number>;
   @Output() range = new FormGroup({
     start: new FormControl(),
     end: new FormControl()
   });
-  public ocarinaTime$: EventEmitter<Date>;
   public font;
 
   private factor: number;
@@ -54,8 +52,7 @@ export class OcarinaOfTimeComponent{
   private timeRange$: EventEmitter<{ 'start': Date, 'end': Date }>;
   maxDate: Date;
 
-  constructor(private ocarinaService: OcarinaOfTimeService) {
-    this.ocarinaTime$ = ocarinaService.$playOcarina;
+  constructor(public ocarinaService: OcarinaOfTimeService) {
     this.timeRange$ = ocarinaService.changeQuery$;
     this.maxDate = new Date(Date.now());
     this.factor = 0;

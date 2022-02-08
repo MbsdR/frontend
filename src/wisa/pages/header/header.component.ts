@@ -1,7 +1,7 @@
 import {Component, ComponentFactoryResolver, EventEmitter, Inject, OnInit, Output} from '@angular/core';
 import {AccountComponent} from '../../@core/account/account.component';
 import {WindEnergyPlant} from '../../@core/model/wind-energy-plant';
-import {interval, Observable} from 'rxjs';
+import {interval, merge, mergeWith, Observable} from 'rxjs';
 import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
 import {map, shareReplay, tap} from 'rxjs/operators';
 import {WindparkMockUpService} from '../../@MockUp/windpark-mock-up.service';
@@ -20,7 +20,7 @@ import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
         <img src="assets/img/Logo_WiSAbigdata_300dpi.png" style="width: 200px">
       </a>
       <div>
-        <span>{{time | async | date:'shortDate' }}</span> <br>
+        <span>{{time | async  | date:'shortDate' }}</span> <br>
         <span>{{time | async | date:'mediumTime' }}</span> <br>
       </div>
       <div>
@@ -60,7 +60,7 @@ import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
 export class HeaderComponent implements OnInit {
 
   plants: Array<WindEnergyPlant> = [];
-  time: Observable<number>;
+  time: Observable<Date>;
   systemTime: Date = new Date('2015-04-01');
 
   checked = true;
@@ -85,9 +85,7 @@ export class HeaderComponent implements OnInit {
               private dialog: MatDialog) {
     this.plants = windparkMockUpService.windpark;
     this.openOcarina$ = ocarina.isOcarinaOpen$;
-    this.time = interval(1000).pipe(map((value: number) =>  {
-      return this.systemTime.setSeconds(value % 60);
-    }));
+    this.time = interval(1000).pipe(map( () => new Date(Date.now())));
   }
 
   ngOnInit(): void {

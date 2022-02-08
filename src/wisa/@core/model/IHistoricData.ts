@@ -3,8 +3,8 @@ import {ITileSetting} from './Usermangemant/ITileSetting';
 export interface IHistoricData {
   vendor: string;
   start: string;
-  end: string;
-  feature: Array<ITileSetting>;
+  stop: string;
+  feature: Array<string>;
   turbine: string;
 }
 
@@ -13,8 +13,8 @@ export class HistoricData implements IHistoricData {
     this.vendor = vendor;
   }
 
-  feature: Array<ITileSetting> = new Array();
-  end: string;
+  feature: Array<string> = new Array();
+  stop: string;
   start: string;
   turbine: string;
   vendor: string;

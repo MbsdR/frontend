@@ -13,20 +13,21 @@ export class OcarinaOfTimeService {
 
   @ViewChildren(ConditionMonitoringComponent) myValue: QueryList<ConditionMonitoringComponent>;
 
-  $playOcarina: EventEmitter<Date> = new EventEmitter<Date>();
+  $ocarinDateStream: EventEmitter<Date> = new EventEmitter<Date>();
   isOcarinaOpen$: EventEmitter<boolean> = new EventEmitter<boolean>();
   changeQuery$ = new EventEmitter<{start: Date; end: Date}>();
 
   private frequency: number;
   private timeRange: { start: Date; end: Date };
   private unit: number;
-  private interval: Observable<number>;
   private newDate: Date;
   private isPause: boolean;
   private sub: Subscription;
 
   constructor(private webSocketService: WebSocketService) {
     this.frequency = 1;
+    this.unit = 1;
+    this.isPause = true;
     this.isOcarinaOpen$.subscribe((isOpen) => {
       console.log('Ocarina Service played ', isOpen);
       isOpen ? webSocketService.connectDemonstrator() : webSocketService.close();
@@ -35,11 +36,9 @@ export class OcarinaOfTimeService {
       this.timeRange = timeRange;
       this.Request2Demonstrator();
       this.newDate = this.timeRange.start;
+      this.$ocarinDateStream.emit(this.newDate);
       console.log('change Settings');
     });
-    this.unit = 1;
-    this.isPause = true;
-
     this.sub = of('Pause').pipe(filter(() => this.isPause), tap(() => console.log('Pause')))
       .pipe(
         map(x => interval(1000).pipe(
@@ -48,13 +47,12 @@ export class OcarinaOfTimeService {
           map(() => new Date(this.newDate.getTime() + this.frequency * 1000 * this.unit)))))
       .pipe(
         switchAll()).subscribe(oldDate => {
-        this.newDate = oldDate;
+          this.$ocarinDateStream.emit(oldDate);
+          this.newDate = oldDate;
       });
   }
 
   private Request2Demonstrator(): void {
-    // todo erzeuge Job für Datenabfrage
-    // todo sende job an Demonstrator
     this.webSocketService.crateJob(this.timeRange.start, this.timeRange.end);
   }
 
@@ -71,7 +69,7 @@ export class OcarinaOfTimeService {
   }
 
   private send(nextDate: Date): void{
-      // this.webSocketService.controlJob(nextDate);
+      this.webSocketService.controlJob(nextDate);
       console.log(nextDate);
   }
 }

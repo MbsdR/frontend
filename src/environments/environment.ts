@@ -3,7 +3,12 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  DATA_PLATFORM: {host: '127.0.0.1', port: 3000},
+  MANAGER: {host: 'localhost', port: 8080},
+  AUTH_ENABLE: false,
+  WS_DES: '/api/users/',
+  STOMP_DES: '/stomp',
 };
 
 /*

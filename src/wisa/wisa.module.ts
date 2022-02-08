@@ -54,6 +54,7 @@ import {ContentCreatorComponent, GraphicsDirective} from './@core/utility/conten
 import {HeaderComponent} from './pages/header/header.component';
 import {PredictiveAnalyticsComponent} from './@core/predictive-analytics/predictive-analytics.component';
 import { AddTileComponent } from './@core/utility/add-tile/add-tile.component';
+import {environment as env} from '../environments/environment';
 
 registerLocaleData(localeDe);
 
@@ -133,13 +134,13 @@ registerLocaleData(localeDe);
   ],
   providers: [
     {provide: MAT_DATE_LOCALE, useValue: 'de'},
-    {provide: BASE_URL_DATAPLATFORM, useValue: 'http://localhost:3000'},
-    {provide: AUTH_ENABLED, useValue: false},
+    {provide: BASE_URL_DATAPLATFORM, useValue: `http://${env.DATA_PLATFORM.host}:${env.DATA_PLATFORM.port}`},
+    {provide: AUTH_ENABLED, useValue: env.AUTH_ENABLE},
     {provide: LANGUAGE, useValue: 'de'},
     {provide: LOCALE_ID, useValue: 'de'},
-    {provide: WEBSOCKET_DESTINATION, useValue: '/api/users/'},
-    {provide: STOMP_DESTINATION, useValue: '/stomp'},
-    {provide: DEMONSTRATOR, useValue: 'http://127.0.0.1:8080'}
+    {provide: WEBSOCKET_DESTINATION, useValue: env.WS_DES},
+    {provide: STOMP_DESTINATION, useValue: env.STOMP_DES},
+    {provide: DEMONSTRATOR, useValue: `http://${env.MANAGER.host}:${env.MANAGER.port}`}
     // {provide: APP_BASE_HREF, useValue: '/wisa'}[CookieService],
   ],
   bootstrap: [WisaComponent]
