@@ -10,21 +10,25 @@ import {ITileSetting} from '../../model/Usermangemant/ITileSetting';
 @Component({
   selector: 'wisa-analysis',
   template: `
-    <div class="datapicker">
-      <mat-form-field appearance="fill">
-        <mat-label>Zeitraum für die manuelle Analyse</mat-label>
-        <mat-date-range-input [formGroup]="range" [rangePicker]="picker" [max]="maxDate">
-          <input matStartDate formControlName="start" placeholder="Start date">
-          <input matEndDate formControlName="end" placeholder="End date" >
-        </mat-date-range-input>
-        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-date-range-picker #picker></mat-date-range-picker>
-        <mat-error *ngIf="range.controls.start.hasError('matStartDateInvalid')">Invalid start date</mat-error>
-        <mat-error *ngIf="range.controls.end.hasError('matEndDateInvalid')">Invalid end date</mat-error>
-      </mat-form-field>
-    </div>
-    <button mat-button cdkFocusInitial (click)="startAnalysis()">Start</button>
-    <button mat-button mat-dialog-close>Abbrechen</button>
+    <mat-dialog-content>
+      <div class="datapicker">
+        <mat-form-field appearance="fill">
+          <mat-label>Zeitraum für die manuelle Analyse</mat-label>
+          <mat-date-range-input [formGroup]="range" [rangePicker]="picker" [max]="maxDate">
+            <input matStartDate formControlName="start" placeholder="Start date">
+            <input matEndDate formControlName="end" placeholder="End date">
+          </mat-date-range-input>
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-date-range-picker #picker></mat-date-range-picker>
+          <mat-error *ngIf="range.controls.start.hasError('matStartDateInvalid')">Invalid start date</mat-error>
+          <mat-error *ngIf="range.controls.end.hasError('matEndDateInvalid')">Invalid end date</mat-error>
+        </mat-form-field>
+      </div>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+      <button mat-button mat-dialog-close cdkFocusInitial (click)="startAnalysis()">Start</button>
+      <button mat-button mat-dialog-close>Abbrechen</button>
+    </mat-dialog-actions>
   `,
   styleUrls: ['./analysis.component.css']
 })
@@ -35,6 +39,7 @@ export class AnalysisComponent implements OnInit {
     end: new FormControl()
   });
   maxDate: Date;
+
   constructor(@Inject(MAT_DIALOG_DATA) public settings: ITileSetting,
               @Inject(DEMONSTRATOR) private managerUrl: string,
               private client: HttpClient,
@@ -42,16 +47,19 @@ export class AnalysisComponent implements OnInit {
     this.maxDate = new Date(Date.now());
 
   }
-
   ngOnInit(): void {
   }
+
   startAnalysis(): void {
     const start: Date = this.range.controls.start.value;
-    const end: Date = this.range.controls.end.value;
+    let end: Date = new Date();
+    if (this.range.controls.end.value !== null){
+      end = this.range.controls.end.value;
+    }
     const format = 'yyyy-MM-dd HH:mm:ssZ';
     const body = new AnalyseOrder(
       formatDate(start, format, 'de-DE', 'Europe/Berlin'),
-      formatDate(end, format, 'de-DE', 'Europe/Berlin') , 'N1-1', 'OBE');
-    this.client.post(this.managerUrl.concat('/api/analyse/pitch_deviation'), body).subscribe();
+      formatDate(end, format, 'de-DE', 'Europe/Berlin'), 'N1-1', 'OBE');
+    this.client.post(`http://${this.managerUrl}/api/analyse/pitch_deviation`, body).subscribe();
   }
 }

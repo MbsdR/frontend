@@ -7,7 +7,7 @@ export const environment = {
   DATA_PLATFORM: {host: '127.0.0.1', port: 3000},
   MANAGER: {host: 'localhost', port: 8080},
   AUTH_ENABLE: false,
-  WS_DES: '/api/users/',
+  WS_DES: '/users/',
   STOMP_DES: '/stomp',
 };
 

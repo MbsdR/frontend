@@ -25,12 +25,11 @@ import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
       </div>
       <div>
         <mat-slide-toggle (toggleChange)="openOcarina()" toggleOcarina></mat-slide-toggle>
-<!--
-        <button mat-icon-button class="more-button" [matMenuTriggerFor]="menu" aria-label="Toggle menu">
+
+        <button mat-icon-button class="more-button" [matMenuTriggerFor]="account" aria-label="Toggle menu">
           <mat-icon>account_circle</mat-icon>
         </button>
-
-        <mat-menu #menu="matMenu" xPosition="before">
+        <mat-menu #account="matMenu" xPosition="before">
           <button mat-menu-item (click)="openAccount()">
             <mat-icon>account_circle</mat-icon>
             Account
@@ -40,9 +39,9 @@ import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
             Logout
           </button>
         </mat-menu>
--->
-        <button mat-raised-button [matMenuTriggerFor]="menu" color="primary">Change Theme</button>
-        <mat-menu #menu="matMenu">
+
+        <button mat-raised-button [matMenuTriggerFor]="theme" color="primary">Design ändern</button>
+        <mat-menu #theme="matMenu">
           <button mat-menu-item (click)="changeTheme('light-theme')">Blue-Light</button>
           <button mat-menu-item (click)="changeTheme('green-light-theme')">Green-Light</button>
           <button mat-menu-item (click)="changeTheme('dark-theme')">Orange-Dark</button>
@@ -58,14 +57,16 @@ import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
           </mat-form-field>
         </div>
       </div>
-      <div [hidden]="!visible" class="ocarina">
-        <wisa-ocarina-of-time></wisa-ocarina-of-time>
-      </div>
     </div>
   `,
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
+
+  @Output()
+  readonly changeThemeForMe = new EventEmitter<string>();
+  @Output()
+  changeVisible: boolean;
 
   plants: Array<WindEnergyPlant> = [];
   time: Observable<Date>;
@@ -77,15 +78,12 @@ export class HeaderComponent implements OnInit {
       map(result => result.matches),
       shareReplay()
     );
-  visible = false;
   private openOcarina$: EventEmitter<boolean>;
 
   myGroup = new FormGroup({
     plant: new FormControl()
   });
 
-  @Output()
-  readonly changeThemeForMe = new EventEmitter<string>();
 
   constructor(@Inject(WindparkMockUpService) windparkMockUpService: WindparkMockUpService,
               private loginService: LoginService,
@@ -95,8 +93,9 @@ export class HeaderComponent implements OnInit {
               private router: ActivatedRoute,
               private dialog: MatDialog) {
     this.plants = windparkMockUpService.windpark;
-    this.openOcarina$ = ocarina.isOcarinaOpen$;
+    this.openOcarina$ = ocarina.$isOpen;
     this.time = interval(1000).pipe(map( () => new Date(Date.now())));
+    this.changeVisible = false;
   }
 
   ngOnInit(): void {
@@ -107,8 +106,8 @@ export class HeaderComponent implements OnInit {
    * Open Ocarina
    */
   openOcarina(): void {
-    this.visible = !this.visible;
-    this.openOcarina$.emit(this.visible);
+    this.changeVisible = !this.changeVisible;
+    this.openOcarina$.emit(this.changeVisible);
   }
 
   playOcarina($event: { start: Date, end: Date }): void {
@@ -129,7 +128,7 @@ export class HeaderComponent implements OnInit {
     });
   }
 
-  changeTheme(theme: string){
-    this.changeThemeForMe.emit(theme)
+  changeTheme(theme: string): void{
+    this.changeThemeForMe.emit(theme);
   }
 }

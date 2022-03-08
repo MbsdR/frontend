@@ -23,8 +23,7 @@ L.Marker.prototype.options.icon = iconDefault;
     <div class="content">
     <div class="map-container">
       <div class="map-frame">
-        <div id="map">
-        </div>
+        <div id="map"></div>
       </div>
     </div>
     </div>
@@ -39,7 +38,7 @@ export class MapComponent implements OnInit, AfterViewInit {
   private initMap(): void {
     this.map = L.map('map', {
       center: [53.146581, 8.181652],
-      zoom: 15
+      zoom: 20
     });
     const tiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 18,

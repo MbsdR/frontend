@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {WebSocketService} from './@core/service/RestAPI/web-socket.service';
+import {WebSocketService} from './@core/service/webSocket/web-socket.service';
 import Ajv, {JSONSchemaType} from 'ajv';
 const ajv = new Ajv();
 
@@ -19,8 +19,7 @@ const schema: JSONSchemaType<MyData> = {
 };
 @Component({
   selector: 'wisa-root',
-  template: `
-    <router-outlet></router-outlet>`,
+  template: `<router-outlet></router-outlet>`,
   styleUrls: ['./wisa.component.css'],
 })
 export class WisaComponent implements OnInit{

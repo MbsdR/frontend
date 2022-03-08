@@ -3,6 +3,7 @@ import {Md5} from 'ts-md5';
 import {IUser, User} from '../../model/Usermangemant/IUser';
 import {UserMockUpService} from '../../../@MockUp/user-mock-up.service';
 import {IProfile} from '../../model/Usermangemant/IProfile';
+import {Datapoint} from '../../model/dto/IDatapoint';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +18,6 @@ export class UsermanagementService {
 
   private vendors = ['obe', 'vat', 'dwt'];
 
-
   constructor(private userManagemen: UserMockUpService) {
     for (const vendor of this.vendors) {
       const user = new User();
@@ -26,10 +26,9 @@ export class UsermanagementService {
       user.password = Md5.hashStr('123456');
       this.user[vendor] = user;
     }
-
     this.profile = userManagemen.profile;
   }
-  getUser(vendor: string): User{
-    return this.user[vendor];
+  getUser(): string{
+    return 'obe';
   }
 }

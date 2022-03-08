@@ -1,23 +1,35 @@
-import {AfterViewInit, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {AfterViewInit, Component, Directive, OnInit} from '@angular/core';
 import {IDatapoint} from '../../../../model/dto/IDatapoint';
-import {EChartsOption} from 'echarts';
 import {ITileSetting} from '../../../../model/Usermangemant/ITileSetting';
-import {Graphic} from '../../graphic';
+import {Graphic, IGraphic} from '../../IGraphic';
+import {EChartsOption} from 'echarts';
+import * as ECharts from 'echarts';
 import {formatDate} from '@angular/common';
+
+@Directive({selector: '[wisaEChart]'})
+export class ChartDirective {
+}
 
 @Component({
   selector: 'wisa-line-chart',
   template: `
-    <div echarts [options]="options" [merge]="updateOptions" (chartInit)="onChartInit($event)" ></div>`,
+    <div echarts wisaEChart [options]="chartOption" [merge]="updateOption" (chartDataZoom)="onChartEvent($event, 'chartDataZoom')"
+         class="Echarts"></div>`,
   styleUrls: ['./line-chart.component.css']
 })
-export class LineChartComponent implements OnInit, AfterViewInit, Graphic {
+export class LineChartComponent extends Graphic implements OnInit, AfterViewInit {
 
   setting: ITileSetting;
-  options: EChartsOption;
-  updateOptions: EChartsOption;
+  chartOption: EChartsOption;
+  updateOption: any;
+  initData: Array<IDatapoint>;
 
-  private dataset: Array<[string, number | string]>;
+  // private dataset: Array<{name: string, value: Array<number | string>}> = ;
+  private dataset: { name: string, value: [any, number] }[] = [{
+    name: new Date(2015, 3, 11, 0, 10, 0).toString(),
+    value: [new Date(2015, 3, 11, 0, 10, 0).toISOString(), 1]
+  },
+    {name: new Date(2015, 3, 11, 0, 11, 0).toISOString(), value: [new Date(2015, 3, 11, 0, 11, 0).toISOString(), 2]}];
   private size: number;
   private echartsInstance: any;
   private puffer: number;
@@ -25,82 +37,91 @@ export class LineChartComponent implements OnInit, AfterViewInit, Graphic {
   private counter = 0;
 
   constructor() {
-    this.size = 10;
-    this.puffer = 1;
-    this.dataset = new Array<[string, (number | string)]>();
-
+    super();
+    this.size = 200;
+    this.puffer = 200;
+    this.dataset = new Array();
   }
 
   ngOnInit(): void {
     this.channel = this.setting.feature;
-    this.options = {
+    this.chartOption = {
       tooltip: {
-        show: true
-      },
-      grid: {
-        left: '10%',
-        height: '20%'
-
+        trigger: 'axis',
+        formatter: (params: any) => {
+          params = params[0];
+          const date = new Date(params.name);
+          return (
+            formatDate(date, 'HH:mm:ss', 'de') +
+            ' : ' +
+            params.value[1]
+          );
+        }
       },
       xAxis: {
-        name: this.channel,
         type: 'time',
-        axisLabel: {
-          formatter: '{yyyy}-{MM}-{dd} {HH}:{mm}:{ss}'
+        splitLine: {
+          show: true
         }
       },
       yAxis: {
-        name: 'Einheit',
-        type: 'value'
-      },
-      dataZoom: [
-        {
-          type: 'inside',
-          start: 0,
-          end: 20
-        },
-        {
-          start: 0,
-          end: 20
+        type: 'value',
+        splitLine: {
+          show: false
         }
-      ],
-      series: [{
-        type: 'line',
-        showSymbol: false,
-        data: [10, 11, 10],
-        lineStyle: {color: 'red'}
       },
-        {
+      series: [{
+        name: 'Fake Data',
         type: 'line',
-        data: [0, 0]
-      }]
+        showSymbol: this.setting.graphicSetting.showSymbol
+      }],
+      areaStyle: {normal: {}}
     };
   }
 
+  initDataset(datapoints: Array<IDatapoint>): void {
+    super.initDataset(datapoints);
+    datapoints.forEach( datapoint => {
+      this.getChartPoint(datapoint);
+    });
+    this.updateOption = {
+      series: [
+        {
+          data: this.dataset
+        }
+      ]
+    };
+  }
+
+  getChartPoint(datapoint: IDatapoint): void {
+    this.dataset.push(
+      {
+        name: new Date(datapoint._stop).toISOString(),
+        value: [new Date(datapoint._stop).toISOString(), datapoint.value]
+      }
+    );
+  }
 
   ngAfterViewInit(): void {
     console.info(this.channel, 'chart was created');
   }
 
   updateChart(datapoint: IDatapoint, turbine: string): void {
-    this.dataset.push([datapoint._stop, datapoint[this.channel]]);
-    if (this.dataset.length > this.size) {
-      this.dataset.shift();
-    }
-    this.dataset = Array.from(new Set(this.dataset));
-    this.counter += 1;
-    if (0 === this.counter % this.puffer) {
-      this.updateOptions = {
-        series: [{
+    console.log(datapoint);
+    this.getChartPoint(datapoint);
+    console.log(this.dataset);
+    this.updateOption = {
+      series: [
+        {
           data: this.dataset
-        }]
-      };
-      this.counter = 0;
-    }
+        }
+      ]
+    };
   }
 
   onChartInit(ec): void {
     this.echartsInstance = ec;
+    console.log(ec);
   }
 
   changeDatasetNumber(size: number): void {
@@ -109,5 +130,11 @@ export class LineChartComponent implements OnInit, AfterViewInit, Graphic {
 
   private createDateStr(stop: string): void {
     const myDate = new Date(stop);
+  }
+
+  onChartEvent($event, type: string): void {
+
+    console.log('chart event:', type, $event);
+
   }
 }

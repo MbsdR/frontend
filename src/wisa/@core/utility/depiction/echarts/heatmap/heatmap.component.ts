@@ -3,9 +3,9 @@ import * as echarts from 'echarts';
 import {EChartsOption} from 'echarts';
 import {interval} from 'rxjs';
 import {formatDate} from '@angular/common';
-import {Graphic} from '../../graphic';
+import {Graphic, IGraphic} from '../../IGraphic';
 import {ITileSetting} from '../../../../model/Usermangemant/ITileSetting';
-import { IDatapoint } from 'src/wisa/@core/model/dto/IDatapoint';
+import {IDatapoint} from 'src/wisa/@core/model/dto/IDatapoint';
 import {IFindings} from '../../../../model/dto/IFindings';
 
 
@@ -17,7 +17,7 @@ import {IFindings} from '../../../../model/dto/IFindings';
   `,
   styleUrls: ['./heatmap.component.css']
 })
-export class HeatmapComponent implements OnInit, AfterViewInit, Graphic {
+export class HeatmapComponent extends Graphic implements OnInit, AfterViewInit {
 
   @Input() setting: ITileSetting;
 
@@ -33,7 +33,11 @@ export class HeatmapComponent implements OnInit, AfterViewInit, Graphic {
   };
   isLoading = false;
 
-  constructor() {}
+  constructor() {
+    super();
+    this.data = new Array<any>();
+  }
+
   updateChart(datapoint: IDatapoint | IFindings, turbine: string): void {
     throw new Error('Method not implemented.');
   }
@@ -71,7 +75,6 @@ export class HeatmapComponent implements OnInit, AfterViewInit, Graphic {
 
   ngAfterViewInit(): void {
     interval(2000).subscribe(value => this.isLoading = true);
-
   }
 
   update(): void {

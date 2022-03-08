@@ -1,9 +1,7 @@
 import {Injectable} from '@angular/core';
-import {HistoricData, IHistoricData} from '../@core/model/IHistoricData';
-import {IDatapoint} from '../@core/model/dto/IDatapoint';
-import {ITileSetting, TileSetting} from '../@core/model/Usermangemant/ITileSetting';
+import {HistoricData, IHistoricData} from '../@core/model/dto/IHistoricData';
+import {ITileSetting} from '../@core/model/Usermangemant/ITileSetting';
 import {ProfileMockUpService} from './profile-mock-up.service';
-import {ITile} from '../@core/model/Usermangemant/ITile';
 import {IScada} from '../@core/model/dto/IScada';
 
 @Injectable({
@@ -42,7 +40,7 @@ export class DataAccessMockupService {
     this.query = new HistoricData('VAT');
     this.query.turbine = 'A01';
     this.query.start = '2017-01-01';
-    this.query.end = '2017-01-02';
-    this.query.feature = new Array<ITileSetting>();
+    this.query.stop = '2017-01-02';
+    this.query.features = new Array<string>();
   }
 }

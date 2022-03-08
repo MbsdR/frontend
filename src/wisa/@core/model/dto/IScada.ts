@@ -1,5 +1,5 @@
 import {IDatapoint} from './IDatapoint';
 
-export interface IScada extends IDatapoint{
+export interface IScada {
   [index: string]: number | string;
 }

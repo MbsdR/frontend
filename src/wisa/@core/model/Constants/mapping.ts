@@ -1,5 +1,5 @@
 export const CHANNELS = {
-  PitchDeviation: {
+  pitch_deviation: {
     value: 'pitch_deviation',
     label: {
       de: 'Pitchabweichung',
@@ -10,13 +10,13 @@ export const CHANNELS = {
       en: 'state'
     },
     features: [
-      'CDI_VA_PitchPositionBlade1',
-      'CDI_VA_PitchPositionBlade2',
-      'CDI_VA_PitchPositionBlade3'
+      'CDI.VA_PitchPositionBlade1',
+      'CDI.VA_PitchPositionBlade2',
+      'CDI.VA_PitchPositionBlade3'
     ]
   },
-  CDI_VA_PitchPositionBlade1: {
-    value: 'CDI_VA_PitchPositionBlade1',
+  'CDI.VA_PitchPositionBlade1': {
+    value: 'CDI.VA_PitchPositionBlade1',
     label: {
       de: 'Position Rotor 1',
       en: 'PitchPositionBlade1'
@@ -26,8 +26,8 @@ export const CHANNELS = {
       en: '°'
     }
   },
-  CDI_VA_PitchPositionBlade2: {
-    value: 'CDI_VA_PitchPositionBlade2',
+  'CDI.VA_PitchPositionBlade2': {
+    value: 'CDI.VA_PitchPositionBlade2',
     label: {
       de: 'Position Rotor 2',
       en: 'PitchPositionBlade2'
@@ -37,8 +37,8 @@ export const CHANNELS = {
       en: '°'
     }
   },
-  CDI_VA_PitchPositionBlade3: {
-    value: 'CDI_VA_PitchPositionBlade3',
+  'CDI.VA_PitchPositionBlade3': {
+    value: 'CDI.VA_PitchPositionBlade3',
     label: {
       de: 'Position Rotor 3',
       en: 'PitchPositionBlade3'

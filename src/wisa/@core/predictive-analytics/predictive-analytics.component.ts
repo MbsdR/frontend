@@ -3,7 +3,7 @@ import {Tile} from '../model/Usermangemant/ITile';
 import {IProfile} from '../model/Usermangemant/IProfile';
 import {Subscription} from 'rxjs';
 import {UsermanagementMockupService} from '../../@MockUp/usermanagement-mockup.service';
-import {RealTimeService} from '../service/real-time/real-time.service';
+import {SseService} from '../service/server-send-event/sse-service';
 
 @Component({
   selector: 'wisa-predictive-analytics',
@@ -31,9 +31,8 @@ export class PredictiveAnalyticsComponent implements OnInit, OnDestroy {
   backgorundColor: string;
   private subscription: Subscription;
 
-  constructor(private user: UsermanagementMockupService, private realTimeService: RealTimeService) {
+  constructor(private user: UsermanagementMockupService, private realTimeService: SseService) {
     this.profile = user.profile;
-    this.realTimeService.getCurrentData('', this.turbine);
   }
 
   ngOnInit(): void {
@@ -44,7 +43,6 @@ export class PredictiveAnalyticsComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     console.log('Destroy Condition');
-    this.realTimeService.rm();
   }
 
 }

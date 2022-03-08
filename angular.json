@@ -23,6 +23,7 @@
               "src/assets"
             ],
             "styles": [
+              "./node_modules/leaflet/dist/leaflet.css", // very important for Leaflet
               "src/styles.css",
               "src/theme.scss"
             ],

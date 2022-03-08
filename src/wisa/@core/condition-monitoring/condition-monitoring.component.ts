@@ -2,8 +2,9 @@ import {Component, EventEmitter, Input, OnDestroy, OnInit, Output, QueryList, Vi
 import {IProfile} from '../model/Usermangemant/IProfile';
 import {Tile} from '../model/Usermangemant/ITile';
 import {UsermanagementMockupService} from '../../@MockUp/usermanagement-mockup.service';
-import {RealTimeService} from '../service/real-time/real-time.service';
+import {SseService} from '../service/server-send-event/sse-service';
 import {Subscription} from 'rxjs';
+import {valueReferenceToExpression} from '@angular/compiler-cli/src/ngtsc/annotations/src/util';
 
 @Component({
   selector: 'wisa-condition-monitoring',
@@ -12,7 +13,8 @@ import {Subscription} from 'rxjs';
       <mat-grid-tile *ngFor="let tile of profile.settings.cms; index as i" [colspan]="tile.cols" [rowspan]="tile.rows"
                      [style]="backgorundColor">
         <div>
-          <wisa-content-creator [tile]="tile" [turbine]="id" [isPlaying]="isPlaying" [isAnalytics]="false" (newTile)="updateTile($event)"></wisa-content-creator>
+          <wisa-content-creator [tile]="tile" [turbine]="id" [isPlaying]="isPlaying" [isAnalytics]="false"
+                                (newTile)="updateTile($event)"></wisa-content-creator>
         </div>
       </mat-grid-tile>
     </mat-grid-list>
@@ -31,9 +33,13 @@ export class ConditionMonitoringComponent implements OnInit, OnDestroy {
   backgorundColor: string;
   private subscription: Subscription;
 
-  constructor(private user: UsermanagementMockupService, private realTimeService: RealTimeService) {
+  constructor(private user: UsermanagementMockupService, private sseService: SseService) {
     this.profile = user.profile;
-    this.realTimeService.getCurrentData('', this.turbine);
+    sseService.datastream$.subscribe({
+      next: (value) => {
+        console.log('receive');
+      }
+    });
   }
 
   ngOnInit(): void {
@@ -44,6 +50,5 @@ export class ConditionMonitoringComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     console.log('Destroy Condition');
-    this.realTimeService.rm();
   }
 }

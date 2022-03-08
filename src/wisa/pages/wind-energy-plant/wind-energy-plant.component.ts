@@ -1,21 +1,19 @@
-import {Component, ComponentFactoryResolver, EventEmitter, Inject, OnDestroy, OnInit, Output, ViewChild} from '@angular/core';
+import {Component, Directive, EventEmitter, OnDestroy, OnInit, Output} from '@angular/core';
 import {MatTabChangeEvent} from '@angular/material/tabs';
 import {Tile} from '../../@core/model/Usermangemant/ITile';
 import {ActivatedRoute} from '@angular/router';
-import {WebSocketService} from '../../@core/service/RestAPI/web-socket.service';
-import {IDatapoint} from '../../@core/model/dto/IDatapoint';
-import {Observable} from 'rxjs';
 import {AddTileComponent} from '../../@core/utility/add-tile/add-tile.component';
 import {MatDialog} from '@angular/material/dialog';
-
+import {ManagerAPIService} from '../../@core/service/RestAPI/manager-api.service';
+import {OcarinaOfTimeService} from '../../@core/ocarina-of-time/service/OcarinaOfTime/ocarina-of-time.service';
 
 @Component({
   selector: 'wisa-wind-energy-plant',
   template: `
-    <mat-tab-group (selectedTabChange)="sayHello($event)" dynamicHeight>
+    <mat-tab-group (selectedTabChange)="changeTab($event)" dynamicHeight>
       <mat-tab label="Überblick">
-        <ng-template >
-            Content 1
+        <ng-template>
+          Content 1
         </ng-template>
       </mat-tab>
       <mat-tab label="Zustandüberwachung">
@@ -30,46 +28,60 @@ import {MatDialog} from '@angular/material/dialog';
       </mat-tab>
       <mat-tab label="Business Intelligence">
         <ng-template matTabContent>
-          Content 3
+          <wisa-bi></wisa-bi>
         </ng-template>
       </mat-tab>
       <!-- <mat-tab label="Wartung"> Content 4</mat-tab> -->
     </mat-tab-group>
-    <button mat-fab (click)="addTiles()"><mat-icon>add</mat-icon> </button>
+    <button mat-fab (click)="addTiles()">
+      <mat-icon>add</mat-icon>
+    </button>
   `,
   styleUrls: ['./wind-energy-plant.component.css']
 })
 export class WindEnergyPlantComponent implements OnInit, OnDestroy {
 
   @Output() $changeDashboard: EventEmitter<string> = new EventEmitter<string>();
+
   turbine: string;
 
-  constructor(private router: ActivatedRoute, private webSocket: WebSocketService,
+  private ocarinsIsOpen: boolean;
+
+  constructor(private router: ActivatedRoute,
+              private ocarina: OcarinaOfTimeService,
+              private managerAPIService: ManagerAPIService,
               private dialog: MatDialog) {
+    this.ocarinsIsOpen = false;
     router.params.subscribe(value => {
       // get Turbine from parameter
-      webSocket.turbine = value.id;
+      managerAPIService.turbine = value.id;
       this.turbine = value.id;
     });
     this.$changeDashboard.subscribe(value => {
-      webSocket.dashboard = value;
-    }) ;
+      managerAPIService.dashboard = value;
+    });
   }
 
-  sayHello($event: MatTabChangeEvent): void {
+  changeTab($event: MatTabChangeEvent): void {
     // TODO Emit dashboard
-    const mapping = {1: 'cms', 2: 'pa', 3: 'bi'};
+    const mapping = {0: 'overview', 1: 'cms', 2: 'pa', 3: 'bi'};
     this.$changeDashboard.emit(mapping[$event.index]);
-    console.log('ChangeEvent', $event);
+    // stop ocarina
+    console.log(this.ocarina.isPause);
   }
 
   ngOnInit(): void {
+    this.ocarina.$isOpen.subscribe({
+      next: isOpen => {
+        this.ocarinsIsOpen = isOpen;
+      }
+    });
   }
 
   ngOnDestroy(): void {
   }
 
-  changeTiles($event: Array<Tile>): void{
+  changeTiles($event: Array<Tile>): void {
     console.log($event);
   }
 

@@ -12,11 +12,11 @@ import {
 import {LineChartComponent} from '../depiction/echarts/line-chart/line-chart.component';
 import {ITile, Tile} from '../../model/Usermangemant/ITile';
 import {ITileSetting} from '../../model/Usermangemant/ITileSetting';
-import {mergeWith, Observable} from 'rxjs';
+import {mergeWith, Observable, tap} from 'rxjs';
 import {IDatapoint} from '../../model/dto/IDatapoint';
-import {Graphic} from '../depiction/graphic';
-import {RealTimeService} from '../../service/real-time/real-time.service';
-import {WebSocketService} from '../../service/RestAPI/web-socket.service';
+import {IGraphic} from '../depiction/IGraphic';
+import {SseService} from '../../service/server-send-event/sse-service';
+import {WebSocketService} from '../../service/webSocket/web-socket.service';
 import {OcarinaOfTimeService} from '../../ocarina-of-time/service/OcarinaOfTime/ocarina-of-time.service';
 import {MatDialog} from '@angular/material/dialog';
 import {filter} from 'rxjs/operators';
@@ -24,6 +24,8 @@ import {PreferenceComponent} from '../preference/preference.component';
 import {CHANNELS} from '../../model/Constants/mapping';
 import {AnalysisComponent} from '../analysis/analysis.component';
 import {GRAPHICS} from './constant';
+import {ContentCreatorService} from './content-creator.service';
+import {SessionService} from '../../service/Session/session.service';
 
 @Directive({
   selector: '[wisaGraphic]'
@@ -47,8 +49,8 @@ export class GraphicsDirective {
           <button mat-icon-button class="more-button" [matMenuTriggerFor]="menu" aria-label="Toggle menu">
             <mat-icon>more_vert</mat-icon>
           </button>
-          <mat-menu #menu="matMenu" xPosition="before" >
-            <button *ngIf="isAnalytics" mat-menu-item (click)="openAnalysis()" >
+          <mat-menu #menu="matMenu" xPosition="before">
+            <button *ngIf="isAnalytics" mat-menu-item (click)="openAnalysis()">
               <mat-icon>assessment</mat-icon>
               Analyse starten
             </button>
@@ -81,7 +83,7 @@ export class GraphicsDirective {
   `,
   styleUrls: ['./content-creator.component.css']
 })
-export class ContentCreatorComponent implements OnInit, AfterViewInit, OnDestroy  {
+export class ContentCreatorComponent implements OnInit, AfterViewInit, OnDestroy {
 
   @ViewChild(LineChartComponent, {static: true}) charts!: LineChartComponent;
   @ViewChild(GraphicsDirective, {static: true}) graphicRef!: GraphicsDirective;
@@ -101,14 +103,16 @@ export class ContentCreatorComponent implements OnInit, AfterViewInit, OnDestroy
 
   private $openOcarina: Observable<boolean>;
   private graphicType: string;
-  private componentRef: ComponentRef<Graphic>;
+  private componentRef: ComponentRef<IGraphic>;
 
-  constructor(private realTimeService: RealTimeService,
+  constructor(private sseService: SseService,
+              private sessionService: SessionService,
               private websocket: WebSocketService,
               private ocarina: OcarinaOfTimeService,
+              private contentCreator: ContentCreatorService,
               private componentFactoryResolver: ComponentFactoryResolver,
               private dialog: MatDialog) {
-    this.$openOcarina = ocarina.isOcarinaOpen$.asObservable();
+    this.$openOcarina = ocarina.$isOpen.asObservable();
   }
 
   ngOnInit(): void {
@@ -120,13 +124,17 @@ export class ContentCreatorComponent implements OnInit, AfterViewInit, OnDestroy
   }
 
   ngAfterViewInit(): void {
-    this.loadGraphic();
+    this.loadGraphic(this.setting.type);
+    const lists = this.sessionService.storage.get(this.setting.feature);
+    if (lists) {
+      this.componentRef.instance.initDataset(lists);
+    }
     // Start Datastream from Historic and RealTime
-    this.mainstream = this.realTimeService.datastream$.asObservable().pipe(mergeWith(
+    this.mainstream = this.sseService.datastream$.asObservable().pipe(mergeWith(
       this.websocket.historicData$.asObservable()));
 
     this.mainstream
-      .pipe(filter(datapoint =>  this.setting.feature in datapoint ? true : false ))
+      .pipe(filter(datapoint => this.setting.feature in datapoint ? true : false))
       .subscribe((datapoint) => {
         this.componentRef.instance.updateChart(datapoint, this.turbine);
       });
@@ -134,7 +142,6 @@ export class ContentCreatorComponent implements OnInit, AfterViewInit, OnDestroy
 
   ngOnDestroy(): void {
     console.log('Destroy');
-    this.realTimeService.rm();
   }
 
   openPreference(): void {
@@ -176,33 +183,12 @@ export class ContentCreatorComponent implements OnInit, AfterViewInit, OnDestroy
     console.info(' Remove Tile');
   }
 
-  private createQuery(channel: string,
-                      turbine: string,
-                      start: Date,
-                      end: Date,
-                      freq: { value: number, unit: string },
-                      func: string): void {
-
-    /*new Query('VAT')
-      .start(start.toISOString())
-      .end(end.toISOString())
-      .func(func)
-      .freq(freq.value.toString().concat(freq.unit))
-      .addTurbine(turbine)
-      .addChannel(channel)
-      .getQuery();
-      */
-  }
-
-  private loadGraphic(): void {
-    const graphic = GRAPHICS.line;
-    const componentFactory = this.componentFactoryResolver.resolveComponentFactory(graphic);
+  private loadGraphic(chart: string): void {
     const viewContainerRef = this.graphicRef.viewContainerRef;
     console.log('view container', viewContainerRef);
     viewContainerRef.clear();
-    this.componentRef = viewContainerRef.createComponent<Graphic>(componentFactory);
+    this.componentRef = viewContainerRef.createComponent<IGraphic>(GRAPHICS[chart]);
     this.componentRef.instance.setting = this.setting;
-
   }
 
 }

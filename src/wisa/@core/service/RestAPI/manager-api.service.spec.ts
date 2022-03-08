@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { RealTimeService } from './real-time.service';
+import { ManagerAPIService } from './manager-api.service';
 
-describe('DataAccessService', () => {
-  let service: RealTimeService;
+describe('ManagerAPIService', () => {
+  let service: ManagerAPIService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(RealTimeService);
+    service = TestBed.inject(ManagerAPIService);
   });
 
   it('should be created', () => {

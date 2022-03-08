@@ -37,7 +37,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
               private ocarina: OcarinaOfTimeService,
               private activatedRoute: ActivatedRoute) {
     this.profile = userMochUpService.profile;
-    this.$beginPlaying = ocarina.isOcarinaOpen$;
+    this.$beginPlaying = ocarina.$isOpen;
   }
 
   ngOnInit(): void {

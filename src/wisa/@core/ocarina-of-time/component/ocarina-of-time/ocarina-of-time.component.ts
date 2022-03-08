@@ -57,7 +57,7 @@ export class OcarinaOfTimeComponent{
     this.maxDate = new Date(Date.now());
     this.factor = 0;
 
-    ocarinaService.isOcarinaOpen$.subscribe((visible) => {
+    ocarinaService.$isOpen.subscribe((visible) => {
       visible ? this.init() : this.destroy();
     });
   }
@@ -109,6 +109,7 @@ export class OcarinaOfTimeComponent{
       }
       if (change === 'end') {
         this.timeRange$.emit({start: this.range.controls.start.value, end: $event.value});
+        console.log($event.value);
       }
     }
   }

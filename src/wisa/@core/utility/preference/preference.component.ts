@@ -4,6 +4,7 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { CHANNELS } from '../../model/Constants/mapping';
 import { ITileSetting } from '../../model/Usermangemant/ITileSetting';
 import { FREQUENCY, UNITS, TYPECHARTS } from '../../model/Constants/ChartSettingConstants';
+import {GRAPHICS} from '../content-creator/constant';
 
 @Component({
   selector: 'wisa-preference',

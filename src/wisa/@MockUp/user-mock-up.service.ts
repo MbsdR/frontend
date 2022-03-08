@@ -11,27 +11,13 @@ export class UserMockUpService {
     {
       cms:  [
         {
-          pos: 2,
-          title: CHANNELS.PitchDeviation.label.de,
-          cols: 2,
-          rows: 1,
-          color: 'lightpink',
-          setting: {
-            feature: CHANNELS.PitchDeviation.value,
-            frequency: {value: FREQUENCY[2], unit: UNITS.min.value},
-            type: 'line',
-            func: 'mean',
-            threshold: {warn: 0.3, alarm: 0.6}
-          }
-        },
-        {
           pos: 1,
-          title: CHANNELS.CDI_VA_PitchPositionBlade1.label.de,
+          title: CHANNELS['CDI.VA_PitchPositionBlade1'].label.de,
           cols: 4,
           rows: 1,
           color: 'lightgreen',
           setting: {
-            feature: CHANNELS.CDI_VA_PitchPositionBlade1.value,
+            feature: CHANNELS['CDI.VA_PitchPositionBlade1'].value,
             frequency: {value: FREQUENCY[0], unit: UNITS.hour.value},
             type: 'line',
             func: 'mean'
@@ -39,12 +25,12 @@ export class UserMockUpService {
         },
         {
           pos: 4,
-          title: CHANNELS.CDI_VA_PitchPositionBlade2.label.de,
+          title: CHANNELS['CDI.VA_PitchPositionBlade2'].label.de,
           cols: 2,
           rows: 1,
           color: 'lightblue',
           setting: {
-            feature: CHANNELS.CDI_VA_PitchPositionBlade2.value,
+            feature: CHANNELS['CDI.VA_PitchPositionBlade2'].value,
             frequency: {value: FREQUENCY[1], unit: UNITS.min.value},
             type: 'line',
             func: 'mean'
@@ -52,19 +38,32 @@ export class UserMockUpService {
         },
         {
           pos: 3,
-          title: CHANNELS.CDI_VA_PitchPositionBlade3.label.de,
+          title: CHANNELS['CDI.VA_PitchPositionBlade3'].label.de,
           cols: 6,
           rows: 1,
           color: '#DDBDF1',
           setting: {
-            feature: CHANNELS.CDI_VA_PitchPositionBlade3.value,
+            feature: CHANNELS['CDI.VA_PitchPositionBlade3'].value,
             frequency: {value: FREQUENCY[1], unit: UNITS.min.value},
             type: 'line',
             func: 'mean'
           }
         },
       ],
-      pa: [],
+      pa: [ {
+        pos: 1,
+        title: CHANNELS.pitch_deviation.label.de,
+        cols: 4,
+        rows: 1,
+        color: 'lightpink',
+        setting: {
+          feature: CHANNELS.pitch_deviation.value,
+          frequency: {value: FREQUENCY[2], unit: UNITS.min.value},
+          type: 'line',
+          func: 'mean',
+          threshold: {warn: 0.3, alarm: 0.6}
+        }
+      } ],
     }
   );
 
