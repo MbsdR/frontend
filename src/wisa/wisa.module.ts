@@ -21,6 +21,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {RouterModule} from '@angular/router';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {MatIconModule} from '@angular/material/icon';
+import {NgxEchartsModule} from 'ngx-echarts';
 import {MatListModule} from '@angular/material/list';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
@@ -38,34 +39,26 @@ import {MatInputModule} from '@angular/material/input';
 import {DashboardComponent} from './pages/dashboard/dashboard.component';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import {LoginComponent} from './@core/login/login.component';
-import {
-  AUTH_ENABLED,
-  BASE_URL_DATAPLATFORM,
-  DEMONSTRATOR,
-  LANGUAGE,
-  STOMP_DESTINATION,
-  WEBSOCKET_DESTINATION
-} from './wisa.tokens';
+import {AUTH_ENABLED, BASE_URL_DATAPLATFORM, DEMONSTRATOR, LANGUAGE, STOMP_DESTINATION, WEBSOCKET_DESTINATION} from './wisa.tokens';
 
 import {registerLocaleData} from '@angular/common';
 import localeDe from '@angular/common/locales/de';
 import {AccountModule} from './@core/account/account.module';
 import {MapComponent} from './@core/map/map.component';
-import {AnalysisComponent} from './@core/utility/analysis/analysis.component';
+import { AnalysisComponent } from './@core/utility/analysis/analysis.component';
 import {ConditionMonitoringComponent} from './@core/condition-monitoring/condition-monitoring.component';
-import {ChartDirective, LineChartComponent} from './@core/utility/depiction/echarts/line-chart/line-chart.component';
+import {LineChartComponent} from './@core/utility/depiction/echarts/line-chart/line-chart.component';
 import {QuickviewComponent} from './@core/condition-monitoring/components/quickview/quickview.component';
 import {HeatmapComponent} from './@core/utility/depiction/echarts/heatmap/heatmap.component';
 import {ContentCreatorComponent, GraphicsDirective} from './@core/utility/content-creator/content-creator.component';
 import {HeaderComponent} from './pages/header/header.component';
 import {PredictiveAnalyticsComponent} from './@core/predictive-analytics/predictive-analytics.component';
-import {AddTileComponent} from './@core/utility/add-tile/add-tile.component';
+import { AddTileComponent } from './@core/utility/add-tile/add-tile.component';
 import {environment as env} from '../environments/environment';
-import {BIComponent} from './@core/business-intelligence/bi.component';
-import {NgxEchartsModule} from 'ngx-echarts';
-import { TestLineChartComponent } from './@core/utility/depiction/echarts/test-line-chart/test-line-chart.component';
-import { FooterComponent } from './pages/footer/footer.component';
-import { NotifcationComponent } from './@core/notifcation/notifcation.component';
+import {BarChartComponent} from "./@core/utility/depiction/echarts/bar-chart/bar-chart.component";
+import {TestLineChartComponent} from "./@core/utility/depiction/echarts/test-line-chart/test-line-chart.component";
+import {FooterComponent} from "./pages/footer/footer.component";
+import {GaugeComponent} from "./@core/utility/depiction/echarts/gauge/gauge.component";
 
 registerLocaleData(localeDe);
 
@@ -91,13 +84,14 @@ registerLocaleData(localeDe);
     GraphicsDirective,
     HeaderComponent,
     AddTileComponent,
-    BIComponent,
-    ChartDirective,
+    BarChartComponent,
     TestLineChartComponent,
     FooterComponent,
-    NotifcationComponent
+    GaugeComponent
+
   ],
-  exports: [],
+  exports: [
+  ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -144,6 +138,7 @@ registerLocaleData(localeDe);
     MatInputModule,
     MatButtonToggleModule,
     AccountModule
+
   ],
   providers: [
     {provide: MAT_DATE_LOCALE, useValue: 'de'},
@@ -152,8 +147,8 @@ registerLocaleData(localeDe);
     {provide: LANGUAGE, useValue: 'de'},
     {provide: LOCALE_ID, useValue: 'de'},
     {provide: WEBSOCKET_DESTINATION, useValue: env.WS_DES},
-    {provide: STOMP_DESTINATION, useValue: `ws://${env.MANAGER.host}:${env.MANAGER.port}${env.STOMP_DES}`},
-    {provide: DEMONSTRATOR, useValue: `${env.MANAGER.host}:${env.MANAGER.port}`}
+    {provide: STOMP_DESTINATION, useValue: env.STOMP_DES},
+    {provide: DEMONSTRATOR, useValue: `http://${env.MANAGER.host}:${env.MANAGER.port}`}
     // {provide: APP_BASE_HREF, useValue: '/wisa'}[CookieService],
   ],
   bootstrap: [WisaComponent]
