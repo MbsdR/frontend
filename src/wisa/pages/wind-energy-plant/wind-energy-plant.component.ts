@@ -6,6 +6,9 @@ import {AddTileComponent} from '../../@core/utility/add-tile/add-tile.component'
 import {MatDialog} from '@angular/material/dialog';
 import {ManagerAPIService} from '../../@core/service/RestAPI/manager-api.service';
 import {OcarinaOfTimeService} from '../../@core/ocarina-of-time/service/OcarinaOfTime/ocarina-of-time.service';
+import {IProfile} from "../../@core/model/Usermangemant/IProfile";
+
+
 
 @Component({
   selector: 'wisa-wind-energy-plant',
@@ -87,10 +90,14 @@ export class WindEnergyPlantComponent implements OnInit, OnDestroy {
 
   addTiles(): void {
 
-    const dialogRef = this.dialog.open(AddTileComponent);
+    const dialogRef = this.dialog.open(AddTileComponent,  {
+      height: '60%',
+      width: '50%',
+      data: {name: 'User Profile'}
+    });
 
-    dialogRef.afterClosed().subscribe(() => {
-      console.log('Save new Tile');
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('Dialog Result: ', result);
     });
   }
 }
