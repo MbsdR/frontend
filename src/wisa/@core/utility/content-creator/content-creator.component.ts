@@ -26,6 +26,11 @@ import {AnalysisComponent} from '../analysis/analysis.component';
 import {GRAPHICS} from './constant';
 import {ContentCreatorService} from './content-creator.service';
 import {SessionService} from '../../service/Session/session.service';
+import {ManagerAPIService} from "../../service/RestAPI/manager-api.service";
+import {IProfile} from "../../model/Usermangemant/IProfile";
+import {UNITS} from "../../model/Constants/ChartSettingConstants";
+import {UserMockUpService} from "../../../@MockUp/user-mock-up.service";
+import {UsermanagementService} from "../../service/Usermanagement/usermanagement.service";
 
 @Directive({
   selector: '[wisaGraphic]'
@@ -62,7 +67,7 @@ export class GraphicsDirective {
               <mat-icon>file_download</mat-icon>
               Exportieren
             </button>
-            <button mat-menu-item (click)="removeTile()">
+            <button mat-menu-item (click)="removeTile(this.tile)">
               <mat-icon>delete</mat-icon>
               Entfernen
             </button>
@@ -99,20 +104,24 @@ export class ContentCreatorComponent implements OnInit, AfterViewInit, OnDestroy
   title: string;
   inProgress: boolean;
   mainstream: Observable<IDatapoint>;
+  profile: IProfile;
 
 
   private $openOcarina: Observable<boolean>;
   private graphicType: string;
   private componentRef: ComponentRef<IGraphic>;
 
-  constructor(private sseService: SseService,
+  constructor(userMockUpService: UserMockUpService,
+              private sseService: SseService,
               private sessionService: SessionService,
               private websocket: WebSocketService,
               private ocarina: OcarinaOfTimeService,
               private contentCreator: ContentCreatorService,
               private componentFactoryResolver: ComponentFactoryResolver,
-              private dialog: MatDialog) {
+              private dialog: MatDialog,
+              private userManagementService: UsermanagementService) {
     this.$openOcarina = ocarina.$isOpen.asObservable();
+    this.profile = userManagementService.profile;
   }
 
   ngOnInit(): void {
@@ -179,7 +188,14 @@ export class ContentCreatorComponent implements OnInit, AfterViewInit, OnDestroy
   export(): void {
   }
 
-  removeTile(): void {
+  removeTile(tile): void {
+    console.log(tile);
+    console.log(this.profile.settings.cms);
+
+    const index = this.profile.settings.cms.indexOf(tile);
+    console.log(index);
+    //this.profile.settings.cms.splice(index, 1);
+    console.log(this.profile.settings.cms);
     console.info(' Remove Tile');
   }
 

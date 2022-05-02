@@ -1,6 +1,7 @@
-import {Injectable} from '@angular/core';
+import {EventEmitter, Injectable} from '@angular/core';
 import {IDatapoint} from '../../model/dto/IDatapoint';
 import {UsermanagementService} from '../Usermanagement/usermanagement.service';
+import {IProfile} from "../../model/Usermangemant/IProfile";
 
 @Injectable({
   providedIn: 'root'
@@ -8,8 +9,12 @@ import {UsermanagementService} from '../Usermanagement/usermanagement.service';
 export class SessionService {
 
   storage: Map<string, Array<IDatapoint>>;
+  $Profile: EventEmitter<IProfile>;
 
   constructor(private usermanagement: UsermanagementService) {
+
+    this.$Profile = new EventEmitter<IProfile>();
+    this.$Profile.emit(usermanagement.profile);
     const dashboards = this.usermanagement.profile.settings;
     this.storage = new Map<string, Array<IDatapoint>>();
 
@@ -18,5 +23,10 @@ export class SessionService {
         this.storage.set(iTile.setting.feature, new Array<IDatapoint>());
       }
     }
+  }
+
+  newProfile(profile: IProfile): void {
+    this.usermanagement.profile = profile;
+    this.$Profile.emit(profile);
   }
 }

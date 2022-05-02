@@ -7,6 +7,8 @@ import {MatDialog} from '@angular/material/dialog';
 import {ManagerAPIService} from '../../@core/service/RestAPI/manager-api.service';
 import {OcarinaOfTimeService} from '../../@core/ocarina-of-time/service/OcarinaOfTime/ocarina-of-time.service';
 import {IProfile} from "../../@core/model/Usermangemant/IProfile";
+import {UsermanagementService} from "../../@core/service/Usermanagement/usermanagement.service";
+import {SessionService} from "../../@core/service/Session/session.service";
 
 
 
@@ -53,6 +55,8 @@ export class WindEnergyPlantComponent implements OnInit, OnDestroy {
   constructor(private router: ActivatedRoute,
               private ocarina: OcarinaOfTimeService,
               private managerAPIService: ManagerAPIService,
+              private managementService: UsermanagementService,
+              private sessionService: SessionService,
               private dialog: MatDialog) {
     this.ocarinsIsOpen = false;
     router.params.subscribe(value => {
@@ -89,14 +93,15 @@ export class WindEnergyPlantComponent implements OnInit, OnDestroy {
   }
 
   addTiles(): void {
-
+    const dashboards = this.managementService.profile.settings;
     const dialogRef = this.dialog.open(AddTileComponent,  {
       height: '60%',
       width: '50%',
-      data: {name: 'User Profile'}
+      data: {dashboards}
     });
 
     dialogRef.afterClosed().subscribe(result => {
+      this.sessionService.newProfile(result)
       console.log('Dialog Result: ', result);
     });
   }

@@ -18,7 +18,7 @@ export class UsermanagementService {
 
   private vendors = ['obe', 'vat', 'dwt'];
 
-  constructor(private userManagemen: UserMockUpService) {
+  constructor(private userManagement: UserMockUpService) {
     for (const vendor of this.vendors) {
       const user = new User();
       user.id = this.vendors.indexOf(vendor).toString();
@@ -26,7 +26,7 @@ export class UsermanagementService {
       user.password = Md5.hashStr('123456');
       this.user[vendor] = user;
     }
-    this.profile = userManagemen.profile;
+    this.profile = userManagement.profile;
   }
   getUser(): string{
     return 'obe';
